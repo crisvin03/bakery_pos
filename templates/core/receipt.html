@@ -1,0 +1,514 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<style>
+  /* Enhanced Receipt Design System */
+  :root {
+    --receipt-primary: #6366f1;
+    --receipt-secondary: #8b5cf6;
+    --receipt-success: #10b981;
+    --receipt-warning: #f59e0b;
+    --receipt-danger: #ef4444;
+    --receipt-gray-50: #f9fafb;
+    --receipt-gray-100: #f3f4f6;
+    --receipt-gray-200: #e5e7eb;
+    --receipt-gray-300: #d1d5db;
+    --receipt-gray-400: #9ca3af;
+    --receipt-gray-500: #6b7280;
+    --receipt-gray-600: #4b5563;
+    --receipt-gray-700: #374151;
+    --receipt-gray-800: #1f2937;
+    --receipt-gray-900: #111827;
+  }
+
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  html {
+    overflow: hidden;
+    height: 100vh;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  html::-webkit-scrollbar {
+    display: none; /* WebKit */
+  }
+
+  body::-webkit-scrollbar {
+    display: none; /* WebKit */
+  }
+
+  .receipt-container {
+    max-width: 400px;
+    margin: 0.25rem auto;
+    padding: 0 0.25rem;
+    height: calc(100vh - 0.5rem);
+    overflow: hidden;
+  }
+
+  .receipt-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    animation: slideUp 0.6s ease-out;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+
+  .receipt-card::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .receipt-card::-webkit-scrollbar-track {
+    background: var(--receipt-gray-100);
+    border-radius: 3px;
+  }
+
+  .receipt-card::-webkit-scrollbar-thumb {
+    background: var(--receipt-gray-300);
+    border-radius: 3px;
+  }
+
+  .receipt-card::-webkit-scrollbar-thumb:hover {
+    background: var(--receipt-gray-400);
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .receipt-header {
+    background: linear-gradient(135deg, var(--receipt-primary) 0%, var(--receipt-secondary) 100%);
+    color: white;
+    padding: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .receipt-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-weight: 800;
+    font-size: 0.875rem;
+    margin-bottom: 0.375rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .receipt-title {
+    font-size: 1.125rem;
+    font-weight: 800;
+    margin-bottom: 0.125rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .receipt-subtitle {
+    font-size: 0.6875rem;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+
+  .receipt-actions {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .action-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+
+  .action-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    color: white;
+  }
+
+  .receipt-body {
+    padding: 0.75rem;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    background: var(--receipt-gray-50);
+    border-radius: 6px;
+    border: 1px solid var(--receipt-gray-200);
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .info-label {
+    font-size: 0.6875rem;
+    color: var(--receipt-gray-600);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .info-value {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--receipt-gray-800);
+  }
+
+  .payment-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  .payment-badge.cash {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+  }
+
+  .payment-badge.card {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+  }
+
+  .items-table {
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--receipt-gray-200);
+    margin-bottom: 0.75rem;
+  }
+
+  .items-table thead {
+    background: linear-gradient(135deg, var(--receipt-gray-50), var(--receipt-gray-100));
+  }
+
+  .items-table thead th {
+    padding: 0.375rem 0.5rem;
+    font-weight: 700;
+    color: var(--receipt-gray-700);
+    text-transform: uppercase;
+    font-size: 0.5625rem;
+    letter-spacing: 0.05em;
+    border: none;
+  }
+
+  .items-table tbody td {
+    padding: 0.375rem 0.5rem;
+    vertical-align: middle;
+    border-top: 1px solid var(--receipt-gray-200);
+  }
+
+  .item-name {
+    font-weight: 700;
+    color: var(--receipt-gray-800);
+    font-size: 0.8125rem;
+  }
+
+  .mono-num {
+    font-variant-numeric: tabular-nums;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-weight: 600;
+  }
+
+  .summary-section {
+    background: linear-gradient(135deg, var(--receipt-gray-50), var(--receipt-gray-100));
+    border-radius: 6px;
+    padding: 0.5rem;
+    border: 1px solid var(--receipt-gray-200);
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--receipt-gray-200);
+  }
+
+  .summary-row:last-child {
+    border-bottom: none;
+  }
+
+  .summary-row.total {
+    margin-top: 0.375rem;
+    padding-top: 0.5rem;
+    border-top: 2px solid var(--receipt-primary);
+    background: linear-gradient(135deg, var(--receipt-primary), var(--receipt-secondary));
+    color: white;
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 800;
+  }
+
+  .summary-label {
+    font-weight: 600;
+    color: var(--receipt-gray-700);
+  }
+
+  .summary-value {
+    font-weight: 700;
+    color: var(--receipt-gray-800);
+  }
+
+  .summary-row.total .summary-label,
+  .summary-row.total .summary-value {
+    color: white;
+  }
+
+  .thank-you {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-radius: 16px;
+    border: 1px solid #bae6fd;
+  }
+
+  .thank-you-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--receipt-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .thank-you-subtext {
+    color: var(--receipt-gray-600);
+    font-size: 0.875rem;
+  }
+
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--receipt-primary), var(--receipt-secondary));
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  }
+
+  .back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    color: white;
+  }
+
+  /* Print Styles */
+  @media print {
+    body {
+      background: white !important;
+    }
+    
+    .receipt-container {
+      margin: 0;
+      padding: 0;
+    }
+    
+    .receipt-card {
+      box-shadow: none !important;
+      border: 1px solid #000 !important;
+    }
+    
+    .receipt-actions,
+    .back-button {
+      display: none !important;
+    }
+    
+    .receipt-header::before {
+      display: none !important;
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .receipt-container {
+      margin: 1rem auto;
+      padding: 0 0.5rem;
+    }
+    
+    .receipt-header {
+      padding: 1.5rem;
+    }
+    
+    .receipt-actions {
+      position: static;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+    
+    .receipt-body {
+      padding: 1.5rem;
+    }
+    
+    .info-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .items-table thead th,
+    .items-table tbody td {
+      padding: 0.75rem 1rem;
+    }
+  }
+</style>
+
+<div class="receipt-container">
+  <div class="receipt-card">
+    <!-- Enhanced Header -->
+    <div class="receipt-header">
+      <div class="brand-logo">🍞</div>
+      <div class="receipt-title">Sales Receipt</div>
+      <div class="receipt-subtitle">Transaction #{{ sale.id }} • {{ sale.created_at|date:"M j, Y" }}</div>
+      
+      <div class="receipt-actions">
+        <button type="button" class="action-btn" onclick="window.print()" title="Print Receipt">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 9V4h12v5h2a2 2 0 0 1 2 2v5h-4v4H6v-4H2v-5a2 2 0 0 1 2-2h2Zm2-3h8v3H8V6Zm8 12v-4H8v4h8Zm3-7a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+          </svg>
+          Print
+        </button>
+        <a href="/pos/" class="action-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 12H5m7-7l-7 7 7 7"/>
+          </svg>
+          Back to POS
+        </a>
+      </div>
+    </div>
+
+    <!-- Enhanced Body -->
+    <div class="receipt-body">
+      <!-- Transaction Info Grid -->
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Date & Time</div>
+          <div class="info-value">{{ sale.created_at|date:"M j, Y, g:i a" }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Cashier</div>
+          <div class="info-value">{{ sale.cashier.username }}</div>
+        </div>
+        {% if sale.payment_method %}
+        <div class="info-item">
+          <div class="info-label">Payment Method</div>
+          <div class="info-value">
+            <span class="payment-badge {% if sale.payment_method == 'cash' %}cash{% else %}card{% endif %}">
+              {% if sale.payment_method == 'cash' %}
+                💵 Cash
+              {% else %}
+                💳 {{ sale.payment_method|title|cut:"_" }}
+              {% endif %}
+          </span>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Enhanced Items Table -->
+      <div class="items-table">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>📦 Item</th>
+              <th class="text-end">🔢 Qty</th>
+              <th class="text-end">💰 Unit Price</th>
+              <th class="text-end">💵 Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for it in sale.items.all %}
+              <tr>
+                <td>
+                  <div class="item-name">{{ it.product.name }}</div>
+                </td>
+                <td class="text-end mono-num">{{ it.qty }}</td>
+                <td class="text-end mono-num">₱{{ it.unit_price|floatformat:2 }}</td>
+                <td class="text-end mono-num">₱{{ it.line_total|floatformat:2 }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Enhanced Summary Section -->
+      <div class="summary-section">
+      <div class="summary-row">
+          <div class="summary-label">Subtotal</div>
+          <div class="summary-value mono-num">₱{{ sale.total_amount|add:sale.discount|floatformat:2 }}</div>
+      </div>
+      <div class="summary-row">
+          <div class="summary-label">Discount</div>
+          <div class="summary-value mono-num">₱{{ sale.discount|floatformat:2 }}</div>
+        </div>
+        <div class="summary-row total">
+          <div class="summary-label">Total Amount</div>
+          <div class="summary-value mono-num">₱{{ sale.total_amount|floatformat:2 }}</div>
+      </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

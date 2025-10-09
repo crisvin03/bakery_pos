@@ -1,0 +1,221 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<style>
+  .kpi-card{border-radius:14px;border:1px solid rgba(0,0,0,.06);box-shadow:0 10px 24px rgba(16,24,40,.06)}
+  .panel-title{font-weight:700}
+  .num{font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+  .legend-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.35rem}
+  .table thead th{color:#6b7280;border-bottom-color:rgba(0,0,0,.06)}
+  .table-hover>tbody>tr:hover>*{background:#fafbff}
+</style>
+
+<div class="card kpi-card p-3 mb-4">
+  <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+    <div>
+      <h5 class="panel-title mb-1">Sales Reports</h5>
+      <div class="text-secondary small">View daily revenue for a selected period and export as CSV.</div>
+    </div>
+
+    <a class="btn btn-primary"
+       href="{% url 'reports_export_csv' %}?start={{ start }}&end={{ end }}">
+      <svg width="16" height="16" viewBox="0 0 24 24" class="me-1">
+        <path fill="currentColor" d="M12 3v10l3.5-3.5 1.4 1.4L12 16.8 7.1 10.9l1.4-1.4L12 13V3zM5 19h14v2H5z"/>
+      </svg>
+      Export CSV
+    </a>
+  </div>
+
+  <form id="reportForm" method="get" class="row g-3 align-items-end">
+    <div class="col-md-3">
+      <label class="form-label">Start</label>
+      <input id="startDate" type="date" name="start" class="form-control" value="{{ start }}">
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">End</label>
+      <input id="endDate" type="date" name="end" class="form-control" value="{{ end }}">
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label d-block">Quick ranges</label>
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="qr('7')">Last 7d</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="qr('30')">Last 30d</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="qr('90')">Last 90d</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="qr('ytd')">YTD</button>
+      </div>
+    </div>
+
+    <div class="col-md-2 text-md-end">
+      <label class="form-label d-none d-md-block">&nbsp;</label>
+      <button type="submit" class="btn btn-outline-secondary w-100 w-md-auto">Apply</button>
+    </div>
+  </form>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card kpi-card p-3">
+      <h5 class="panel-title mb-2">Revenue by Day</h5>
+      <div class="px-1"><canvas id="revChart" height="120"></canvas></div>
+      <div class="small text-secondary mt-2">
+        <span class="legend-dot" style="background:#0d6efd"></span>Revenue
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card kpi-card p-3">
+      <h5 class="panel-title mb-2">Summary</h5>
+      <div class="row g-3">
+        <div class="col-6">
+          <div class="border rounded p-3">
+            <div class="text-secondary small">Total</div>
+            <div id="kpiTotal" class="h5 num mb-0">—</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="border rounded p-3">
+            <div class="text-secondary small">Avg / day</div>
+            <div id="kpiAvg" class="h5 num mb-0">—</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="border rounded p-3">
+            <div class="text-secondary small">Days</div>
+            <div id="kpiDays" class="h5 num mb-0">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card kpi-card p-3 mt-4">
+  <h5 class="panel-title mb-2">Daily Detail</h5>
+  <div class="table-responsive">
+    <table class="table table-sm align-middle table-hover mb-0">
+      <thead>
+        <tr><th>Date</th><th class="text-end">Revenue</th></tr>
+      </thead>
+      <tbody>
+        {% for r in history %}
+          <tr>
+            <td>{{ r.date }}</td>
+            <td class="text-end num">₱{{ r.revenue|floatformat:2 }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="2" class="text-center text-secondary py-4">No data for selected period</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{{ history|json_script:"history-json" }}
+
+<script>
+  // Parse data for chart/KPIs
+  const historyData = JSON.parse(document.getElementById('history-json').textContent || '[]');
+  const labels = historyData.map(r => r.date);
+  const values = historyData.map(r => Number(r.revenue || 0));
+
+  const total = values.reduce((a,b)=>a+b,0);
+  const days  = values.length;
+  const avg   = days ? (total/days) : 0;
+  const pesoFmt = new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP'});
+
+  document.getElementById('kpiTotal').textContent = pesoFmt.format(total);
+  document.getElementById('kpiAvg').textContent   = pesoFmt.format(avg);
+  document.getElementById('kpiDays').textContent  = String(days);
+
+  // Chart
+  const ctx  = document.getElementById('revChart').getContext('2d');
+  const grad = ctx.createLinearGradient(0,0,0,220);
+  grad.addColorStop(0,'rgba(13,110,253,.22)');
+  grad.addColorStop(1,'rgba(13,110,253,0)');
+
+  new Chart(ctx,{
+    type:'line',
+    data:{
+      labels,
+      datasets:[{
+        label:'Revenue',
+        data:values,
+        borderColor:'#0d6efd',
+        backgroundColor:grad,
+        fill:true,
+        borderWidth:2,
+        tension:.35,
+        pointRadius:0,
+        hoverRadius:3
+      }]
+    },
+    options:{
+      responsive:true,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>`Revenue: ${pesoFmt.format(c.raw||0)}`}}
+      },
+      scales:{
+        x:{grid:{display:false}},
+        y:{ticks:{callback:v=>pesoFmt.format(v).replace('PHP','₱')},grid:{color:'rgba(0,0,0,.06)'}}
+      }
+    }
+  });
+</script>
+
+<!-- Quick range + lock out future dates -->
+<script>
+  // format YYYY-MM-DD in LOCAL time
+  function fmtLocal(d){
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+
+  // qr('7') / qr('30') / qr('90') / qr('ytd')
+  function qr(kind){
+    var form = document.getElementById('reportForm');
+    var s    = document.getElementById('startDate');
+    var e    = document.getElementById('endDate');
+
+    var now  = new Date();
+    var end  = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // local midnight
+    var start = new Date(end);
+
+    if (kind === 'ytd'){
+      start = new Date(end.getFullYear(), 0, 1);
+    } else {
+      var n = parseInt(kind, 10) || 7;
+      start.setDate(end.getDate() - (n - 1)); // inclusive
+    }
+
+    s.value = fmtLocal(start);
+    e.value = fmtLocal(end);
+
+    if (form && typeof form.requestSubmit === 'function') form.requestSubmit();
+    else if (form) form.submit();
+  }
+
+  // 🔒 Disallow selecting any future date
+  (function lockFutureDates(){
+    const startEl = document.getElementById('startDate');
+    const endEl   = document.getElementById('endDate');
+    const today   = new Date(); today.setHours(0,0,0,0);
+    const maxIso  = fmtLocal(today);
+
+    [startEl, endEl].forEach(inp=>{
+      if(!inp) return;
+      inp.setAttribute('max', maxIso);      // prevents picking future days
+      inp.addEventListener('input', ()=>{   // clamp if user types manually
+        if (inp.value && inp.value > maxIso) inp.value = maxIso;
+      });
+    });
+  })();
+</script>
+
+{% endblock %}

@@ -1,0 +1,329 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<style>
+  /* Page header */
+  .hero {
+    background:
+      radial-gradient(800px 300px at 0% 0%, rgba(255, 214, 150, .22), transparent 60%),
+      radial-gradient(700px 280px at 100% 100%, rgba(255, 143, 178, .18), transparent 60%),
+      linear-gradient(180deg, #ffffff, #ffffff);
+    border-radius: 1rem;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+  .hero .title {
+    letter-spacing: .3px;
+  }
+
+  /* KPI cards */
+  .kpi-card {
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 1rem;
+    box-shadow: 0 12px 28px rgba(16,24,40,.08);
+  }
+  .kpi-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .25rem .6rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    background: #f6f8fa;
+  }
+  .kpi-muted { color: #6c757d; }
+
+  /* Section cards */
+  .panel {
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 1rem;
+    box-shadow: 0 10px 24px rgba(16,24,40,.06);
+  }
+
+  /* Accent button (honey) */
+  .btn-honey {
+    background-color: #f0a001;
+    border-color: #f0a001;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: .2px;
+    text-shadow: 0 1px 0 rgba(0,0,0,.25);
+  }
+  .btn-honey:hover, .btn-honey:focus { background-color: #d58f00; border-color: #d58f00; color: #fff; }
+  .btn-honey:active { background-color: #bf7f00; border-color: #bf7f00; color: #fff; }
+
+  /* Tables */
+  .table thead th { font-weight: 600; color: #6c757d; border-bottom-color: rgba(0,0,0,.08); }
+  .table tbody td { vertical-align: middle; }
+
+  /* Role badge */
+  .role-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .35rem .7rem; border-radius: 999px; font-weight: 600; font-size: .85rem;
+  }
+  .role-admin { background: #e7f1ff; color: #0d6efd; }
+  .role-cashier { background: #e8fff4; color: #20c997; }
+
+  /* Icon circle */
+  .ic {
+    width: 38px; height: 38px; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #f1f3f5; color: #6c757d;
+  }
+</style>
+
+<!-- Hero / Header -->
+<div class="hero p-4 p-md-5 mb-4">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <div>
+      <h1 class="h4 title mb-1">Alvarez Bakery — POS Dashboard</h1>
+      <div class="text-secondary">Quick overview, shortcuts, and today’s performance.</div>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+      <a href="/pos/" class="btn btn-honey">
+        <!-- cart icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="me-1">
+          <path d="M7 4h-2l-1 2h2l2.68 9.39A2 2 0 0 0 10.6 17h6.8a2 2 0 0 0 1.93-1.52L22 7H6.42l-.5-2ZM7 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm10 0a2 2 0 1 0-.001-3.999A2 2 0 0 0 17 20Z"/>
+        </svg>
+        Open POS
+      </a>
+      {% if request.user.is_staff %}
+      <a href="/products/" class="btn btn-outline-primary">Manage Products</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="row g-4 mb-4">
+  <div class="col-12 col-md-4">
+    <div class="kpi-card p-4">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="kpi-pill">
+          <span class="ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 13h2v8H3zM7 9h2v12H7zM11 5h2v16h-2zM15 11h2v10h-2zM19 3h2v18h-2z"/>
+            </svg>
+          </span>
+          Today’s Sales
+        </div>
+        <span class="kpi-muted small">PHP</span>
+      </div>
+      <div class="h3 mb-1">{{ kpi_today_sales|default:"0.00" }}</div>
+      <div class="text-success small">▲ {{ kpi_today_growth|default:"0.0%" }} vs. yesterday</div>
+    </div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="kpi-card p-4">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="kpi-pill">
+          <span class="ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 4h18v2H3zm3 4h12v2H6zm-3 4h18v2H3zm3 4h12v2H6z"/>
+            </svg>
+          </span>
+          Orders
+        </div>
+        <span class="kpi-muted small">Count</span>
+      </div>
+      <div class="h3 mb-1">{{ kpi_today_orders|default:"0" }}</div>
+      <div class="text-muted small">Avg ticket: PHP {{ kpi_avg_ticket|default:"0.00" }}</div>
+    </div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="kpi-card p-4">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="kpi-pill">
+          <span class="ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 15h-2v-2h2Zm0-4h-2V7h2Z"/>
+            </svg>
+          </span>
+          Stock Alerts
+        </div>
+        <span class="kpi-muted small">Low items</span>
+      </div>
+      <div class="h3 mb-1">{{ kpi_low_stock|default:"0" }}</div>
+      <div class="text-muted small">Items nearing threshold</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="row g-4">
+  <!-- Left column: Quick Actions + Role + Top Sellers -->
+  <div class="col-lg-5">
+    <div class="panel p-4 mb-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h5 class="mb-0">Quick Actions</h5>
+      </div>
+      <div class="d-grid gap-2">
+        <a class="btn btn-honey" href="/pos/">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+            <path d="M7 4h-2l-1 2h2l2.68 9.39A2 2 0 0 0 10.6 17h6.8a2 2 0 0 0 1.93-1.52L22 7H6.42l-.5-2Z"/>
+          </svg>
+          Open POS
+        </a>
+        {% if request.user.is_staff %}
+        <div class="d-flex gap-2">
+          <a class="btn btn-outline-primary flex-fill" href="/products/">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="me-2"><path d="M3 3h18v2H3zM4 7h16v12H4z"/></svg>
+            Manage Products
+          </a>
+          <a class="btn btn-outline-secondary flex-fill" href="/forecast/">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="me-2"><path d="M3 13h4v8H3zM10 3h4v18h-4zM17 9h4v12h-4z"/></svg>
+            Forecast
+          </a>
+        </div>
+        <a class="btn btn-outline-dark" href="/reports/">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="me-2"><path d="M4 4h16v2H4zM6 8h12v10H6zM4 20h16v2H4z"/></svg>
+          Reports
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="panel p-4 mb-4">
+      <h5 class="mb-3">Your Role</h5>
+      {% if request.user.is_staff %}
+        <span class="role-badge role-admin">
+          <!-- shield icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/></svg>
+          Admin (Owner)
+        </span>
+        <div class="text-muted small mt-2">Full access — products, POS, forecasts, and reports.</div>
+      {% else %}
+        <span class="role-badge role-cashier">
+          <!-- user icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.33 0-8 2.17-8 5v1h16v-1c0-2.83-3.67-5-8-5Z"/></svg>
+          Cashier (Staff)
+        </span>
+        <div class="text-muted small mt-2">POS access only — process sales and print receipts.</div>
+      {% endif %}
+    </div>
+
+    <div class="panel p-4">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h5 class="mb-0">Top Sellers</h5>
+        {% if request.user.is_staff %}<a href="/reports/" class="small text-decoration-none">View all</a>{% endif %}
+      </div>
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="text-end">Qty</th>
+              <th class="text-end">Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if top_products %}
+              {% for p in top_products %}
+              <tr>
+                <td>{{ p.name }}</td>
+                <td class="text-end">{{ p.qty }}</td>
+                <td class="text-end">PHP {{ p.revenue }}</td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="3" class="text-muted">No data yet. Make a few sales in POS.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right column: Sales chart + Recent Transactions -->
+  <div class="col-lg-7">
+    <div class="panel p-4 mb-4">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h5 class="mb-0">Last 7 Days — Sales</h5>
+        {% if request.user.is_staff %}<a href="/forecast/" class="small text-decoration-none">Forecast & trends</a>{% endif %}
+      </div>
+      <canvas id="sales7Chart" height="120"></canvas>
+    </div>
+
+    <div class="panel p-4">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h5 class="mb-0">Recent Transactions</h5>
+        <a href="/reports/" class="small text-decoration-none">Go to reports</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Receipt #</th>
+              <th>Time</th>
+              <th class="text-end">Items</th>
+              <th class="text-end">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if recent_sales %}
+              {% for s in recent_sales %}
+              <tr>
+                <td><span class="badge text-bg-light">#{{ s.id }}</span></td>
+                <td>{{ s.created_at }}</td>
+                <td class="text-end">{{ s.item_count }}</td>
+                <td class="text-end">PHP {{ s.total_amount }}</td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="4" class="text-muted">No transactions yet today.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+  The chart will use server-provided arrays if present:
+  - last7_labels: JSON list of 7 day labels (e.g., ["Mon","Tue",...])
+  - last7_values: JSON list of 7 numbers (sales totals)
+  If not provided, it falls back to a simple demo dataset.
+{% endcomment %}
+
+<script>
+  (function () {
+    const ctx = document.getElementById('sales7Chart');
+    if (!ctx || typeof Chart === 'undefined') return;
+
+    const fallbackLabels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    const fallbackValues = [1200, 1450, 900, 1600, 2100, 2500, 1800];
+
+    // If you pass JSON-safe lists from your view, they will be used; else fallback.
+    const labels = (function(){
+      try { return JSON.parse('{{ last7_labels|default:"[]"|safe }}'); } catch(_) { return []; }
+    })();
+    const values = (function(){
+      try { return JSON.parse('{{ last7_values|default:"[]"|safe }}'); } catch(_) { return []; }
+    })();
+
+    const data = (Array.isArray(labels) && labels.length === 7 && Array.isArray(values) && values.length === 7)
+      ? { labels, values }
+      : { labels: fallbackLabels, values: fallbackValues };
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'Sales (PHP)',
+          data: data.values,
+          tension: 0.35,
+          fill: true
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, ticks: { precision: 0 } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  })();
+</script>
+{% endblock %}
