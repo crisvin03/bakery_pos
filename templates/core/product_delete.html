@@ -1,15 +1,330 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block content %}
+
+<style>
+  /* Enhanced Delete Confirmation Design */
+  :root {
+    --delete-primary: #ef4444;
+    --delete-secondary: #dc2626;
+    --delete-warning: #f59e0b;
+    --delete-gray-50: #f9fafb;
+    --delete-gray-100: #f3f4f6;
+    --delete-gray-200: #e5e7eb;
+    --delete-gray-300: #d1d5db;
+    --delete-gray-400: #9ca3af;
+    --delete-gray-500: #6b7280;
+    --delete-gray-600: #4b5563;
+    --delete-gray-700: #374151;
+    --delete-gray-800: #1f2937;
+    --delete-gray-900: #111827;
+  }
+
+  body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .delete-card {
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    animation: slideIn 0.6s ease-out;
+  }
+
+  .delete-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--delete-primary), var(--delete-secondary));
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .delete-header {
+    background: linear-gradient(135deg, var(--delete-primary) 0%, var(--delete-secondary) 100%);
+    color: white;
+    padding: 2rem;
+    margin: -1.5rem -1.5rem 2rem -1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .delete-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  .delete-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .delete-subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 400;
+  }
+
+
+  .product-info {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(220, 38, 38, 0.05));
+    border: 2px solid rgba(239, 68, 68, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+
+  .product-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, var(--delete-primary), var(--delete-secondary));
+    border-radius: 12px 12px 0 0;
+  }
+
+  .product-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--delete-gray-800);
+    margin-bottom: 0.5rem;
+  }
+
+  .product-details {
+    color: var(--delete-gray-600);
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+  .warning-text {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+    border-left: 4px solid var(--delete-warning);
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0 8px 8px 0;
+    color: var(--delete-gray-700);
+    font-weight: 500;
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, var(--delete-primary), var(--delete-secondary));
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-danger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-danger:hover::before {
+    left: 100%;
+  }
+
+  .btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    color: white;
+  }
+
+  .btn-outline-secondary {
+    border: 2px solid var(--delete-gray-300);
+    color: var(--delete-gray-700);
+    background: white;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-secondary:hover {
+    background: var(--delete-gray-50);
+    border-color: var(--delete-gray-400);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    color: var(--delete-gray-800);
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .delete-card {
+      margin: 1rem;
+      max-width: none;
+    }
+    
+    .delete-header {
+      padding: 1.5rem;
+      margin: -1rem -1rem 1.5rem -1rem;
+    }
+    
+    .delete-title {
+      font-size: 1.5rem;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+  }
+</style>
+
 <div class="row justify-content-center">
   <div class="col-md-6">
-    <div class="card p-4">
-      <h4 class="mb-3">Delete Product</h4>
-      <p>Are you sure you want to delete <strong>{{ product.name }}</strong>?</p>
-      <form method="post">{% csrf_token %}
-        <a class="btn btn-outline-secondary" href="/products/">Cancel</a>
-        <button class="btn btn-danger">Delete</button>
-      </form>
+    <div class="card delete-card">
+      <div class="card-body p-4 p-md-5">
+        <!-- Enhanced Header -->
+        <div class="delete-header">
+          <h1 class="delete-title">
+            Delete Product
+          </h1>
+          <p class="delete-subtitle">This action cannot be undone</p>
+        </div>
+
+        <!-- Product Information -->
+        <div class="product-info">
+          <div class="product-name">{{ product.name }}</div>
+          <div class="product-details">
+            {% if product.price %}
+              Price: ₱{{ product.price|floatformat:2 }}
+            {% endif %}
+            {% if product.ingredients %}
+              <br>Ingredients: {{ product.ingredients|truncatechars:50 }}
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Warning Message -->
+        <div class="warning-text">
+          <strong>⚠️ Warning:</strong> Deleting this product will permanently remove it from your inventory. 
+          All associated sales records will remain intact, but the product will no longer be available for new sales.
+        </div>
+
+        <!-- Action Buttons -->
+        <form method="post">
+          {% csrf_token %}
+          <div class="action-buttons">
+            <a class="btn btn-outline-secondary" href="/products/">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+              Cancel
+            </a>
+            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you absolutely sure you want to delete this product? This action cannot be undone.')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              </svg>
+              Delete Product
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  // Enhanced Delete Confirmation Functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const deleteBtn = document.querySelector('.btn-danger');
+    const cancelBtn = document.querySelector('.btn-outline-secondary');
+    
+    // Add loading state to delete button
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', function(e) {
+        const originalText = this.innerHTML;
+        
+        // Add loading state
+        this.innerHTML = `
+          <div class="spinner-border spinner-border-sm me-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          Deleting...
+        `;
+        this.disabled = true;
+        
+        // Re-enable after 3 seconds (in case of slow response)
+        setTimeout(() => {
+          this.innerHTML = originalText;
+          this.disabled = false;
+        }, 3000);
+      });
+    }
+    
+    // Add hover effects
+    if (cancelBtn) {
+      cancelBtn.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+      });
+      
+      cancelBtn.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+      });
+    }
+    
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        window.location.href = '/products/';
+      }
+    });
+  });
+</script>
+
 {% endblock %}

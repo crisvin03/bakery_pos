@@ -16,7 +16,59 @@ def is_admin(user):
 
 @login_required
 def home(request):
-    return render(request, 'core/home.html')
+    today = date.today()
+    yesterday = today - timedelta(days=1)
+    
+    # Today's sales data
+    today_sales = SalesTransaction.objects.filter(created_at__date=today)
+    today_revenue = sum(sale.total_amount for sale in today_sales)
+    today_orders = today_sales.count()
+    today_avg_ticket = today_revenue / today_orders if today_orders > 0 else 0
+    
+    # Yesterday's sales for comparison
+    yesterday_sales = SalesTransaction.objects.filter(created_at__date=yesterday)
+    yesterday_revenue = sum(sale.total_amount for sale in yesterday_sales)
+    today_growth = ((today_revenue - yesterday_revenue) / yesterday_revenue * 100) if yesterday_revenue > 0 else 0
+    
+    # Low stock products (assuming we have a stock field or can calculate from sales)
+    low_stock_count = Product.objects.filter(is_active=True).count()  # Placeholder - would need stock tracking
+    
+    # Top sellers (last 7 days)
+    week_start = today - timedelta(days=7)
+    top_products = top_sellers(start=week_start, end=today, limit=5)
+    
+    # Recent transactions (last 7)
+    recent_sales = SalesTransaction.objects.select_related().prefetch_related('items').order_by('-created_at')[:7]
+    recent_sales_data = []
+    for sale in recent_sales:
+        recent_sales_data.append({
+            'id': sale.id,
+            'created_at': sale.created_at.strftime('%H:%M'),
+            'item_count': sale.items.count(),
+            'total_amount': f"{sale.total_amount:.2f}"
+        })
+    
+    # Last 7 days sales for chart
+    last7_labels = []
+    last7_values = []
+    for i in range(7):
+        day = today - timedelta(days=6-i)
+        day_sales = SalesTransaction.objects.filter(created_at__date=day)
+        day_revenue = sum(sale.total_amount for sale in day_sales)
+        last7_labels.append(day.strftime('%a'))
+        last7_values.append(day_revenue)
+    
+    return render(request, 'core/home.html', {
+        'kpi_today_sales': f"{today_revenue:.2f}",
+        'kpi_today_growth': f"{today_growth:+.1f}%",
+        'kpi_today_orders': today_orders,
+        'kpi_avg_ticket': f"{today_avg_ticket:.2f}",
+        'kpi_low_stock': low_stock_count,
+        'top_products': top_products,
+        'recent_sales': recent_sales_data,
+        'last7_labels': last7_labels,
+        'last7_values': last7_values,
+    })
 
 # ---------------- Admin: Product CRUD -----------------
 @login_required

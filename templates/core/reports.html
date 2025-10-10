@@ -2,220 +2,794 @@
 {% block content %}
 
 <style>
-  .kpi-card{border-radius:14px;border:1px solid rgba(0,0,0,.06);box-shadow:0 10px 24px rgba(16,24,40,.06)}
-  .panel-title{font-weight:700}
-  .num{font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
-  .legend-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.35rem}
-  .table thead th{color:#6b7280;border-bottom-color:rgba(0,0,0,.06)}
-  .table-hover>tbody>tr:hover>*{background:#fafbff}
+  /* Enhanced Reports Design System */
+  :root {
+    --reports-primary: #6366f1;
+    --reports-secondary: #8b5cf6;
+    --reports-success: #10b981;
+    --reports-warning: #f59e0b;
+    --reports-danger: #ef4444;
+    --reports-gray-50: #f9fafb;
+    --reports-gray-100: #f3f4f6;
+    --reports-gray-200: #e5e7eb;
+    --reports-gray-300: #d1d5db;
+    --reports-gray-400: #9ca3af;
+    --reports-gray-500: #6b7280;
+    --reports-gray-600: #4b5563;
+    --reports-gray-700: #374151;
+    --reports-gray-800: #1f2937;
+    --reports-gray-900: #111827;
+  }
+
+  body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #374151;
+  }
+
+  .reports-container {
+    width: 100%;
+    margin: 0;
+    padding: 0.5rem;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, var(--reports-primary) 0%, var(--reports-secondary) 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 8s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(180deg); }
+  }
+
+  .header-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .page-subtitle {
+    font-size: 1.125rem;
+    opacity: 0.9;
+    font-weight: 400;
+  }
+
+  .kpi-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 35px 70px rgba(0, 0, 0, 0.15);
+  }
+
+  .panel-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #6366f1;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .panel-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(135deg, var(--reports-primary), var(--reports-secondary));
+    border-radius: 2px;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-weight: 700;
+  }
+
+  .legend-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .table thead {
+    background: linear-gradient(135deg, var(--reports-gray-50), var(--reports-gray-100));
+  }
+
+  .table thead th {
+    color: #374151;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 1rem 1.5rem;
+  }
+
+  .table tbody td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+    border-top: 1px solid var(--reports-gray-200);
+  }
+
+  .table-hover > tbody > tr:hover > * {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+  }
+
+  .form-control {
+    border: 2px solid var(--reports-gray-200);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: var(--reports-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  .btn {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--reports-primary), var(--reports-secondary));
+    border: none;
+    color: white;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+  }
+
+  .btn-outline-secondary {
+    border: 2px solid var(--reports-gray-300);
+    color: var(--reports-gray-700);
+    background: white;
+  }
+
+  .btn-outline-secondary:hover {
+    background: var(--reports-gray-50);
+    border-color: var(--reports-gray-400);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    color: var(--reports-gray-800);
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .kpi-item {
+    background: linear-gradient(135deg, var(--reports-gray-50), white);
+    border: 2px solid var(--reports-gray-200);
+    border-radius: 12px;
+    padding: 0.75rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .kpi-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-color: var(--reports-primary);
+  }
+
+  .kpi-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+  }
+
+  .kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #6366f1;
+    margin-bottom: 0.25rem;
+  }
+
+  .kpi-change {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+  }
+
+  .kpi-change.positive {
+    color: #10b981;
+  }
+
+  .kpi-change.negative {
+    color: #ef4444;
+  }
+
+  .chart-container {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--reports-gray-200);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--reports-gray-500);
+  }
+
+  .empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+  }
+
+  .quick-range-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .quick-range-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+  }
+
+  .quick-range-btn.active {
+    background: linear-gradient(135deg, var(--reports-primary), var(--reports-secondary));
+    color: white;
+    border: none;
+  }
+
+  .quick-range-btn:not(.active) {
+    background: white;
+    border: 2px solid var(--reports-gray-300);
+    color: #374151;
+  }
+
+  .quick-range-btn:not(.active):hover {
+    background: var(--reports-gray-50);
+    border-color: var(--reports-gray-400);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .reports-container {
+      padding: 1rem 0.5rem;
+    }
+    
+    .page-header {
+      padding: 1.5rem;
+    }
+    
+    .page-title {
+      font-size: 2rem;
+    }
+    
+    .kpi-card {
+      padding: 1.5rem;
+    }
+    
+    .kpi-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
 </style>
 
-<div class="card kpi-card p-3 mb-4">
-  <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+<div class="reports-container">
+
+  <!-- Reports Controls -->
+  <div class="kpi-card">
+    <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 mb-4">
     <div>
-      <h5 class="panel-title mb-1">Sales Reports</h5>
-      <div class="text-secondary small">View daily revenue for a selected period and export as CSV.</div>
+        <h5 class="panel-title mb-2">📈 Report Controls</h5>
+        <div class="text-secondary">Configure date range and export your sales data</div>
     </div>
 
     <a class="btn btn-primary"
        href="{% url 'reports_export_csv' %}?start={{ start }}&end={{ end }}">
-      <svg width="16" height="16" viewBox="0 0 24 24" class="me-1">
+        <svg width="16" height="16" viewBox="0 0 24 24" class="me-2">
         <path fill="currentColor" d="M12 3v10l3.5-3.5 1.4 1.4L12 16.8 7.1 10.9l1.4-1.4L12 13V3zM5 19h14v2H5z"/>
       </svg>
       Export CSV
     </a>
   </div>
 
-  <form id="reportForm" method="get" class="row g-3 align-items-end">
+    <form id="reportForm" method="get" class="row g-4 align-items-end">
     <div class="col-md-3">
-      <label class="form-label">Start</label>
+        <label class="form-label fw-bold">📅 Start Date</label>
       <input id="startDate" type="date" name="start" class="form-control" value="{{ start }}">
     </div>
 
     <div class="col-md-3">
-      <label class="form-label">End</label>
+        <label class="form-label fw-bold">📅 End Date</label>
       <input id="endDate" type="date" name="end" class="form-control" value="{{ end }}">
     </div>
 
     <div class="col-md-4">
-      <label class="form-label d-block">Quick ranges</label>
-      <div class="d-flex flex-wrap gap-2">
-        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="qr('7')">Last 7d</button>
-        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="qr('30')">Last 30d</button>
-        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="qr('90')">Last 90d</button>
-        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="qr('ytd')">YTD</button>
+        <label class="form-label fw-bold d-block">⚡ Quick Ranges</label>
+        <div class="quick-range-buttons">
+          <button type="button" class="btn quick-range-btn" onclick="qr('7')">Last 7d</button>
+          <button type="button" class="btn quick-range-btn" onclick="qr('30')">Last 30d</button>
+          <button type="button" class="btn quick-range-btn" onclick="qr('90')">Last 90d</button>
+          <button type="button" class="btn quick-range-btn" onclick="qr('ytd')">YTD</button>
       </div>
     </div>
 
     <div class="col-md-2 text-md-end">
       <label class="form-label d-none d-md-block">&nbsp;</label>
-      <button type="submit" class="btn btn-outline-secondary w-100 w-md-auto">Apply</button>
+        <button type="submit" class="btn btn-primary w-100 w-md-auto">
+          <svg width="16" height="16" viewBox="0 0 24 24" class="me-2">
+            <path fill="currentColor" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Apply
+        </button>
     </div>
   </form>
 </div>
 
+  <!-- KPI Summary Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-item">
+      <div class="kpi-label">💰 Total Revenue</div>
+      <div id="kpiTotal" class="kpi-value">—</div>
+      <div class="kpi-change positive">📈 Sales Performance</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">📊 Daily Average</div>
+      <div id="kpiAvg" class="kpi-value">—</div>
+      <div class="kpi-change">📅 Per Day</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">📅 Total Days</div>
+      <div id="kpiDays" class="kpi-value">—</div>
+      <div class="kpi-change">📆 Period</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">🎯 Best Day</div>
+      <div id="kpiBest" class="kpi-value">—</div>
+      <div class="kpi-change positive">🏆 Peak Performance</div>
+    </div>
+  </div>
+
+  <!-- Chart Section -->
 <div class="row g-4">
   <div class="col-lg-8">
-    <div class="card kpi-card p-3">
-      <h5 class="panel-title mb-2">Revenue by Day</h5>
-      <div class="px-1"><canvas id="revChart" height="120"></canvas></div>
-      <div class="small text-secondary mt-2">
-        <span class="legend-dot" style="background:#0d6efd"></span>Revenue
+      <div class="chart-container">
+        <h5 class="panel-title mb-4">📈 Revenue Trend Analysis</h5>
+        <div class="px-1">
+          <canvas id="revChart" height="120"></canvas>
+        </div>
+        <div class="d-flex align-items-center justify-content-center mt-3">
+          <span class="legend-dot" style="background: linear-gradient(135deg, var(--reports-primary), var(--reports-secondary))"></span>
+          <span class="text-secondary fw-bold">Daily Revenue Performance</span>
+        </div>
+      </div>
+      
+      <!-- Daily Detail Table - Moved directly below chart -->
+      <div class="kpi-card mt-4">
+        <h5 class="panel-title mb-4">📋 Daily Sales Breakdown</h5>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>📅 Date</th>
+                <th class="text-end">💰 Revenue</th>
+                <th class="text-center">📊 Performance</th>
+                <th class="text-center">🎯 Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in history %}
+                <tr>
+                  <td class="fw-bold">{{ r.date }}</td>
+                  <td class="text-end num fw-bold">₱{{ r.revenue|floatformat:2 }}</td>
+                  <td class="text-center">
+                    {% if r.revenue > avg %}
+                      <span class="badge bg-success">📈 Above Avg</span>
+                    {% elif r.revenue == avg %}
+                      <span class="badge bg-warning">📊 Average</span>
+                    {% else %}
+                      <span class="badge bg-danger">📉 Below Avg</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-center">
+                    {% if r.revenue > avg %}
+                      <span class="text-success">🔥 Excellent</span>
+                    {% elif r.revenue == avg %}
+                      <span class="text-warning">⚡ Good</span>
+                    {% else %}
+                      <span class="text-danger">📉 Needs Focus</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center py-5">
+                    <div class="empty-state">
+                      <div class="empty-state-icon">📊</div>
+                      <h5 class="fw-bold text-secondary">No Sales Data Available</h5>
+                      <p class="text-secondary">No sales data found for the selected period. Try adjusting your date range.</p>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
       </div>
     </div>
   </div>
 
   <div class="col-lg-4">
-    <div class="card kpi-card p-3">
-      <h5 class="panel-title mb-2">Summary</h5>
+      <div class="kpi-card">
+        <h5 class="panel-title mb-4">📊 Performance Insights</h5>
       <div class="row g-3">
-        <div class="col-6">
-          <div class="border rounded p-3">
-            <div class="text-secondary small">Total</div>
-            <div id="kpiTotal" class="h5 num mb-0">—</div>
+          <div class="col-12">
+            <div class="kpi-item text-start">
+              <div class="kpi-label">🔥 Growth Rate</div>
+              <div class="kpi-value" id="growthRate">—</div>
+              <div class="kpi-change positive">📈 vs Previous Period</div>
+            </div>
           </div>
+          <div class="col-12">
+            <div class="kpi-item text-start">
+              <div class="kpi-label">📉 Lowest Day</div>
+              <div class="kpi-value" id="lowestDay">—</div>
+              <div class="kpi-change negative">📅 Needs Attention</div>
         </div>
-        <div class="col-6">
-          <div class="border rounded p-3">
-            <div class="text-secondary small">Avg / day</div>
-            <div id="kpiAvg" class="h5 num mb-0">—</div>
           </div>
+          <div class="col-12">
+            <div class="kpi-item text-start">
+              <div class="kpi-label">⚡ Consistency</div>
+              <div class="kpi-value" id="consistency">—</div>
+              <div class="kpi-change">📊 Stability Score</div>
         </div>
-        <div class="col-6">
-          <div class="border rounded p-3">
-            <div class="text-secondary small">Days</div>
-            <div id="kpiDays" class="h5 num mb-0">—</div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="card kpi-card p-3 mt-4">
-  <h5 class="panel-title mb-2">Daily Detail</h5>
-  <div class="table-responsive">
-    <table class="table table-sm align-middle table-hover mb-0">
-      <thead>
-        <tr><th>Date</th><th class="text-end">Revenue</th></tr>
-      </thead>
-      <tbody>
-        {% for r in history %}
-          <tr>
-            <td>{{ r.date }}</td>
-            <td class="text-end num">₱{{ r.revenue|floatformat:2 }}</td>
-          </tr>
-        {% empty %}
-          <tr><td colspan="2" class="text-center text-secondary py-4">No data for selected period</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
   </div>
 </div>
 
 {{ history|json_script:"history-json" }}
 
 <script>
-  // Parse data for chart/KPIs
+  // Enhanced Analytics Engine
   const historyData = JSON.parse(document.getElementById('history-json').textContent || '[]');
   const labels = historyData.map(r => r.date);
   const values = historyData.map(r => Number(r.revenue || 0));
 
+  // Calculate comprehensive metrics
   const total = values.reduce((a,b)=>a+b,0);
   const days  = values.length;
   const avg   = days ? (total/days) : 0;
+  const max   = Math.max(...values, 0);
+  const min   = Math.min(...values.filter(v => v > 0), 0);
   const pesoFmt = new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP'});
 
+  // Calculate growth rate (comparing first half vs second half)
+  const midPoint = Math.floor(days / 2);
+  const firstHalf = values.slice(0, midPoint).reduce((a,b)=>a+b,0);
+  const secondHalf = values.slice(midPoint).reduce((a,b)=>a+b,0);
+  const growthRate = firstHalf > 0 ? ((secondHalf - firstHalf) / firstHalf * 100) : 0;
+
+  // Calculate consistency (coefficient of variation)
+  const variance = values.reduce((acc, val) => acc + Math.pow(val - avg, 2), 0) / days;
+  const stdDev = Math.sqrt(variance);
+  const consistency = avg > 0 ? (100 - (stdDev / avg * 100)) : 0;
+
+  // Update KPI displays
   document.getElementById('kpiTotal').textContent = pesoFmt.format(total);
   document.getElementById('kpiAvg').textContent   = pesoFmt.format(avg);
   document.getElementById('kpiDays').textContent  = String(days);
+  document.getElementById('kpiBest').textContent   = pesoFmt.format(max);
+  document.getElementById('growthRate').textContent = growthRate.toFixed(1) + '%';
+  document.getElementById('lowestDay').textContent = pesoFmt.format(min);
+  document.getElementById('consistency').textContent = Math.max(0, consistency).toFixed(1) + '%';
 
-  // Chart
-  const ctx  = document.getElementById('revChart').getContext('2d');
+  // Enhanced Chart Configuration
+  const ctx = document.getElementById('revChart').getContext('2d');
   const grad = ctx.createLinearGradient(0,0,0,220);
-  grad.addColorStop(0,'rgba(13,110,253,.22)');
-  grad.addColorStop(1,'rgba(13,110,253,0)');
+  grad.addColorStop(0,'rgba(99,102,241,0.3)');
+  grad.addColorStop(0.5,'rgba(139,92,246,0.2)');
+  grad.addColorStop(1,'rgba(99,102,241,0)');
 
-  new Chart(ctx,{
-    type:'line',
-    data:{
+  new Chart(ctx, {
+    type: 'line',
+    data: {
       labels,
-      datasets:[{
-        label:'Revenue',
-        data:values,
-        borderColor:'#0d6efd',
-        backgroundColor:grad,
-        fill:true,
-        borderWidth:2,
-        tension:.35,
-        pointRadius:0,
-        hoverRadius:3
+      datasets: [{
+        label: 'Daily Revenue',
+        data: values,
+        borderColor: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+        backgroundColor: grad,
+        fill: true,
+        borderWidth: 3,
+        tension: 0.4,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#6366f1',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2,
+        pointHoverBackgroundColor: '#8b5cf6',
+        pointHoverBorderColor: '#ffffff',
+        pointHoverBorderWidth: 3
       }]
     },
-    options:{
-      responsive:true,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{label:c=>`Revenue: ${pesoFmt.format(c.raw||0)}`}}
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        mode: 'index',
+        intersect: false
       },
-      scales:{
-        x:{grid:{display:false}},
-        y:{ticks:{callback:v=>pesoFmt.format(v).replace('PHP','₱')},grid:{color:'rgba(0,0,0,.06)'}}
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          titleColor: '#ffffff',
+          bodyColor: '#ffffff',
+          borderColor: '#6366f1',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: false,
+          callbacks: {
+            title: (context) => `📅 ${context[0].label}`,
+            label: (context) => `💰 Revenue: ${pesoFmt.format(context.raw || 0)}`,
+            afterLabel: (context) => {
+              const value = context.raw || 0;
+              if (value > avg) return '📈 Above Average';
+              if (value === avg) return '📊 Average';
+              return '📉 Below Average';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          ticks: {
+            color: '#6b7280',
+            font: {
+              weight: '600'
+            }
+          }
+        },
+        y: {
+          grid: {
+            color: 'rgba(0,0,0,0.05)',
+            drawBorder: false
+          },
+          ticks: {
+            callback: v => pesoFmt.format(v).replace('PHP','₱'),
+            color: '#6b7280',
+            font: {
+              weight: '600'
+            }
+          }
+        }
+      },
+      elements: {
+        line: {
+          borderCapStyle: 'round'
+        }
       }
+
     }
+
   });
 </script>
 
-<!-- Quick range + lock out future dates -->
+<!-- Enhanced Quick Range & Date Management -->
 <script>
-  // format YYYY-MM-DD in LOCAL time
-  function fmtLocal(d){
+  // Enhanced date formatting
+  function fmtLocal(d) {
     const y = d.getFullYear();
-    const m = String(d.getMonth()+1).padStart(2,'0');
-    const day = String(d.getDate()).padStart(2,'0');
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
     return `${y}-${m}-${day}`;
   }
 
-  // qr('7') / qr('30') / qr('90') / qr('ytd')
-  function qr(kind){
-    var form = document.getElementById('reportForm');
-    var s    = document.getElementById('startDate');
-    var e    = document.getElementById('endDate');
+  // Enhanced quick range with visual feedback
+  function qr(kind) {
+    const form = document.getElementById('reportForm');
+    const startEl = document.getElementById('startDate');
+    const endEl = document.getElementById('endDate');
+    const buttons = document.querySelectorAll('.quick-range-btn');
 
-    var now  = new Date();
-    var end  = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // local midnight
-    var start = new Date(end);
+    // Remove active class from all buttons
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    // Add active class to clicked button
+    event.target.classList.add('active');
 
-    if (kind === 'ytd'){
+    const now = new Date();
+    const end = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let start = new Date(end);
+
+    if (kind === 'ytd') {
       start = new Date(end.getFullYear(), 0, 1);
     } else {
-      var n = parseInt(kind, 10) || 7;
-      start.setDate(end.getDate() - (n - 1)); // inclusive
+      const n = parseInt(kind, 10) || 7;
+      start.setDate(end.getDate() - (n - 1));
     }
 
-    s.value = fmtLocal(start);
-    e.value = fmtLocal(end);
+    startEl.value = fmtLocal(start);
+    endEl.value = fmtLocal(end);
 
-    if (form && typeof form.requestSubmit === 'function') form.requestSubmit();
-    else if (form) form.submit();
+    // Add loading animation
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+    submitBtn.disabled = true;
+
+    setTimeout(() => {
+      if (form && typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else if (form) {
+        form.submit();
+      }
+    }, 300);
   }
 
-  // 🔒 Disallow selecting any future date
-  (function lockFutureDates(){
+  // Enhanced date validation with user feedback
+  (function lockFutureDates() {
     const startEl = document.getElementById('startDate');
-    const endEl   = document.getElementById('endDate');
-    const today   = new Date(); today.setHours(0,0,0,0);
-    const maxIso  = fmtLocal(today);
+    const endEl = document.getElementById('endDate');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const maxIso = fmtLocal(today);
 
-    [startEl, endEl].forEach(inp=>{
-      if(!inp) return;
-      inp.setAttribute('max', maxIso);      // prevents picking future days
-      inp.addEventListener('input', ()=>{   // clamp if user types manually
-        if (inp.value && inp.value > maxIso) inp.value = maxIso;
+    [startEl, endEl].forEach(inp => {
+      if (!inp) return;
+      
+      inp.setAttribute('max', maxIso);
+      
+      inp.addEventListener('input', () => {
+        if (inp.value && inp.value > maxIso) {
+          inp.value = maxIso;
+          // Show user feedback
+          inp.style.borderColor = '#ef4444';
+          setTimeout(() => {
+            inp.style.borderColor = '';
+          }, 2000);
+        }
+      });
+
+      inp.addEventListener('change', () => {
+        // Validate date range
+        const startDate = new Date(startEl.value);
+        const endDate = new Date(endEl.value);
+        
+        if (startDate > endDate) {
+          endEl.value = startEl.value;
+        }
       });
     });
   })();
+
+  // Add keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey) {
+      switch(e.key) {
+        case '1':
+          e.preventDefault();
+          qr('7');
+          break;
+        case '2':
+          e.preventDefault();
+          qr('30');
+          break;
+        case '3':
+          e.preventDefault();
+          qr('90');
+          break;
+        case '4':
+          e.preventDefault();
+          qr('ytd');
+          break;
+        case 'e':
+          e.preventDefault();
+          document.querySelector('a[href*="export"]').click();
+          break;
+      }
+    }
+  });
+
+  // Add smooth animations on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.kpi-card');
+    cards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        card.style.transition = 'all 0.6s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, index * 100);
+    });
+  });
 </script>
 
 {% endblock %}

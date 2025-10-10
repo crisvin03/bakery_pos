@@ -400,28 +400,14 @@
 
 <div class="page-head">
   <div class="d-flex align-items-center">
-    <div class="me-3">
-      <div class="icon-container">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" class="icon-enhanced">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-      </div>
-    </div>
     <div>
       <h2 class="h3 mb-1">🍞 Products</h2>
       <div class="text-secondary">Manage your bakery catalog and inventory</div>
     </div>
   </div>
   <div class="kpi">
-    <div class="d-flex align-items-center">
-      <div class="me-3">
-        <div class="kpi-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
-        </div>
-      </div>
-      <div>
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="text-center">
         <div class="fw-bold fs-4 text-primary">{{ products|length }}</div>
         <div class="small text-muted fw-semibold">Total Products</div>
       </div>
@@ -459,7 +445,7 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="me-2 icon-enhanced">
           <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/>
         </svg>
-        ✨ New Product
+        New Product
       </a>
     </div>
 
@@ -484,7 +470,7 @@
                 <div class="thumb d-flex align-items-center justify-content-center">
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.6;">
                     <path d="M6 15l3-3 2 2 3-4 4 6H6z"/>
-                  </svg>
+                </svg>
                 </div>
               {% endif %}
             </td>
@@ -592,23 +578,45 @@
       if (input.value.trim() === '' && new URLSearchParams(location.search).has('q')) {
         showSearchLoading();
         setTimeout(() => {
-          window.location.replace(base);
+        window.location.replace(base);
         }, 500);
       }
     }
 
-    // Debounced search
-    function debouncedSearch() {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        if (input.value.trim() !== '') {
-          showSearchLoading();
-          form.submit();
-        }
-      }, 500);
-    }
+     // Search with small delay to prevent input disappearing
+     function performSearch() {
+       clearTimeout(searchTimeout);
+       searchTimeout = setTimeout(() => {
+         if (input.value.trim() !== '') {
+           showSearchLoading();
+           form.submit();
+         } else {
+           // If search is empty, show all products
+           showSearchLoading();
+           window.location.replace(base);
+         }
+       }, 200);
+     }
 
-    input.addEventListener('input', debouncedSearch);
+     // Search on input change with delay
+     input.addEventListener('input', performSearch);
+     
+     // Search on backspace/delete with delay
+     input.addEventListener('keydown', function(e) {
+       if (e.key === 'Backspace' || e.key === 'Delete') {
+         clearTimeout(searchTimeout);
+         searchTimeout = setTimeout(() => {
+           if (input.value.trim() !== '') {
+             showSearchLoading();
+             form.submit();
+           } else {
+             showSearchLoading();
+             window.location.replace(base);
+           }
+         }, 100);
+       }
+     });
+
     input.addEventListener('search', maybeReset);
 
     // Add search suggestions (placeholder for future enhancement)

@@ -1,77 +1,290 @@
 {% extends 'core/base.html' %}
 {% block content %}
 <style>
-  /* Page header */
-  .hero {
-    background:
-      radial-gradient(800px 300px at 0% 0%, rgba(255, 214, 150, .22), transparent 60%),
-      radial-gradient(700px 280px at 100% 100%, rgba(255, 143, 178, .18), transparent 60%),
-      linear-gradient(180deg, #ffffff, #ffffff);
-    border-radius: 1rem;
-    border: 1px solid rgba(0,0,0,.06);
-  }
-  .hero .title {
-    letter-spacing: .3px;
+  /* Enhanced CSS Variables */
+  :root {
+    --home-primary: #667eea;
+    --home-secondary: #764ba2;
+    --home-success: #10b981;
+    --home-warning: #f59e0b;
+    --home-danger: #ef4444;
+    --home-info: #3b82f6;
+    --home-light: #f8fafc;
+    --home-dark: #1e293b;
+    --home-gradient: linear-gradient(135deg, var(--home-primary), var(--home-secondary));
+    --home-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --home-shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   }
 
-  /* KPI cards */
-  .kpi-card {
-    border: 1px solid rgba(0,0,0,.06);
-    border-radius: 1rem;
-    box-shadow: 0 12px 28px rgba(16,24,40,.08);
+  /* Enhanced Body */
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
+
+  /* Enhanced Hero Section */
+  .hero {
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: var(--home-shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--home-gradient);
+  }
+  
+  .hero .title {
+    font-weight: 700;
+    font-size: 1.5rem;
+    background: var(--home-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.025em;
+  }
+
+  /* Enhanced KPI Cards */
+  .kpi-card {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    box-shadow: var(--home-shadow);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--home-gradient);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--home-shadow-lg);
+  }
+  
+  .kpi-card:hover::before {
+    opacity: 1;
+  }
+  
   .kpi-pill {
     display: inline-flex;
     align-items: center;
-    gap: .5rem;
-    padding: .25rem .6rem;
-    border-radius: 999px;
-    font-size: .8rem;
-    background: #f6f8fa;
-  }
-  .kpi-muted { color: #6c757d; }
-
-  /* Section cards */
-  .panel {
-    border: 1px solid rgba(0,0,0,.06);
-    border-radius: 1rem;
-    box-shadow: 0 10px 24px rgba(16,24,40,.06);
-  }
-
-  /* Accent button (honey) */
-  .btn-honey {
-    background-color: #f0a001;
-    border-color: #f0a001;
-    color: #fff;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: .2px;
-    text-shadow: 0 1px 0 rgba(0,0,0,.25);
+    background: var(--home-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   }
-  .btn-honey:hover, .btn-honey:focus { background-color: #d58f00; border-color: #d58f00; color: #fff; }
-  .btn-honey:active { background-color: #bf7f00; border-color: #bf7f00; color: #fff; }
+  
+  .kpi-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    background: var(--home-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  
+  .kpi-change {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .kpi-change.positive {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--home-success);
+  }
+  
+  .kpi-change.negative {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--home-danger);
+  }
 
-  /* Tables */
-  .table thead th { font-weight: 600; color: #6c757d; border-bottom-color: rgba(0,0,0,.08); }
-  .table tbody td { vertical-align: middle; }
+  /* Enhanced Panels */
+  .panel {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    box-shadow: var(--home-shadow);
+    transition: all 0.3s ease;
+  }
+  
+  .panel:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--home-shadow-lg);
+  }
+  
+  .panel-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--home-dark);
+    margin-bottom: 0.75rem;
+  }
 
-  /* Role badge */
+  /* Enhanced Buttons */
+  .btn-honey {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.75rem;
+  }
+  
+  .btn-honey:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+    background: linear-gradient(135deg, #d97706, #b45309);
+  }
+  
+  .btn-outline-primary {
+    border: 2px solid var(--home-primary);
+    color: var(--home-primary);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.75rem;
+  }
+  
+  .btn-outline-primary:hover {
+    background: var(--home-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+
+  /* Enhanced Tables */
+  .table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  
+  .table thead th {
+    background: var(--home-gradient);
+    color: white;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 1rem;
+  }
+  
+  .table tbody td {
+    padding: 1rem;
+    border-color: rgba(0,0,0,0.05);
+    vertical-align: middle;
+  }
+  
+  .table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+  }
+
+  /* Enhanced Role Badge */
   .role-badge {
-    display: inline-flex; align-items: center; gap: .5rem;
-    padding: .35rem .7rem; border-radius: 999px; font-weight: 600; font-size: .85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
-  .role-admin { background: #e7f1ff; color: #0d6efd; }
-  .role-cashier { background: #e8fff4; color: #20c997; }
+  
+  .role-admin {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+  }
+  
+  .role-cashier {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+  }
 
-  /* Icon circle */
+  /* Enhanced Icon Circle */
   .ic {
-    width: 38px; height: 38px; border-radius: 999px;
-    display: inline-flex; align-items: center; justify-content: center;
-    background: #f1f3f5; color: #6c757d;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--home-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   }
+
+  /* Chart Container */
+  .chart-container {
+    position: relative;
+    height: 150px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 8px;
+    padding: 0.75rem;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .kpi-card, .panel {
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  .kpi-card:nth-child(1) { animation-delay: 0.1s; }
+  .kpi-card:nth-child(2) { animation-delay: 0.2s; }
+  .kpi-card:nth-child(3) { animation-delay: 0.3s; }
 </style>
 
 <!-- Hero / Header -->
-<div class="hero p-4 p-md-5 mb-4">
+<div class="hero p-3 p-md-4 mb-3">
   <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
     <div>
       <h1 class="h4 title mb-1">Alvarez Bakery — POS Dashboard</h1>
@@ -93,67 +306,76 @@
   </div>
 </div>
 
-<!-- KPIs -->
-<div class="row g-4 mb-4">
+<!-- Enhanced KPIs -->
+<div class="row g-3 mb-3">
   <div class="col-12 col-md-4">
-    <div class="kpi-card p-4">
+    <div class="kpi-card p-3">
       <div class="d-flex align-items-center justify-content-between mb-2">
         <div class="kpi-pill">
           <span class="ic">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 13h2v8H3zM7 9h2v12H7zM11 5h2v16h-2zM15 11h2v10h-2zM19 3h2v18h-2z"/>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
           </span>
-          Today’s Sales
+          Today's Revenue
         </div>
-        <span class="kpi-muted small">PHP</span>
+        <span class="text-muted small fw-bold">₱</span>
       </div>
-      <div class="h3 mb-1">{{ kpi_today_sales|default:"0.00" }}</div>
-      <div class="text-success small">▲ {{ kpi_today_growth|default:"0.0%" }} vs. yesterday</div>
+      <div class="kpi-value mb-1">₱{{ kpi_today_sales|default:"0.00" }}</div>
+      <div class="kpi-change {% if kpi_today_growth|slice:'1:'|add:'0' > 0 %}positive{% else %}negative{% endif %}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 14l5-5 5 5z"/>
+        </svg>
+        {{ kpi_today_growth|default:"0.0%" }} vs yesterday
+      </div>
     </div>
   </div>
   <div class="col-12 col-md-4">
-    <div class="kpi-card p-4">
+    <div class="kpi-card p-3">
       <div class="d-flex align-items-center justify-content-between mb-2">
         <div class="kpi-pill">
           <span class="ic">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 4h18v2H3zm3 4h12v2H6zm-3 4h18v2H3zm3 4h12v2H6z"/>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
             </svg>
           </span>
-          Orders
+          Orders Today
         </div>
-        <span class="kpi-muted small">Count</span>
+        <span class="text-muted small fw-bold">Count</span>
       </div>
-      <div class="h3 mb-1">{{ kpi_today_orders|default:"0" }}</div>
-      <div class="text-muted small">Avg ticket: PHP {{ kpi_avg_ticket|default:"0.00" }}</div>
+      <div class="kpi-value mb-1">{{ kpi_today_orders|default:"0" }}</div>
+      <div class="text-muted small">
+        <strong>Avg ticket:</strong> ₱{{ kpi_avg_ticket|default:"0.00" }}
+      </div>
     </div>
   </div>
   <div class="col-12 col-md-4">
-    <div class="kpi-card p-4">
+    <div class="kpi-card p-3">
       <div class="d-flex align-items-center justify-content-between mb-2">
         <div class="kpi-pill">
           <span class="ic">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 15h-2v-2h2Zm0-4h-2V7h2Z"/>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
           </span>
-          Stock Alerts
+          Active Products
         </div>
-        <span class="kpi-muted small">Low items</span>
+        <span class="text-muted small fw-bold">Items</span>
       </div>
-      <div class="h3 mb-1">{{ kpi_low_stock|default:"0" }}</div>
-      <div class="text-muted small">Items nearing threshold</div>
+      <div class="kpi-value mb-1">{{ kpi_low_stock|default:"0" }}</div>
+      <div class="text-muted small">
+        <strong>Products in catalog</strong>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Main content -->
-<div class="row g-4">
+<div class="row g-3">
   <!-- Left column: Quick Actions + Role + Top Sellers -->
   <div class="col-lg-5">
-    <div class="panel p-4 mb-4">
-      <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="panel p-3 mb-3">
+      <div class="d-flex align-items-center justify-content-between mb-2">
         <h5 class="mb-0">Quick Actions</h5>
       </div>
       <div class="d-grid gap-2">
@@ -182,8 +404,8 @@
       </div>
     </div>
 
-    <div class="panel p-4 mb-4">
-      <h5 class="mb-3">Your Role</h5>
+    <div class="panel p-3 mb-3">
+      <h5 class="mb-2">Your Role</h5>
       {% if request.user.is_staff %}
         <span class="role-badge role-admin">
           <!-- shield icon -->
@@ -201,7 +423,7 @@
       {% endif %}
     </div>
 
-    <div class="panel p-4">
+    <div class="panel p-3">
       <div class="d-flex align-items-center justify-content-between mb-2">
         <h5 class="mb-0">Top Sellers</h5>
         {% if request.user.is_staff %}<a href="/reports/" class="small text-decoration-none">View all</a>{% endif %}
@@ -219,7 +441,7 @@
             {% if top_products %}
               {% for p in top_products %}
               <tr>
-                <td>{{ p.name }}</td>
+                <td>{{ p.product }}</td>
                 <td class="text-end">{{ p.qty }}</td>
                 <td class="text-end">PHP {{ p.revenue }}</td>
               </tr>
@@ -235,15 +457,24 @@
 
   <!-- Right column: Sales chart + Recent Transactions -->
   <div class="col-lg-7">
-    <div class="panel p-4 mb-4">
+    <div class="panel p-3 mb-3">
       <div class="d-flex align-items-center justify-content-between mb-2">
-        <h5 class="mb-0">Last 7 Days — Sales</h5>
-        {% if request.user.is_staff %}<a href="/forecast/" class="small text-decoration-none">Forecast & trends</a>{% endif %}
+        <h5 class="panel-title mb-0">📈 Sales Performance (Last 7 Days)</h5>
+        {% if request.user.is_staff %}
+        <a href="/forecast/" class="btn btn-sm btn-outline-primary">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="me-1">
+            <path d="M3 13h4v8H3zM10 3h4v18h-4zM17 9h4v12h-4z"/>
+          </svg>
+          Forecast
+        </a>
+        {% endif %}
       </div>
-      <canvas id="sales7Chart" height="120"></canvas>
+      <div class="chart-container">
+        <canvas id="sales7Chart" height="120"></canvas>
+      </div>
     </div>
 
-    <div class="panel p-4">
+    <div class="panel p-3">
       <div class="d-flex align-items-center justify-content-between mb-2">
         <h5 class="mb-0">Recent Transactions</h5>
         <a href="/reports/" class="small text-decoration-none">Go to reports</a>
@@ -293,34 +524,88 @@
     const fallbackLabels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
     const fallbackValues = [1200, 1450, 900, 1600, 2100, 2500, 1800];
 
-    // If you pass JSON-safe lists from your view, they will be used; else fallback.
-    const labels = (function(){
-      try { return JSON.parse('{{ last7_labels|default:"[]"|safe }}'); } catch(_) { return []; }
-    })();
-    const values = (function(){
-      try { return JSON.parse('{{ last7_values|default:"[]"|safe }}'); } catch(_) { return []; }
-    })();
+    // Get real data from backend
+    const labels = JSON.parse('{{ last7_labels|default:"[]"|escapejs }}');
+    const values = JSON.parse('{{ last7_values|default:"[]"|escapejs }}');
 
     const data = (Array.isArray(labels) && labels.length === 7 && Array.isArray(values) && values.length === 7)
       ? { labels, values }
       : { labels: fallbackLabels, values: fallbackValues };
 
+    // Enhanced chart with professional styling
     new Chart(ctx, {
       type: 'line',
       data: {
         labels: data.labels,
         datasets: [{
-          label: 'Sales (PHP)',
+          label: 'Daily Revenue',
           data: data.values,
-          tension: 0.35,
-          fill: true
+          borderColor: '#667eea',
+          backgroundColor: 'rgba(102, 126, 234, 0.1)',
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 6,
+          pointHoverRadius: 8,
+          pointBackgroundColor: '#667eea',
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 2,
+          pointHoverBackgroundColor: '#764ba2',
+          pointHoverBorderColor: '#ffffff',
+          pointHoverBorderWidth: 3
         }]
       },
       options: {
-        plugins: { legend: { display: false } },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { 
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            borderColor: '#667eea',
+            borderWidth: 1,
+            cornerRadius: 8,
+            displayColors: false,
+            callbacks: {
+              label: function(context) {
+                return `Revenue: ₱${context.parsed.y.toLocaleString()}`;
+              }
+            }
+          }
+        },
         scales: {
-          y: { beginAtZero: true, ticks: { precision: 0 } },
-          x: { grid: { display: false } }
+          y: { 
+            beginAtZero: true, 
+            grid: {
+              color: 'rgba(0,0,0,0.05)',
+              drawBorder: false
+            },
+            ticks: { 
+              precision: 0,
+              font: { size: 12, weight: '600' },
+              color: '#6b7280',
+              callback: function(value) {
+                return '₱' + value.toLocaleString();
+              }
+            }
+          },
+          x: { 
+            grid: { display: false },
+            ticks: {
+              font: { size: 12, weight: '600' },
+              color: '#6b7280'
+            }
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
+        animation: {
+          duration: 2000,
+          easing: 'easeInOutQuart'
         }
       }
     });
