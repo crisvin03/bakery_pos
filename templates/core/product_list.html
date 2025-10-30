@@ -456,7 +456,7 @@
             <th style="width:80px">🖼️ Image</th>
             <th>📦 Product Details</th>
             <th class="text-end hide-sm" style="width:160px">💰 Price</th>
-            <th class="hide-sm" style="width:140px">📊 Status</th>
+            <th class="hide-sm" style="width:140px">📦 Stock</th>
             <th class="text-end" style="width:180px">⚙️ Actions</th>
           </tr>
         </thead>
@@ -489,17 +489,10 @@
               <div class="num fw-bold text-success fs-5">₱{{ p.price|floatformat:2 }}</div>
             </td>
             <td class="hide-sm">
-              {% if p.is_active %}
-                <span class="badge bg-success d-inline-flex align-items-center">
-                  <span class="status-dot bg-white me-1"></span>
-                  Active
-                </span>
-              {% else %}
-                <span class="badge bg-secondary d-inline-flex align-items-center">
-                  <span class="status-dot bg-white me-1"></span>
-                  Inactive
-                </span>
-              {% endif %}
+              <span class="badge bg-success d-inline-flex align-items-center">
+                <span class="status-dot bg-white me-1"></span>
+                {{ p.stock }} in stock
+              </span>
             </td>
             <td class="text-end actions">
               <div class="btn-group" role="group" aria-label="Actions">

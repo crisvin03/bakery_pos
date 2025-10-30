@@ -5,6 +5,7 @@ class Product(models.Model):
     name = models.CharField(max_length=160)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     ingredients = models.TextField(blank=True)
+    stock = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
     # Product image (stored under MEDIA_ROOT/products/)

@@ -5,7 +5,7 @@ from .models import Product
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['image', 'name', 'price', 'ingredients', 'is_active']
+        fields = ['image', 'name', 'price', 'stock', 'ingredients', 'is_active']
         widgets = {
             'image': forms.ClearableFileInput(attrs={
                 'class': 'form-control',   # so it matches your bootstrap style
@@ -14,6 +14,7 @@ class ProductForm(forms.ModelForm):
             }),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'stock': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '1'}),
             'ingredients': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }

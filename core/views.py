@@ -75,7 +75,7 @@ def home(request):
 @user_passes_test(is_admin)
 def product_list(request):
     q = (request.GET.get('q') or '').strip()
-    qs = Product.objects.all().order_by('name')
+    qs = Product.objects.filter(stock__gt=0).order_by('name')
     if q:
         from django.db.models import Q
         qs = qs.filter(Q(name__icontains=q) | Q(ingredients__icontains=q))
