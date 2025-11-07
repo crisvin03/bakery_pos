@@ -35,6 +35,14 @@ urlpatterns = [
     # Reports (Admin only)
     path('reports/', core_views.reports, name='reports'),
     path('reports/export/', core_views.reports_export_csv, name='reports_export_csv'),
+
+    # Cashier Management (Admin only)
+    path('cashiers/', core_views.cashier_list, name='cashier_list'),
+    path('cashiers/new/', core_views.cashier_create, name='cashier_create'),
+    path('cashiers/<int:user_id>/history/', core_views.cashier_login_history, name='cashier_login_history'),
+
+    # Profile (All authenticated users)
+    path('profile/', core_views.profile, name='profile'),
 ]
 
 # serve uploaded media in development

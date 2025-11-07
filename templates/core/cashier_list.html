@@ -1,0 +1,431 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  :root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    --card-shadow: 0 20px 40px rgba(16,24,40,.08);
+    --border-color: rgba(16,24,40,.08);
+  }
+
+  /* Enhanced Page Header */
+  .page-head { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 1.5rem; 
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-head::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient);
+  }
+
+  .page-head h2 {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+
+  .kpi {
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+    box-shadow: var(--card-shadow);
+    font-size: 1rem;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-gradient);
+  }
+
+  .kpi::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-20px, -20px) rotate(180deg); }
+  }
+
+  /* Enhanced Card */
+  .card-elevated { 
+    border: 1px solid var(--border-color); 
+    border-radius: 20px; 
+    box-shadow: var(--card-shadow);
+    background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+  }
+
+  .card-elevated:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 25px 50px rgba(16,24,40,.12);
+  }
+
+  /* Enhanced Toolbar */
+  .toolbar { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 1rem; 
+    align-items: center; 
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+  }
+
+  .toolbar .search { width: min(400px, 100%); }
+
+  /* Enhanced Search */
+  .input-group {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  }
+
+  .input-group-text {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 2px solid var(--border-color);
+    border-right: none;
+  }
+
+  .form-control {
+    border: 2px solid var(--border-color);
+    border-left: none;
+    border-radius: 0 12px 12px 0;
+    transition: all 0.2s ease;
+  }
+
+  .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+  }
+
+  .cashier-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background: white;
+  }
+
+  .cashier-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16,24,40,.12);
+  }
+
+  .avatar-large {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-right: 1rem;
+  }
+
+  .btn-primary-gradient { 
+    background: var(--primary-gradient); 
+    border: none; 
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-primary-gradient:hover::before {
+    left: 100%;
+  }
+
+  .btn-primary-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
+
+  .icon-enhanced {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    transition: transform 0.2s ease;
+  }
+
+  .icon-enhanced:hover {
+    transform: scale(1.1);
+  }
+
+  .badge-login {
+    background: var(--success-gradient);
+    color: white;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .text-muted {
+    color: #64748b;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #64748b;
+  }
+
+  .empty-state svg {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+</style>
+
+<div class="page-head">
+  <div class="d-flex align-items-center">
+    <div>
+      <h2 class="h3 mb-1">👥 Cashiers</h2>
+      <div class="text-secondary">Manage cashier accounts and view login history</div>
+    </div>
+  </div>
+  <div class="kpi">
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="text-center">
+        <div id="cashierCount" class="fw-bold fs-4 text-primary">{{ cashiers|length }}</div>
+        <div class="small text-muted fw-semibold">Total Cashiers</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="card card-elevated">
+  <div class="card-body">
+    <div class="toolbar">
+      <!-- Enhanced Search -->
+      <div class="d-flex search">
+        <div class="input-group">
+          <span class="input-group-text">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="icon-enhanced">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 5L20.5 19l-5-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/>
+            </svg>
+          </span>
+          <input id="searchCashier" type="search" 
+                 class="form-control"
+                 placeholder="Search cashiers by name or username...">
+        </div>
+      </div>
+
+      <!-- Enhanced Add Button -->
+      <a href="{% url 'cashier_create' %}" class="btn btn-primary-gradient text-white ms-auto">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="me-2 icon-enhanced">
+          <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/>
+        </svg>
+        Add Cashier
+      </a>
+    </div>
+    {% if cashiers %}
+      <div id="cashiersContainer" class="row g-3">
+        {% for item in cashiers %}
+          <div class="col-md-6 cashier-item" data-name="{{ item.user.get_full_name|default:item.user.username|lower }}" data-username="{{ item.user.username|lower }}">
+            <div class="cashier-card">
+              <div class="d-flex align-items-center">
+                <div class="avatar-large">
+                  {{ item.user.username|slice:":1"|upper }}
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-1">{{ item.user.get_full_name|default:item.user.username }}</h5>
+                  <p class="text-muted small mb-2">@{{ item.user.username }}</p>
+                  <div class="d-flex align-items-center gap-3">
+                    <span class="badge-login">
+                      {{ item.login_count }} login{{ item.login_count|pluralize }}
+                    </span>
+                    {% if item.last_login %}
+                      <span class="text-muted small">Last: {{ item.last_login|date:"M d, Y H:i" }}</span>
+                    {% else %}
+                      <span class="text-muted small">Never logged in</span>
+                    {% endif %}
+                  </div>
+                </div>
+                <div>
+                  <a href="{% url 'cashier_login_history' item.user.id %}" 
+                     class="btn btn-sm btn-outline-primary">
+                    View History
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+        <h5 class="mt-3">No Cashiers Yet</h5>
+        <p class="text-muted">Add your first cashier to get started.</p>
+        <a href="{% url 'cashier_create' %}" class="btn btn-primary-gradient text-white mt-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+          </svg>
+          Add Cashier
+        </a>
+      </div>
+    {% endif %}
+    <div id="noResultsState" class="empty-state" style="display: none;">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 5L20.5 19l-5-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/>
+      </svg>
+      <h5 class="mt-3">No Cashiers Found</h5>
+      <p class="text-muted">Try a different search keyword.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Instant client-side live search (no reload)
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('searchCashier');
+    const container = document.getElementById('cashiersContainer');
+    const countEl = document.getElementById('cashierCount');
+    const noResultsState = document.getElementById('noResultsState');
+    
+    if (!input) {
+      console.warn('Search input not found');
+      return;
+    }
+
+    if (!container) {
+      console.warn('Cashiers container not found');
+      return;
+    }
+
+    function filter() {
+      const q = input.value.trim().toLowerCase();
+      let shown = 0;
+      
+      const items = container.querySelectorAll('.cashier-item');
+      
+      if (items.length === 0) {
+        console.warn('No cashier items found');
+        return;
+      }
+      
+      items.forEach(item => {
+        const name = (item.getAttribute('data-name') || '').toLowerCase();
+        const username = (item.getAttribute('data-username') || '').toLowerCase();
+        
+        // Also check the displayed text as fallback
+        const nameElement = item.querySelector('h5');
+        const usernameElement = item.querySelector('p.text-muted');
+        const displayName = nameElement ? nameElement.textContent.toLowerCase() : '';
+        const displayUsername = usernameElement ? usernameElement.textContent.toLowerCase().replace('@', '') : '';
+        
+        // Match against all possible fields
+        const match = q === '' || 
+                     name.includes(q) || 
+                     username.includes(q) || 
+                     displayName.includes(q) || 
+                     displayUsername.includes(q);
+        
+        if (match) {
+          item.style.display = '';
+          shown += 1;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      // Update count
+      if (countEl) {
+        countEl.textContent = String(shown);
+      }
+      
+      // Show/hide empty state
+      if (noResultsState) {
+        if (shown === 0 && q !== '') {
+          noResultsState.style.display = 'block';
+          container.style.display = 'none';
+        } else {
+          noResultsState.style.display = 'none';
+          container.style.display = '';
+        }
+      }
+    }
+
+    // Set up event listeners
+    input.addEventListener('input', filter);
+    input.addEventListener('keyup', filter);
+    input.addEventListener('search', filter);
+
+    // Add keyboard shortcut (Ctrl+F to focus search)
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'f') {
+        e.preventDefault();
+        input.focus();
+        input.select();
+      }
+    });
+    
+    // Expose filter function globally for debugging
+    window.filterCashiers = filter;
+  });
+</script>
+
+{% endblock %}
+

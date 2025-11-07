@@ -125,6 +125,15 @@
             <span>Reports</span>
           </a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if request.path|slice:':10' == '/cashiers/' %}active{% endif %}" href="/cashiers/" title="Cashiers">
+            <svg class="nav-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            <span>Cashiers</span>
+          </a>
+        </li>
         {% endif %}
       </ul>
 
@@ -137,6 +146,15 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
               <li class="dropdown-header small text-muted px-3">Signed in as <strong>{{ request.user.username }}</strong></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="{% url 'profile' %}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  </svg>
+                  My Profile
+                </a>
+              </li>
               <li><hr class="dropdown-divider"></li>
               <!-- Logout as POST to avoid 405; redirect back to login -->
               <li>

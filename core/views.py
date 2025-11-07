@@ -6,10 +6,13 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import date, timedelta, datetime
 
-from .models import Product, SalesTransaction, SalesItem
-from .forms import ProductForm
+from .models import Product, SalesTransaction, SalesItem, LoginHistory
+from .forms import ProductForm, CashierForm, ProfileEditForm
 from .utils import daily_sales, top_sellers, moving_average_forecast
 from .reports import sales_csv
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 def is_admin(user):
     return user.is_staff  # treat staff=True as Admin role
@@ -75,7 +78,8 @@ def home(request):
 @user_passes_test(is_admin)
 def product_list(request):
     q = (request.GET.get('q') or '').strip()
-    qs = Product.objects.filter(stock__gt=0).order_by('name')
+    # Show all products (including out of stock) for admin management
+    qs = Product.objects.all().order_by('name')
     if q:
         from django.db.models import Q
         qs = qs.filter(Q(name__icontains=q) | Q(ingredients__icontains=q))
@@ -121,22 +125,50 @@ def product_delete(request, pk):
 # ---------------- POS: Cashier & Admin -----------------
 @login_required
 def pos(request):
-    products = Product.objects.filter(is_active=True).order_by('name')
+    from datetime import date
+    today = date.today()
+    # Filter out expired products and out-of-stock products - only show active products that are not expired and have stock
+    products = Product.objects.filter(
+        is_active=True,
+        stock__gt=0
+    ).exclude(
+        expiration_date__lt=today
+    ).order_by('name')
     cart = request.session.get('cart', {})
     print(f"POS view - Cart data: {cart}")
     return render(request, 'core/pos.html', {'products': products, 'cart': cart})
 
 @login_required
 def add_to_cart(request, product_id):
+    from datetime import date
     product = get_object_or_404(Product, pk=product_id, is_active=True)
+    
+    # Check if product is expired
+    if product.is_expired():
+        messages.error(request, f'❌ Cannot add "{product.name}" - Product has expired!')
+        return redirect('pos')
+    
+    # Check if product is in stock
+    if product.stock <= 0:
+        messages.error(request, f'❌ Cannot add "{product.name}" - Out of stock!')
+        return redirect('pos')
+    
     cart = request.session.get('cart', {})
     qty = int(request.POST.get('qty', 1))
     if qty <= 0: qty = 1
+    
+    # Check if adding this quantity exceeds available stock
+    current_cart_qty = cart.get(str(product_id), {}).get('qty', 0)
+    if current_cart_qty + qty > product.stock:
+        messages.warning(request, f'⚠️ Only {product.stock} units available for "{product.name}"')
+        qty = max(1, product.stock - current_cart_qty)
+    
     item = cart.get(str(product_id), {'name': product.name, 'unit_price': float(product.price), 'qty': 0})
     item['qty'] += qty
     cart[str(product_id)] = item
     request.session['cart'] = cart
     request.session.modified = True  # Ensure session is saved
+    messages.success(request, f'✅ Added {qty}x {product.name} to cart')
     return redirect('pos')
 
 @login_required
@@ -145,6 +177,28 @@ def update_cart(request, product_id):
     print(f"Before update - Product {product_id}, Cart: {cart}")
     
     if str(product_id) in cart:
+        # Check if product still exists and is valid
+        try:
+            product = Product.objects.get(pk=product_id, is_active=True)
+            if product.is_expired():
+                cart.pop(str(product_id))
+                messages.error(request, f'❌ Removed "{product.name}" from cart - Product has expired!')
+                request.session['cart'] = cart
+                request.session.modified = True
+                return redirect('pos')
+            elif product.stock <= 0:
+                cart.pop(str(product_id))
+                messages.error(request, f'❌ Removed "{product.name}" from cart - Out of stock!')
+                request.session['cart'] = cart
+                request.session.modified = True
+                return redirect('pos')
+        except Product.DoesNotExist:
+            cart.pop(str(product_id))
+            messages.warning(request, '⚠️ Product no longer available')
+            request.session['cart'] = cart
+            request.session.modified = True
+            return redirect('pos')
+        
         qty = int(request.POST.get('qty', 1))
         print(f"Updating product {product_id} to quantity {qty}")
         
@@ -152,6 +206,10 @@ def update_cart(request, product_id):
             cart.pop(str(product_id))
             print(f"Removed product {product_id} from cart")
         else:
+            # Ensure quantity doesn't exceed stock
+            if qty > product.stock:
+                qty = product.stock
+                messages.warning(request, f'⚠️ Limited to {product.stock} units for "{product.name}"')
             cart[str(product_id)]['qty'] = qty
             print(f"Updated product {product_id} quantity to {qty}")
         
@@ -165,8 +223,27 @@ def update_cart(request, product_id):
 
 @login_required
 def checkout(request):
+    from datetime import date
     cart = request.session.get('cart', {})
     if request.method == 'POST' and cart:
+        # Validate all products in cart before checkout
+        invalid_products = []
+        for pid, item in cart.items():
+            try:
+                product = Product.objects.get(pk=int(pid))
+                if product.is_expired():
+                    invalid_products.append(product.name)
+                elif not product.is_active:
+                    invalid_products.append(product.name)
+                elif product.stock < item['qty']:
+                    invalid_products.append(f"{product.name} (insufficient stock)")
+            except Product.DoesNotExist:
+                invalid_products.append(f"Product ID {pid}")
+        
+        if invalid_products:
+            messages.error(request, f'❌ Cannot checkout - Some products are expired, inactive, or out of stock: {", ".join(invalid_products)}')
+            return redirect('pos')
+        
         # Debug: Print cart data before processing
         print(f"Checkout cart data: {cart}")
         discount = float(request.POST.get('discount', 0) or 0)
@@ -185,13 +262,17 @@ def checkout(request):
         for pid, item in cart.items():
             # Debug: Print each item being saved
             print(f"Creating SalesItem: Product {pid}, Qty: {item['qty']}, Unit Price: {item['unit_price']}, Line Total: {item['unit_price'] * item['qty']}")
+            product = Product.objects.get(pk=int(pid))
             SalesItem.objects.create(
                 sale=sale,
-                product=Product.objects.get(pk=int(pid)),
+                product=product,
                 qty=item['qty'],
                 unit_price=item['unit_price'],
                 line_total=item['unit_price'] * item['qty']
             )
+            # Update stock
+            product.stock -= item['qty']
+            product.save()
         request.session['cart'] = {}
         messages.success(request, f'Sale #{sale.id} completed.')
         return redirect('receipt', sale_id=sale.id)
@@ -211,10 +292,14 @@ def forecast(request):
     history = daily_sales(start=start, end=today)
     forecast_points = moving_average_forecast(history, horizon=7, window=7)
     top = top_sellers(start=start, end=today, limit=5)
+    # Sales performance for last 7 days
+    start_7days = today - timedelta(days=7)
+    top_7days = top_sellers(start=start_7days, end=today, limit=10)
     return render(request, 'core/forecast.html', {
         'history': history,
         'forecast_points': forecast_points,
         'top': top,
+        'top_7days': top_7days,
     })
 
 # ---------------- Admin: Reports ------------------------
@@ -242,3 +327,70 @@ def reports_export_csv(request):
     resp = HttpResponse(csv_data, content_type='text/csv')
     resp['Content-Disposition'] = f'attachment; filename="sales_{start}_{end}.csv"'
     return resp
+
+# ---------------- Admin: Cashier Management -----------------
+@login_required
+@user_passes_test(is_admin)
+def cashier_list(request):
+    """List all cashiers (non-staff users)"""
+    cashiers = User.objects.filter(is_staff=False).order_by('-date_joined')
+    
+    # Get login history count for each cashier
+    cashiers_with_stats = []
+    for cashier in cashiers:
+        login_count = LoginHistory.objects.filter(user=cashier).count()
+        last_login = LoginHistory.objects.filter(user=cashier).first()
+        cashiers_with_stats.append({
+            'user': cashier,
+            'login_count': login_count,
+            'last_login': last_login.login_time if last_login else None,
+        })
+    
+    return render(request, 'core/cashier_list.html', {
+        'cashiers': cashiers_with_stats
+    })
+
+@login_required
+@user_passes_test(is_admin)
+def cashier_create(request):
+    """Create a new cashier account"""
+    if request.method == 'POST':
+        form = CashierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Cashier "{form.cleaned_data["username"]}" created successfully.')
+            return redirect('cashier_list')
+    else:
+        form = CashierForm()
+    return render(request, 'core/cashier_form.html', {'form': form})
+
+@login_required
+def profile(request):
+    """Display and edit the current user's profile information"""
+    user = request.user
+    
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('profile')
+    else:
+        form = ProfileEditForm(instance=user)
+    
+    return render(request, 'core/profile.html', {
+        'user': user,
+        'form': form,
+    })
+
+@login_required
+@user_passes_test(is_admin)
+def cashier_login_history(request, user_id):
+    """View login history for a specific cashier"""
+    cashier = get_object_or_404(User, pk=user_id, is_staff=False)
+    login_history = LoginHistory.objects.filter(user=cashier).order_by('-login_time')[:100]  # Last 100 logins
+    
+    return render(request, 'core/cashier_login_history.html', {
+        'cashier': cashier,
+        'login_history': login_history,
+    })

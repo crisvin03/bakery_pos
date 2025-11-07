@@ -531,10 +531,64 @@
 {{ history|json_script:"history-json" }}
 
 <script>
-  // Enhanced Analytics Engine
-  const historyData = JSON.parse(document.getElementById('history-json').textContent || '[]');
-  const labels = historyData.map(r => r.date);
-  const values = historyData.map(r => Number(r.revenue || 0));
+  // Enhanced Analytics Engine with robust fallback
+  function ensureGraphData() {
+    try {
+      const historyJsonEl = document.getElementById('history-json');
+      if (!historyJsonEl) {
+        throw new Error('History JSON element not found');
+      }
+      
+      const historyData = JSON.parse(historyJsonEl.textContent || '[]');
+      
+      // Validate and extract data
+      let labels = [];
+      let values = [];
+      
+      if (Array.isArray(historyData) && historyData.length > 0) {
+        labels = historyData.map(r => r && r.date ? r.date : null).filter(d => d !== null);
+        values = historyData.map(r => Number(r && r.revenue ? r.revenue : 0));
+      }
+      
+      // Always ensure we have at least some data for the graph
+      if (labels.length === 0 || values.length === 0) {
+        const today = new Date();
+        const tmpLabels = [];
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date(today);
+          d.setDate(today.getDate() - i);
+          tmpLabels.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
+        }
+        labels = tmpLabels;
+        values = new Array(labels.length).fill(0);
+      }
+      
+      // Ensure arrays are the same length
+      if (labels.length !== values.length) {
+        const minLen = Math.min(labels.length, values.length);
+        labels = labels.slice(0, minLen);
+        values = values.slice(0, minLen);
+      }
+      
+      return { labels, values };
+    } catch (error) {
+      console.warn('Error parsing history data, using fallback:', error);
+      // Generate default 7-day range as fallback
+      const today = new Date();
+      const tmpLabels = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        tmpLabels.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
+      }
+      return {
+        labels: tmpLabels,
+        values: new Array(tmpLabels.length).fill(0)
+      };
+    }
+  }
+  
+  const { labels, values } = ensureGraphData();
 
   // Calculate comprehensive metrics
   const total = values.reduce((a,b)=>a+b,0);
@@ -564,35 +618,59 @@
   document.getElementById('lowestDay').textContent = pesoFmt.format(min);
   document.getElementById('consistency').textContent = Math.max(0, consistency).toFixed(1) + '%';
 
-  // Enhanced Chart Configuration
-  const ctx = document.getElementById('revChart').getContext('2d');
-  const grad = ctx.createLinearGradient(0,0,0,220);
-  grad.addColorStop(0,'rgba(99,102,241,0.3)');
-  grad.addColorStop(0.5,'rgba(139,92,246,0.2)');
-  grad.addColorStop(1,'rgba(99,102,241,0)');
+  // Enhanced Chart Configuration - Always render with fallback
+  function initRevenueChart() {
+    const revCanvas = document.getElementById('revChart');
+    if (!revCanvas) {
+      console.warn('Chart canvas not found, retrying...');
+      setTimeout(initRevenueChart, 100);
+      return;
+    }
+    
+    if (typeof Chart === 'undefined') {
+      console.warn('Chart.js not loaded, retrying...');
+      setTimeout(initRevenueChart, 100);
+      return;
+    }
+    
+    // Ensure we always have valid data
+    const chartLabels = labels && labels.length > 0 ? labels : ['No Data'];
+    const chartValues = values && values.length > 0 ? values : [0];
+    
+    const ctx = revCanvas.getContext('2d');
+    if (!ctx) {
+      console.error('Could not get canvas context');
+      return;
+    }
+    
+    const grad = ctx.createLinearGradient(0,0,0,220);
+    grad.addColorStop(0,'rgba(99,102,241,0.3)');
+    grad.addColorStop(0.5,'rgba(139,92,246,0.2)');
+    grad.addColorStop(1,'rgba(99,102,241,0)');
 
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Daily Revenue',
-        data: values,
-        borderColor: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-        backgroundColor: grad,
-        fill: true,
-        borderWidth: 3,
-        tension: 0.4,
-        pointRadius: 0,
-        pointHoverRadius: 6,
-        pointBackgroundColor: '#6366f1',
-        pointBorderColor: '#ffffff',
-        pointBorderWidth: 2,
-        pointHoverBackgroundColor: '#8b5cf6',
-        pointHoverBorderColor: '#ffffff',
-        pointHoverBorderWidth: 3
-      }]
-    },
+    try {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: chartLabels,
+          datasets: [{
+            label: 'Daily Revenue',
+            data: chartValues,
+            borderColor: '#6366f1',
+            backgroundColor: grad,
+            fill: true,
+            borderWidth: 3,
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 6,
+            pointBackgroundColor: '#6366f1',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointHoverBackgroundColor: '#8b5cf6',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 3
+          }]
+        },
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -655,10 +733,32 @@
           borderCapStyle: 'round'
         }
       }
-
+      }
+      });
+    } catch (error) {
+      console.error('Error initializing chart:', error);
+      // Even on error, try to show a simple message or placeholder
+      if (revCanvas) {
+        const ctx = revCanvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#6366f1';
+          ctx.font = '16px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Chart initialization error', revCanvas.width / 2, revCanvas.height / 2);
+        }
+      }
     }
-
-  });
+  }
+  
+  // Initialize chart on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRevenueChart);
+  } else {
+    initRevenueChart();
+  }
+  
+  // Fallback initialization after a short delay
+  setTimeout(initRevenueChart, 500);
 </script>
 
 <!-- Enhanced Quick Range & Date Management -->

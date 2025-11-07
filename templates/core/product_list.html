@@ -408,7 +408,7 @@
   <div class="kpi">
     <div class="d-flex align-items-center justify-content-center">
       <div class="text-center">
-        <div class="fw-bold fs-4 text-primary">{{ products|length }}</div>
+        <div id="productCount" class="fw-bold fs-4 text-primary">{{ products|length }}</div>
         <div class="small text-muted fw-semibold">Total Products</div>
       </div>
     </div>
@@ -432,12 +432,7 @@
                  class="form-control"
                  placeholder="Search products by name or ingredients...">
         </div>
-        <button class="btn btn-outline-primary ms-2" type="submit">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="me-1">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 5L20.5 19l-5-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"/>
-          </svg>
-          Search
-        </button>
+        
       </form>
 
       <!-- Enhanced Add Button -->
@@ -457,10 +452,11 @@
             <th>📦 Product Details</th>
             <th class="text-end hide-sm" style="width:160px">💰 Price</th>
             <th class="hide-sm" style="width:140px">📦 Stock</th>
+            <th class="hide-sm" style="width:160px">📅 Expiration</th>
             <th class="text-end" style="width:180px">⚙️ Actions</th>
           </tr>
         </thead>
-        <tbody>
+          <tbody id="productsTbody">
           {% for p in products %}
           <tr class="product-row">
             <td>
@@ -489,10 +485,39 @@
               <div class="num fw-bold text-success fs-5">₱{{ p.price|floatformat:2 }}</div>
             </td>
             <td class="hide-sm">
-              <span class="badge bg-success d-inline-flex align-items-center">
-                <span class="status-dot bg-white me-1"></span>
-                {{ p.stock }} in stock
-              </span>
+              {% if p.stock > 0 %}
+                <span class="badge bg-success d-inline-flex align-items-center">
+                  <span class="status-dot bg-white me-1"></span>
+                  {{ p.stock }} in stock
+                </span>
+              {% else %}
+                <span class="badge bg-danger d-inline-flex align-items-center">
+                  <span class="status-dot bg-white me-1"></span>
+                  Out of stock
+                </span>
+              {% endif %}
+            </td>
+            <td class="hide-sm">
+              {% if p.expiration_date %}
+                {% if p.get_expiration_status == 'expired' %}
+                  <span class="badge bg-danger d-inline-flex align-items-center">
+                    <span class="status-dot bg-white me-1"></span>
+                    Expired {{ p.expiration_date|date:"M d, Y" }}
+                  </span>
+                {% elif p.get_expiration_status == 'today' %}
+                  <span class="badge bg-warning text-dark d-inline-flex align-items-center">
+                    <span class="status-dot bg-white me-1"></span>
+                    Expires Today
+                  </span>
+                {% else %}
+                  <span class="badge bg-info d-inline-flex align-items-center">
+                    <span class="status-dot bg-white me-1"></span>
+                    {{ p.expiration_date|date:"M d, Y" }}
+                  </span>
+                {% endif %}
+              {% else %}
+                <span class="text-muted small">Not set</span>
+              {% endif %}
             </td>
             <td class="text-end actions">
               <div class="btn-group" role="group" aria-label="Actions">
@@ -511,7 +536,7 @@
           </tr>
           {% empty %}
           <tr>
-            <td colspan="5" class="text-center py-5">
+            <td colspan="6" class="text-center py-5">
               <div class="empty-state">
                 <div class="mb-3">
                   <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.6;">
@@ -546,82 +571,43 @@
     });
   });
 
-  // Enhanced search functionality
+  // Instant client-side live search (no reload)
   (function () {
-    const form = document.getElementById('searchForm');
     const input = document.getElementById('q');
-    const base = form.getAttribute('action') || window.location.pathname;
-    let searchTimeout;
+    const tbody = document.getElementById('productsTbody');
+    const countEl = document.getElementById('productCount');
+    if (!input || !tbody) return;
 
-    // Add loading state to search
-    function showSearchLoading() {
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<div class="loading me-2"></div> Searching...';
-      submitBtn.disabled = true;
-      
-      setTimeout(() => {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-      }, 1000);
-    }
-
-    // Auto-restore full list when search field becomes empty
-    function maybeReset() {
-      if (input.value.trim() === '' && new URLSearchParams(location.search).has('q')) {
-        showSearchLoading();
-        setTimeout(() => {
-        window.location.replace(base);
-        }, 500);
+    function filter() {
+      const q = input.value.trim().toLowerCase();
+      let shown = 0;
+      const rows = tbody.querySelectorAll('tr.product-row');
+      rows.forEach(row => {
+        const name = (row.querySelector('.fw-bold')?.textContent || '').toLowerCase();
+        const ings = (row.querySelector('.text-secondary')?.textContent || '').toLowerCase();
+        const match = q === '' || name.includes(q) || ings.includes(q);
+        row.style.display = match ? '' : 'none';
+        if (match) shown += 1;
+      });
+      if (countEl) countEl.textContent = String(shown);
+      // Toggle empty state row
+      let empty = tbody.querySelector('tr[data-empty="1"]');
+      if (shown === 0) {
+        if (!empty) {
+          empty = document.createElement('tr');
+          empty.setAttribute('data-empty', '1');
+          empty.innerHTML = '<td colspan="6" class="text-center py-5"><div class="empty-state"><div class="mb-3"><svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" style="opacity:.6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div><h5 class="mb-2">📦 No Products Found</h5><p class="mb-0 text-muted">Try a different keyword.</p></div></td>';
+          tbody.appendChild(empty);
+        }
+      } else if (empty) {
+        empty.remove();
       }
     }
 
-     // Search with small delay to prevent input disappearing
-     function performSearch() {
-       clearTimeout(searchTimeout);
-       searchTimeout = setTimeout(() => {
-         if (input.value.trim() !== '') {
-           showSearchLoading();
-           form.submit();
-         } else {
-           // If search is empty, show all products
-           showSearchLoading();
-           window.location.replace(base);
-         }
-       }, 200);
-     }
-
-     // Search on input change with delay
-     input.addEventListener('input', performSearch);
-     
-     // Search on backspace/delete with delay
-     input.addEventListener('keydown', function(e) {
-       if (e.key === 'Backspace' || e.key === 'Delete') {
-         clearTimeout(searchTimeout);
-         searchTimeout = setTimeout(() => {
-           if (input.value.trim() !== '') {
-             showSearchLoading();
-             form.submit();
-           } else {
-             showSearchLoading();
-             window.location.replace(base);
-           }
-         }, 100);
-       }
-     });
-
-    input.addEventListener('search', maybeReset);
-
-    // Add search suggestions (placeholder for future enhancement)
-    input.addEventListener('focus', function() {
-      this.style.borderColor = '#667eea';
-      this.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
-    });
-
-    input.addEventListener('blur', function() {
-      this.style.borderColor = '';
-      this.style.boxShadow = '';
-    });
+    // Initial run if field prefilled
+    filter();
+    input.addEventListener('input', filter);
+    input.addEventListener('search', filter);
   })();
 
   // Enhanced product row interactions

@@ -1,0 +1,595 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  :root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-shadow: 0 20px 40px rgba(16,24,40,.08);
+    --border-color: rgba(16,24,40,.08);
+  }
+
+  .profile-card { 
+    max-width: 700px; 
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+  }
+
+  .profile-header {
+    background: transparent;
+    color: #111827;
+    padding: 1rem 0;
+    text-align: center;
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 auto 1rem;
+    border: 4px solid rgba(102, 126, 234, 0.2);
+  }
+
+  .profile-header h2 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.75rem;
+  }
+
+  .profile-header p {
+    margin: 0.5rem 0 0 0;
+    opacity: 0.9;
+    font-size: 1rem;
+  }
+
+  .profile-body {
+    padding: 2rem;
+  }
+
+  .profile-header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f3f4f6;
+  }
+
+  .profile-header-section h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .btn-edit-toggle {
+    background: var(--primary-gradient);
+    border: none;
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-edit-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  .info-section {
+    margin-bottom: 2rem;
+  }
+
+  .info-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .info-section h5 {
+    color: #667eea;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+    color: #ef4444;
+    font-size: 0.875rem;
+  }
+
+  .edit-mode .view-mode {
+    display: none !important;
+  }
+
+  .view-mode .edit-mode {
+    display: none !important;
+  }
+
+  .edit-mode .info-row {
+    display: none;
+  }
+
+  .view-mode .form-group {
+    display: none;
+  }
+
+  .info-row {
+    display: flex;
+    padding: 1rem;
+    border-bottom: none;
+    align-items: center;
+  }
+
+  .info-row:last-child {
+    border-bottom: none;
+  }
+
+  .info-label {
+    font-weight: 600;
+    color: #6b7280;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .info-value {
+    color: #111827;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .info-value.empty {
+    color: #9ca3af;
+    font-style: italic;
+  }
+
+  .badge-role {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: var(--primary-gradient);
+    color: white;
+  }
+
+  .badge-role.admin {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  }
+
+  .badge-role.cashier {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  }
+
+  .info-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+  }
+
+  .profile-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .btn-edit {
+    background: var(--primary-gradient);
+    border: none;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
+
+  .btn-back {
+    background: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    color: #6b7280;
+    padding: 0.75rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-back:hover {
+    background: #e5e7eb;
+    color: #374151;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .stat-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.25rem;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+  }
+</style>
+
+<div class="profile-card view-mode">
+  <div class="profile-body">
+    <div class="profile-header-section">
+      <h3>My Profile</h3>
+      <button type="button" class="btn-edit-toggle" id="toggleEdit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+        <span id="editBtnText">Edit Profile</span>
+      </button>
+    </div>
+
+    <form method="post" id="profileForm">
+      {% csrf_token %}
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+      
+      <!-- Personal Information -->
+      <div class="info-section view-mode">
+        <h5>
+          <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+          Personal Information
+        </h5>
+        
+        <div class="info-row">
+          <div class="info-label">
+            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            Username
+          </div>
+          <div class="info-value">{{ user.username }}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">
+            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+            </svg>
+            First Name
+          </div>
+          <div class="info-value {% if not user.first_name %}empty{% endif %}">
+            {{ user.first_name|default:"Not provided" }}
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">
+            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+            </svg>
+            Last Name
+          </div>
+          <div class="info-value {% if not user.last_name %}empty{% endif %}">
+            {{ user.last_name|default:"Not provided" }}
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">
+            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            Email
+          </div>
+          <div class="info-value {% if not user.email %}empty{% endif %}">
+            {{ user.email|default:"Not provided" }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Mode - Personal Information -->
+      <div class="info-section edit-mode" style="display: none;">
+        <h5>
+          <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+          Personal Information
+        </h5>
+
+        <div class="info-row">
+          <div class="info-label">
+            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            Username
+          </div>
+          <div class="info-value">{{ user.username }}</div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+            </svg>
+            First Name
+          </label>
+          {{ form.first_name }}
+          {% if form.first_name.errors %}
+            <ul class="errorlist">
+              {% for error in form.first_name.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label>
+            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+            </svg>
+            Last Name
+          </label>
+          {{ form.last_name }}
+          {% if form.last_name.errors %}
+            <ul class="errorlist">
+              {% for error in form.last_name.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label>
+            <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            Email
+          </label>
+          {{ form.email }}
+          {% if form.email.errors %}
+            <ul class="errorlist">
+              {% for error in form.email.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+
+    <!-- Account Information -->
+    <div class="info-section">
+      <h5>
+        <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+        </svg>
+        Account Information
+      </h5>
+      
+      <div class="info-row">
+        <div class="info-label">
+          <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          Role
+        </div>
+        <div class="info-value">
+          <span class="badge-role {% if user.is_staff %}admin{% else %}cashier{% endif %}">
+            {% if user.is_staff %}👑 Administrator{% else %}💰 Cashier{% endif %}
+          </span>
+        </div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">
+          <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+          </svg>
+          Date Joined
+        </div>
+        <div class="info-value">{{ user.date_joined|date:"F d, Y" }}</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">
+          <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.72-2.83-.01-1.54-1.05-2.38-3.21-2.88z"/>
+          </svg>
+          Active Status
+        </div>
+        <div class="info-value">
+          {% if user.is_active %}
+            <span style="color: #10b981; font-weight: 600;">✓ Active</span>
+          {% else %}
+            <span style="color: #ef4444; font-weight: 600;">✗ Inactive</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics (if available) -->
+    {% if user.is_staff %}
+    <div class="info-section">
+      <h5>
+        <svg class="info-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+        </svg>
+        Account Statistics
+      </h5>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">{% if user.is_staff %}Admin{% else %}Cashier{% endif %}</div>
+          <div class="stat-label">Account Type</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ user.date_joined|timesince }}</div>
+          <div class="stat-label">Active Since</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="profile-actions edit-mode" style="display: none;">
+      <button type="button" class="btn-back" id="cancelEdit">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+        Cancel
+      </button>
+      <button type="submit" class="btn-edit">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+        Save Changes
+      </button>
+    </div>
+  </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('toggleEdit');
+    const cancelBtn = document.getElementById('cancelEdit');
+    const form = document.getElementById('profileForm');
+    const editBtnText = document.getElementById('editBtnText');
+    let isEditMode = false;
+
+    function toggleEditMode() {
+      isEditMode = !isEditMode;
+      const profileCard = document.querySelector('.profile-card');
+      const viewSections = document.querySelectorAll('.info-section.view-mode');
+      const editSections = document.querySelectorAll('.info-section.edit-mode');
+      
+      if (isEditMode) {
+        profileCard.classList.remove('view-mode');
+        profileCard.classList.add('edit-mode');
+        editBtnText.textContent = 'View Profile';
+        document.querySelector('.profile-actions.edit-mode').style.display = 'flex';
+        viewSections.forEach(s => s.style.display = 'none');
+        editSections.forEach(s => s.style.display = 'block');
+      } else {
+        profileCard.classList.remove('edit-mode');
+        profileCard.classList.add('view-mode');
+        editBtnText.textContent = 'Edit Profile';
+        document.querySelector('.profile-actions.edit-mode').style.display = 'none';
+        viewSections.forEach(s => s.style.display = 'block');
+        editSections.forEach(s => s.style.display = 'none');
+      }
+    }
+
+    toggleBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!isEditMode) {
+        toggleEditMode();
+      }
+    });
+
+    cancelBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (isEditMode) {
+        toggleEditMode();
+      }
+    });
+  });
+</script>
+
+{% endblock %}
+
