@@ -28,9 +28,8 @@
     @media (min-width: 1200px) { .navbar-brand { font-size: 1.35rem; } }
     .brand-mark {
       width: 34px; height: 34px; border-radius: 8px;
-      background: linear-gradient(135deg, #0d6efd, #20c997);
-      display: inline-grid; place-items: center;
-      color: #fff; font-size: 1rem; font-weight: 700;
+      display: inline-block;
+      object-fit: contain;
     }
 
     /* Spacing & bigger type for nav links */
@@ -77,8 +76,8 @@
 {% if request.path != '/login/' %}
 <nav class="navbar navbar-expand-lg navbar-light navbar-elevated">
   <div class="container-fluid px-3">
-    <a class="navbar-brand" href="/">
-      <span class="brand-mark">AB</span>
+    <a class="navbar-brand" href="#" style="pointer-events: none; cursor: default;">
+      <img src="/media/products/Logo.jpg" alt="Alvarez Bakery" class="brand-mark">
       Alvarez Bakery
     </a>
 
@@ -89,6 +88,15 @@
     <div class="collapse navbar-collapse" id="nav">
       <!-- main menu -->
       <ul class="navbar-nav ms-3 ms-md-4 ms-lg-5 me-auto">
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/" title="Home Dashboard">
+            <svg class="nav-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+            <span>Home</span>
+          </a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link {% if request.path == '/pos/' %}active{% endif %}" href="/pos/" title="Point of Sale">
             <svg class="nav-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -141,11 +149,15 @@
         {% if request.user.is_authenticated %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:1.05rem;">
-              <span class="avatar">{{ request.user.username|slice:":1"|upper }}</span>
-              <span class="d-none d-sm-inline">Hello, {{ request.user.username }}</span>
+              {% if request.user.profile.profile_picture %}
+                <img src="{{ request.user.profile.profile_picture.url }}" alt="{{ request.user.get_full_name|default:request.user.username }}" class="avatar" style="object-fit: cover;">
+              {% else %}
+                <span class="avatar">{{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}</span>
+              {% endif %}
+              <span class="d-none d-sm-inline">Hello, {{ request.user.get_full_name|default:request.user.username }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
-              <li class="dropdown-header small text-muted px-3">Signed in as <strong>{{ request.user.username }}</strong></li>
+              <li class="dropdown-header small text-muted px-3">Signed in as <strong>{{ request.user.get_full_name|default:request.user.username }}</strong></li>
               <li><hr class="dropdown-divider"></li>
               <li>
                 <a class="dropdown-item" href="{% url 'profile' %}">
