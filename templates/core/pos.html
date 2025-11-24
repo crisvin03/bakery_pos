@@ -4,12 +4,23 @@
 
 <style>
   :root {
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    --success-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
     --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
     --card-shadow: 0 20px 40px rgba(16,24,40,.08);
     --border-color: rgba(16,24,40,.08);
+  }
+
+  /* Body background matching home.html */
+  body {
+    background: linear-gradient(135deg, #f5e6d3 0%, #faf5f0 100%);
+    min-height: 100vh;
+  }
+
+  /* Add spacing below sticky navbar */
+  .container {
+    padding-top: 1rem;
   }
 
   /* Enhanced POS Layout */
@@ -68,7 +79,7 @@
     width: 48px;
     height: 48px;
     opacity: 0.4;
-    color: #6b7280;
+    color: #4b5563;
   }
 
   /* Fallback for browsers without aspect-ratio */
@@ -114,7 +125,7 @@
     font-weight: 800;
     font-size: 1.1rem;
     min-height: 1.5rem;
-    background: linear-gradient(135deg, #0d6efd, #4facfe);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -133,7 +144,7 @@
     height: 36px;
     border: 2px solid var(--border-color);
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    color: #6b7280;
+    color: #4b5563;
     font-weight: 600;
     transition: all 0.2s ease;
   }
@@ -156,8 +167,8 @@
   }
 
   .qty-stepper .form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 
   /* Enhanced Add Button */
@@ -191,15 +202,15 @@
 
   .btn-add:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
   }
 
   /* Enhanced Cards */
   .card-elevated {
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 20px;
     box-shadow: var(--card-shadow);
-    background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(20px);
     transition: all 0.3s ease;
   }
@@ -218,9 +229,9 @@
 
   .table thead th {
     font-weight: 700;
-    color: #6b7280;
+    color: white;
     border-bottom-color: var(--border-color);
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: var(--primary-gradient);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 0.8rem;
@@ -255,9 +266,32 @@
   }
 
   .form-control:focus, .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     transform: translateY(-1px);
+  }
+  
+  .form-control.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+  }
+  
+  .form-control.is-invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+  }
+
+  /* Remove spinner arrows from number inputs */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
   }
 
   /* Enhanced Checkout Button */
@@ -289,7 +323,18 @@
 
   .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  }
+  
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .btn-primary:disabled:hover {
+    transform: none;
+    box-shadow: none;
   }
 
   /* Enhanced Remove Button */
@@ -313,9 +358,9 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid rgba(102, 126, 234, 0.3);
+    border: 3px solid rgba(59, 130, 246, 0.3);
     border-radius: 50%;
-    border-top-color: #667eea;
+    border-top-color: #3b82f6;
     animation: spin 1s ease-in-out infinite;
   }
 
@@ -327,7 +372,7 @@
   .empty-cart {
     text-align: center;
     padding: 3rem 2rem;
-    color: #6b7280;
+    color: #4b5563;
     background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
     border: 2px dashed var(--border-color);
     border-radius: 16px;
@@ -335,7 +380,7 @@
   }
 
   .empty-cart:hover {
-    border-color: #667eea;
+    border-color: #3b82f6;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   }
 
@@ -349,13 +394,13 @@
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.25);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
     transition: all 0.3s ease;
   }
 
   .icon-container:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
   }
 
   /* KPI Badge */
@@ -415,8 +460,20 @@
   }
 
   .total-display:hover {
-    border-color: #667eea;
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Change Display Animation */
+  @keyframes slideIn {
+    from { 
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* Loading States */
@@ -601,7 +658,11 @@
                   <form method="post" action="/pos/update-cart/{{ pid }}/" class="d-inline">
                     {% csrf_token %}
                     <input type="hidden" name="qty" value="0">
-                    <button class="btn btn-outline-danger btn-sm" title="Remove">🗑</button>
+                    <button class="btn btn-outline-danger btn-sm" title="Remove">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                      </svg>
+                    </button>
                   </form>
                 </td>
               </tr>
@@ -635,22 +696,27 @@
         <form method="post" action="/pos/checkout/" id="checkoutForm">
           {% csrf_token %}
           <div class="mb-3">
+            <label class="form-label fw-semibold">💵 Cash <span class="text-danger">*</span></label>
+            <input type="number" name="cash_received" id="cashReceived" step="0.01" min="0" required class="form-control" placeholder="Enter cash amount">
+            <small class="text-danger" id="cashError" style="display: none;">Please enter cash amount</small>
+            <small class="text-danger" id="cashInsufficientError" style="display: none;">Cash amount is insufficient</small>
+          </div>
+          <div class="mb-3">
             <label class="form-label fw-semibold">💰 Discount (%)</label>
             <input type="number" name="discount_percentage" id="discountInput" step="0.01" min="0" max="100" value="0" class="form-control" placeholder="Enter discount percentage">
             <input type="hidden" name="discount" id="discountAmount" value="0">
             <small class="text-muted" id="discountAmountDisplay">Discount amount: ₱0.00</small>
           </div>
-          <div class="mb-4">
-            <label class="form-label fw-semibold">💳 Payment Method</label>
-            <select name="payment_method" class="form-select" disabled title="Payment method is fixed to Cash">
-              <option value="CASH" selected>💵 Cash</option>
-            </select>
-            <input type="hidden" name="payment_method" value="CASH">
-          </div>
+          <input type="hidden" name="payment_method" value="CASH">
 
-          <div class="d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded-3">
+          <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded-3">
             <span class="fs-5 fw-bold">Total</span>
             <span class="fs-4 fw-bold text-success" id="totalText">₱0.00</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded-3" id="changeDisplay" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border: 2px solid #4caf50; display: none;">
+            <span class="fs-5 fw-bold text-success">💰 Change</span>
+            <span class="fs-4 fw-bold text-success" id="changeText">₱0.00</span>
           </div>
 
           <button class="btn btn-primary w-100 py-3" id="checkoutBtn">
@@ -806,7 +872,105 @@
     if (checkoutText) {
       checkoutText.textContent = 'Pay ₱' + total.toFixed(2);
     }
+    
+    // Calculate and display change
+    calculateChange(total);
+    
+    // Validate cash after recompute
+    validateCash();
   }
+  
+  // Calculate change based on cash received and total
+  function calculateChange(total) {
+    const cashReceived = parseFloat(document.getElementById('cashReceived')?.value || '0');
+    const change = Math.max(0, cashReceived - total);
+    const changeText = document.getElementById('changeText');
+    const changeDisplay = document.getElementById('changeDisplay');
+    
+    if (changeText) {
+      changeText.style.transform = 'scale(1.1)';
+      changeText.textContent = '₱' + change.toFixed(2);
+      setTimeout(() => {
+        changeText.style.transform = '';
+      }, 200);
+    }
+    
+    // Show change display if cash received is greater than total
+    if (changeDisplay) {
+      if (cashReceived > 0 && cashReceived >= total) {
+        changeDisplay.style.display = 'flex';
+        changeDisplay.style.animation = 'slideIn 0.3s ease-out';
+      } else {
+        changeDisplay.style.display = 'none';
+      }
+    }
+  }
+  
+  // Validate cash input and enable/disable checkout button
+  function validateCash() {
+    const cashInput = document.getElementById('cashReceived');
+    const cashError = document.getElementById('cashError');
+    const cashInsufficientError = document.getElementById('cashInsufficientError');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const total = parseFloat(document.getElementById('totalText')?.textContent.replace('₱', '').replace(',', '') || '0');
+    const cashReceived = parseFloat(cashInput?.value || '0');
+    
+    // Reset error messages
+    if (cashError) cashError.style.display = 'none';
+    if (cashInsufficientError) cashInsufficientError.style.display = 'none';
+    
+    // Remove error styling
+    if (cashInput) {
+      cashInput.classList.remove('is-invalid');
+      cashInput.style.borderColor = '';
+    }
+    
+    // Validate cash
+    let isValid = true;
+    if (!cashInput || cashReceived <= 0) {
+      isValid = false;
+      if (cashError) cashError.style.display = 'block';
+      if (cashInput) {
+        cashInput.classList.add('is-invalid');
+        cashInput.style.borderColor = '#dc3545';
+      }
+    } else if (cashReceived < total) {
+      isValid = false;
+      if (cashInsufficientError) cashInsufficientError.style.display = 'block';
+      if (cashInput) {
+        cashInput.classList.add('is-invalid');
+        cashInput.style.borderColor = '#dc3545';
+      }
+    }
+    
+    // Enable/disable checkout button
+    if (checkoutBtn) {
+      if (isValid && cashReceived >= total) {
+        checkoutBtn.disabled = false;
+        checkoutBtn.style.opacity = '1';
+        checkoutBtn.style.cursor = 'pointer';
+      } else {
+        checkoutBtn.disabled = true;
+        checkoutBtn.style.opacity = '0.6';
+        checkoutBtn.style.cursor = 'not-allowed';
+      }
+    }
+    
+    // Calculate change
+    calculateChange(total);
+    
+    return isValid;
+  }
+
+  // Handle cash received input
+  document.getElementById('cashReceived')?.addEventListener('input', function(e) {
+    validateCash();
+  });
+  
+  // Handle cash received blur
+  document.getElementById('cashReceived')?.addEventListener('blur', function(e) {
+    validateCash();
+  });
 
   // Handle discount percentage input
   document.getElementById('discountInput')?.addEventListener('input', function(e) {
@@ -840,8 +1004,8 @@
       const value = e.target.value.trim();
       
       // Add input animation
-      e.target.style.borderColor = '#667eea';
-      e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+      e.target.style.borderColor = '#3b82f6';
+      e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
       
       // Don't update if field is empty - let user finish typing
       if (productId && value !== '') {
@@ -893,7 +1057,7 @@
 <div class="modal fade" id="confirmCheckoutModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content" style="border-radius:16px; overflow:hidden;">
-      <div class="modal-header" style="background: linear-gradient(135deg, #667eea, #764ba2); color: #fff;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;">
         <h5 class="modal-title d-flex align-items-center gap-2">
           <span class="badge bg-light text-dark" style="border-radius:10px;">POS</span>
           Confirm Payment
@@ -932,6 +1096,17 @@
     form.addEventListener('submit', function(e){
       if (form.dataset.confirmed === '1') { return; }
       e.preventDefault();
+      
+      // Validate cash before showing modal
+      if (!validateCash()) {
+        const cashInput = document.getElementById('cashReceived');
+        if (cashInput) {
+          cashInput.focus();
+          showNotification('❌ Please enter a valid cash amount before proceeding', 'danger');
+        }
+        return;
+      }
+      
       var total = document.getElementById('totalText')?.textContent || '₱0.00';
       var totalTarget = document.getElementById('confirmTotal');
       if (totalTarget) totalTarget.textContent = total;
@@ -1078,7 +1253,19 @@
     }
   });
   
+  // Initialize: compute totals and validate cash
   recompute();
+  
+  // Initialize checkout button state
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (checkoutBtn) {
+      checkoutBtn.disabled = true;
+      checkoutBtn.style.opacity = '0.6';
+      checkoutBtn.style.cursor = 'not-allowed';
+    }
+    validateCash();
+  });
 </script>
 
 {% endblock %}

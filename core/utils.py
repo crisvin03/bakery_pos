@@ -11,8 +11,20 @@ def daily_sales(start=None, end=None):
         qs = qs.filter(sale__created_at__date__lte=end)
     agg = (qs.values('sale__created_at__date')
              .annotate(revenue=Sum(F('line_total')))
-             .order_by('sale__created_at__date'))
+             .order_by('-sale__created_at__date'))
     return [{'date': r['sale__created_at__date'], 'revenue': float(r['revenue'] or 0)} for r in agg]
+
+def daily_quantity(start=None, end=None):
+    # returns list of dicts: [{'date': date, 'quantity': int}]
+    qs = SalesItem.objects.all()
+    if start:
+        qs = qs.filter(sale__created_at__date__gte=start)
+    if end:
+        qs = qs.filter(sale__created_at__date__lte=end)
+    agg = (qs.values('sale__created_at__date')
+             .annotate(quantity=Sum('qty'))
+             .order_by('-sale__created_at__date'))
+    return [{'date': r['sale__created_at__date'], 'quantity': int(r['quantity'] or 0)} for r in agg]
 
 def top_sellers(start=None, end=None, limit=5):
     qs = SalesItem.objects.all()
@@ -23,7 +35,18 @@ def top_sellers(start=None, end=None, limit=5):
     agg = (qs.values('product__name')
              .annotate(qty=Sum('qty'), revenue=Sum('line_total'))
              .order_by('-qty')[:limit])
-    return [{'product': r['product__name'], 'qty': int(r['qty'] or 0), 'revenue': float(r['revenue'] or 0)} for r in agg]
+    result = []
+    for r in agg:
+        qty = int(r['qty'] or 0)
+        revenue = float(r['revenue'] or 0)
+        avg_price = revenue / qty if qty > 0 else 0.0
+        result.append({
+            'product': r['product__name'],
+            'qty': qty,
+            'revenue': revenue,
+            'avg_price': round(avg_price, 2)
+        })
+    return result
 
 def moving_average_forecast(history, horizon=7, window=7):
     # history: list of {'date': date, 'revenue': float}

@@ -4,12 +4,23 @@
 
 <style>
   :root {
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
     --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
     --card-shadow: 0 20px 40px rgba(16,24,40,.08);
     --border-color: rgba(16,24,40,.08);
+  }
+
+  /* Body background matching home.html */
+  body {
+    background: linear-gradient(135deg, #f5e6d3 0%, #faf5f0 100%);
+    min-height: 100vh;
+  }
+
+  /* Add spacing below sticky navbar */
+  .container {
+    padding-top: 1rem;
   }
 
   /* Enhanced Page Header */
@@ -20,9 +31,10 @@
     gap: 1.5rem; 
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
     border-radius: 20px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255,255,255,0.2);
   }
 
   .page-head h2 {
@@ -36,9 +48,10 @@
 
   .kpi {
     padding: 1rem 1.5rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 16px;
-    background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
     box-shadow: var(--card-shadow);
     font-size: 1rem;
     font-weight: 600;
@@ -58,10 +71,10 @@
 
   /* Enhanced Card */
   .card-elevated { 
-    border: 1px solid var(--border-color); 
+    border: 1px solid rgba(255,255,255,0.2); 
     border-radius: 20px; 
     box-shadow: var(--card-shadow);
-    background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(20px);
     transition: all 0.3s ease;
   }
@@ -78,10 +91,11 @@
     gap: 1rem; 
     align-items: center; 
     padding: 1.5rem;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
     border-radius: 16px;
     margin-bottom: 1.5rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255,255,255,0.2);
   }
 
   .toolbar .search { width: min(400px, 100%); }
@@ -113,7 +127,7 @@
 
   .btn-primary-gradient:hover { 
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
   }
 
   /* Enhanced Search */
@@ -137,8 +151,8 @@
   }
 
   .form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 
   /* Enhanced Table */
@@ -150,9 +164,9 @@
 
   .table thead th { 
     font-weight: 700; 
-    color: #6b7280; 
+    color: white; 
     border-bottom-color: var(--border-color);
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: var(--primary-gradient);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 0.8rem;
@@ -175,7 +189,7 @@
     position: sticky; 
     top: 0; 
     z-index: 5; 
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: var(--primary-gradient);
   }
 
   /* Enhanced Product Images */
@@ -262,7 +276,7 @@
   .empty-state {
     text-align: center;
     padding: 3rem 2rem;
-    color: #6b7280;
+    color: #4b5563;
     background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
     border: 2px dashed var(--border-color);
     border-radius: 20px;
@@ -270,7 +284,7 @@
   }
 
   .empty-state:hover {
-    border-color: #667eea;
+    border-color: #3b82f6;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   }
 
@@ -279,9 +293,9 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid rgba(102, 126, 234, 0.3);
+    border: 3px solid rgba(59, 130, 246, 0.3);
     border-radius: 50%;
-    border-top-color: #667eea;
+    border-top-color: #3b82f6;
     animation: spin 1s ease-in-out infinite;
   }
 
@@ -330,13 +344,13 @@
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
     transition: all 0.3s ease;
   }
 
   .icon-container:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
   }
 
   /* Enhanced KPI Icon */
@@ -349,13 +363,13 @@
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.25);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
     transition: all 0.3s ease;
   }
 
   .kpi-icon:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
   }
 
   /* Enhanced KPI Card */
@@ -371,7 +385,7 @@
     right: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
     animation: float 6s ease-in-out infinite;
   }
 
@@ -402,14 +416,26 @@
   <div class="d-flex align-items-center">
     <div>
       <h2 class="h3 mb-1">🍞 Products</h2>
-      <div class="text-secondary">Manage your bakery catalog and inventory</div>
+      <div class="text-secondary">
+        {% if show_archived %}
+          Viewing archived products
+        {% else %}
+          Manage your bakery catalog and inventory
+        {% endif %}
+      </div>
     </div>
   </div>
   <div class="kpi">
     <div class="d-flex align-items-center justify-content-center">
       <div class="text-center">
         <div id="productCount" class="fw-bold fs-4 text-primary">{{ products|length }}</div>
-        <div class="small text-muted fw-semibold">Total Products</div>
+        <div class="small text-muted fw-semibold">
+          {% if show_archived %}
+            Archived Products
+          {% else %}
+            Total Products
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
@@ -419,8 +445,27 @@
 <div class="card card-elevated">
   <div class="card-body">
     <div class="toolbar">
+      <!-- View Tabs -->
+      <div class="btn-group" role="group" aria-label="View options">
+        <a href="/products/" class="btn {% if not show_archived %}btn-primary-gradient text-white{% else %}btn-outline-secondary{% endif %}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          Active Products
+        </a>
+        <a href="/products/?archived=true" class="btn {% if show_archived %}btn-primary-gradient text-white{% else %}btn-outline-secondary{% endif %}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+            <path d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14V4zm0 16H5V8h14v12z"/>
+          </svg>
+          Archived Products
+        </a>
+      </div>
+
       <!-- Enhanced Search -->
       <form method="get" id="searchForm" class="d-flex search" action="/products/">
+        {% if show_archived %}
+          <input type="hidden" name="archived" value="true">
+        {% endif %}
         <div class="input-group">
           <span class="input-group-text">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="icon-enhanced">
@@ -435,13 +480,15 @@
         
       </form>
 
-      <!-- Enhanced Add Button -->
+      <!-- Enhanced Add Button (only show for active products) -->
+      {% if not show_archived %}
       <a href="/products/new/" class="btn btn-primary-gradient text-white ms-auto">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="me-2 icon-enhanced">
           <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/>
         </svg>
         New Product
       </a>
+      {% endif %}
     </div>
 
     <div class="table-responsive">
@@ -521,16 +568,27 @@
             </td>
             <td class="text-end actions">
               <div class="btn-group" role="group" aria-label="Actions">
-                <a class="btn btn-outline-secondary" href="/products/{{ p.id }}/edit/" data-bs-toggle="tooltip" title="✏️ Edit Product">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="icon-enhanced">
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25Zm2.92 2.33H5v-.92l8.06-8.06.92.92-8.06 8.06ZM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z"/>
-                  </svg>
-                </a>
-                <a class="btn btn-outline-danger" href="/products/{{ p.id }}/delete/" data-bs-toggle="tooltip" title="🗑️ Delete Product">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="icon-enhanced">
-                    <path d="M6 7h12v2H6V7Zm2 3h8l-.8 9.6A2 2 0 0 1 13.21 22h-2.42A2 2 0 0 1 8.8 19.6L8 10Zm3-7h4l1 1h3v2H4V4h3l1-1h4Z"/>
-                  </svg>
-                </a>
+                {% if not show_archived %}
+                  <a class="btn btn-outline-secondary" href="/products/{{ p.id }}/edit/" data-bs-toggle="tooltip" title="✏️ Edit Product">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="icon-enhanced">
+                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25Zm2.92 2.33H5v-.92l8.06-8.06.92.92-8.06 8.06ZM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z"/>
+                    </svg>
+                  </a>
+                  <a class="btn btn-outline-danger" href="/products/{{ p.id }}/delete/" data-bs-toggle="tooltip" title="🗑️ Archive Product">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="icon-enhanced">
+                      <path d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14V4zm0 16H5V8h14v12z"/>
+                    </svg>
+                  </a>
+                {% else %}
+                  <form method="post" action="/products/{{ p.id }}/restore/" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-success" type="submit" data-bs-toggle="tooltip" title="♻️ Restore Product">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="icon-enhanced">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                      </svg>
+                    </button>
+                  </form>
+                {% endif %}
               </div>
             </td>
           </tr>
@@ -540,17 +598,31 @@
               <div class="empty-state">
                 <div class="mb-3">
                   <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" style="opacity: 0.6;">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    {% if show_archived %}
+                      <path d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14V4zm0 16H5V8h14v12z"/>
+                    {% else %}
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    {% endif %}
                   </svg>
                 </div>
-                <h5 class="mb-2">📦 No Products Found</h5>
-                <p class="mb-3 text-muted">Start building your bakery catalog by adding your first product.</p>
-                <a href="/products/new/" class="btn btn-primary-gradient text-white">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="me-2">
-                    <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/>
-                  </svg>
-                  Add Your First Product
-                </a>
+                <h5 class="mb-2">
+                  {% if show_archived %}
+                    📦 No Archived Products Found
+                  {% else %}
+                    📦 No Products Found
+                  {% endif %}
+                </h5>
+                {% if not show_archived %}
+                  <p class="mb-3 text-muted">Start building your bakery catalog by adding your first product.</p>
+                  <a href="/products/new/" class="btn btn-primary-gradient text-white">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+                      <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/>
+                    </svg>
+                    Add Your First Product
+                  </a>
+                {% else %}
+                  <p class="mb-0 text-muted">There are no archived products at this time.</p>
+                {% endif %}
               </div>
             </td>
           </tr>
@@ -571,12 +643,15 @@
     });
   });
 
-  // Instant client-side live search (no reload)
+  // Automatic debounced search (triggers when user stops typing)
   (function () {
     const input = document.getElementById('q');
     const tbody = document.getElementById('productsTbody');
     const countEl = document.getElementById('productCount');
     if (!input || !tbody) return;
+
+    let debounceTimer;
+    const searchDelay = 400; // Wait 400ms after user stops typing
 
     function filter() {
       const q = input.value.trim().toLowerCase();
@@ -590,24 +665,56 @@
         if (match) shown += 1;
       });
       if (countEl) countEl.textContent = String(shown);
-      // Toggle empty state row
+      // Toggle empty state row (only if user is searching, not when page initially has no products)
+      // If totalRows === 0, the template's empty block is showing, so don't create a JavaScript one
+      const totalRows = rows.length;
+      const hasSearchQuery = q !== '';
+      
+      // Only create JavaScript empty state if:
+      // 1. There are product rows in the table (totalRows > 0 means template empty state is NOT showing)
+      // 2. User is actively searching (has search query)
+      // 3. But none match the search (shown === 0)
       let empty = tbody.querySelector('tr[data-empty="1"]');
-      if (shown === 0) {
+      if (shown === 0 && totalRows > 0 && hasSearchQuery) {
+        // User is searching but no results match - create search-specific empty state
         if (!empty) {
           empty = document.createElement('tr');
           empty.setAttribute('data-empty', '1');
-          empty.innerHTML = '<td colspan="6" class="text-center py-5"><div class="empty-state"><div class="mb-3"><svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" style="opacity:.6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div><h5 class="mb-2">📦 No Products Found</h5><p class="mb-0 text-muted">Try a different keyword.</p></div></td>';
+          // Check if we're viewing archived products
+          const urlParams = new URLSearchParams(window.location.search);
+          const isArchived = urlParams.get('archived') === 'true';
+          const emptyMessage = isArchived 
+            ? '<h5 class="mb-2">📦 No Archived Products Found</h5><p class="mb-0 text-muted">Try a different keyword.</p>'
+            : '<h5 class="mb-2">📦 No Products Found</h5><p class="mb-0 text-muted">Try a different keyword.</p>';
+          const iconPath = isArchived
+            ? '<path d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14V4zm0 16H5V8h14v12z"/>'
+            : '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>';
+          empty.innerHTML = '<td colspan="6" class="text-center py-5"><div class="empty-state"><div class="mb-3"><svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor" style="opacity:.6">' + iconPath + '</svg></div>' + emptyMessage + '</div></td>';
           tbody.appendChild(empty);
         }
       } else if (empty) {
+        // Remove JavaScript-created empty state if products are shown or search is cleared
         empty.remove();
       }
     }
 
+    // Debounced search function
+    function debouncedSearch() {
+      // Clear previous timer
+      clearTimeout(debounceTimer);
+      
+      // Set new timer to execute search after user stops typing
+      debounceTimer = setTimeout(() => {
+        filter();
+      }, searchDelay);
+    }
+
     // Initial run if field prefilled
     filter();
-    input.addEventListener('input', filter);
-    input.addEventListener('search', filter);
+    
+    // Listen for input events and trigger debounced search
+    input.addEventListener('input', debouncedSearch);
+    input.addEventListener('search', filter); // Immediate search on clear button click
   })();
 
   // Enhanced product row interactions

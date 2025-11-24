@@ -4,8 +4,8 @@
 <style>
   /* Enhanced Reports Design System */
   :root {
-    --reports-primary: #6366f1;
-    --reports-secondary: #8b5cf6;
+    --reports-primary: #3b82f6;
+    --reports-secondary: #2563eb;
     --reports-success: #10b981;
     --reports-warning: #f59e0b;
     --reports-danger: #ef4444;
@@ -22,12 +22,17 @@
   }
 
   body {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: linear-gradient(135deg, #f5e6d3 0%, #faf5f0 100%);
     min-height: 100vh;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-weight: 400;
     line-height: 1.5;
-    color: #374151;
+    color: #1e293b;
+  }
+
+  /* Add spacing below sticky navbar */
+  .container {
+    padding-top: 1rem;
   }
 
   .reports-container {
@@ -110,7 +115,7 @@
   .panel-title {
     font-weight: 600;
     font-size: 1.1rem;
-    color: #6366f1;
+    color: #3b82f6;
     margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
@@ -141,18 +146,19 @@
   }
 
   .table {
-    background: white;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
 
   .table thead {
-    background: linear-gradient(135deg, var(--reports-gray-50), var(--reports-gray-100));
+    background: linear-gradient(135deg, var(--reports-primary), var(--reports-secondary));
   }
 
   .table thead th {
-    color: #374151;
+    color: white;
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.875rem;
@@ -183,7 +189,7 @@
 
   .form-control:focus {
     border-color: var(--reports-primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 
   .btn {
@@ -203,12 +209,12 @@
     background: linear-gradient(135deg, var(--reports-primary), var(--reports-secondary));
     border: none;
     color: white;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
   }
 
   .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
   }
 
   .btn-outline-secondary {
@@ -233,8 +239,9 @@
   }
 
   .kpi-item {
-    background: linear-gradient(135deg, var(--reports-gray-50), white);
-    border: 2px solid var(--reports-gray-200);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 12px;
     padding: 0.75rem;
     text-align: center;
@@ -249,7 +256,7 @@
 
   .kpi-label {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #4b5563;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -259,14 +266,14 @@
   .kpi-value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #6366f1;
+    color: #3b82f6;
     margin-bottom: 0.25rem;
   }
 
   .kpi-change {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #6b7280;
+    color: #4b5563;
   }
 
   .kpi-change.positive {
@@ -278,17 +285,18 @@
   }
 
   .chart-container {
-    background: white;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
     border-radius: 12px;
     padding: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--reports-gray-200);
+    border: 1px solid rgba(255,255,255,0.2);
   }
 
   .empty-state {
     text-align: center;
     padding: 2rem 1rem;
-    color: var(--reports-gray-500);
+    color: #4b5563;
   }
 
   .empty-state-icon {
@@ -363,13 +371,12 @@
         <div class="text-secondary">Configure date range and export your sales data</div>
     </div>
 
-    <a class="btn btn-primary"
-       href="{% url 'reports_export_csv' %}?start={{ start }}&end={{ end }}">
+    <button id="exportReport" class="btn btn-primary" type="button">
         <svg width="16" height="16" viewBox="0 0 24 24" class="me-2">
-        <path fill="currentColor" d="M12 3v10l3.5-3.5 1.4 1.4L12 16.8 7.1 10.9l1.4-1.4L12 13V3zM5 19h14v2H5z"/>
+        <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
       </svg>
-      Export CSV
-    </a>
+      Export PDF
+    </button>
   </div>
 
     <form id="reportForm" method="get" class="row g-4 align-items-end">
@@ -530,6 +537,7 @@
 
 {{ history|json_script:"history-json" }}
 
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script>
   // Enhanced Analytics Engine with robust fallback
   function ensureGraphData() {
@@ -644,9 +652,9 @@
     }
     
     const grad = ctx.createLinearGradient(0,0,0,220);
-    grad.addColorStop(0,'rgba(99,102,241,0.3)');
-    grad.addColorStop(0.5,'rgba(139,92,246,0.2)');
-    grad.addColorStop(1,'rgba(99,102,241,0)');
+    grad.addColorStop(0,'rgba(59,130,246,0.3)');
+    grad.addColorStop(0.5,'rgba(37,99,235,0.2)');
+    grad.addColorStop(1,'rgba(59,130,246,0)');
 
     try {
       new Chart(ctx, {
@@ -656,17 +664,17 @@
           datasets: [{
             label: 'Daily Revenue',
             data: chartValues,
-            borderColor: '#6366f1',
+            borderColor: '#3b82f6',
             backgroundColor: grad,
             fill: true,
             borderWidth: 3,
             tension: 0.4,
             pointRadius: 0,
             pointHoverRadius: 6,
-            pointBackgroundColor: '#6366f1',
+            pointBackgroundColor: '#3b82f6',
             pointBorderColor: '#ffffff',
             pointBorderWidth: 2,
-            pointHoverBackgroundColor: '#8b5cf6',
+            pointHoverBackgroundColor: '#2563eb',
             pointHoverBorderColor: '#ffffff',
             pointHoverBorderWidth: 3
           }]
@@ -686,7 +694,7 @@
           backgroundColor: 'rgba(0,0,0,0.8)',
           titleColor: '#ffffff',
           bodyColor: '#ffffff',
-          borderColor: '#6366f1',
+          borderColor: '#3b82f6',
           borderWidth: 1,
           cornerRadius: 8,
           displayColors: false,
@@ -708,7 +716,7 @@
             display: false
           },
           ticks: {
-            color: '#6b7280',
+            color: '#4b5563',
             font: {
               weight: '600'
             }
@@ -721,7 +729,7 @@
           },
           ticks: {
             callback: v => pesoFmt.format(v).replace('PHP','₱'),
-            color: '#6b7280',
+            color: '#4b5563',
             font: {
               weight: '600'
             }
@@ -741,7 +749,7 @@
       if (revCanvas) {
         const ctx = revCanvas.getContext('2d');
         if (ctx) {
-          ctx.fillStyle = '#6366f1';
+          ctx.fillStyle = '#3b82f6';
           ctx.font = '16px sans-serif';
           ctx.textAlign = 'center';
           ctx.fillText('Chart initialization error', revCanvas.width / 2, revCanvas.height / 2);
@@ -889,7 +897,340 @@
         card.style.transform = 'translateY(0)';
       }, index * 100);
     });
+    
+    // Setup PDF export
+    setupPDFExport();
   });
+  
+  // Helper function to get jsPDF
+  function getJsPDF() {
+    if (window.jspdf && window.jspdf.jsPDF) {
+      return window.jspdf.jsPDF;
+    } else if (window.jsPDF) {
+      return window.jsPDF;
+    } else if (typeof jspdf !== 'undefined' && jspdf.jsPDF) {
+      return jspdf.jsPDF;
+    }
+    return null;
+  }
+  
+  // Setup PDF Export
+  function setupPDFExport() {
+    const exportBtn = document.getElementById('exportReport');
+    if (!exportBtn) {
+      setTimeout(setupPDFExport, 100);
+      return;
+    }
+    
+    exportBtn.addEventListener('click', function() {
+      try {
+        // Get jsPDF - wait a bit if not loaded yet
+        let jsPDF = getJsPDF();
+        if (!jsPDF) {
+          // Wait up to 3 seconds for library to load
+          let attempts = 0;
+          const checkInterval = setInterval(() => {
+            attempts++;
+            jsPDF = getJsPDF();
+            if (jsPDF) {
+              clearInterval(checkInterval);
+              generateReportPDF(jsPDF);
+            } else if (attempts >= 30) {
+              clearInterval(checkInterval);
+              alert('PDF library failed to load. Please refresh the page.');
+            }
+          }, 100);
+          return;
+        }
+        
+        generateReportPDF(jsPDF);
+      } catch (error) {
+        console.error('Export error:', error);
+        alert('Error generating PDF: ' + error.message);
+      }
+    });
+  }
+  
+  // Generate Report PDF
+  function generateReportPDF(jsPDFClass) {
+    // Helper function to format numbers without separators
+    function formatNumber(num) {
+      return num.toFixed(2);
+    }
+    
+    // Helper function to clean text (remove ± and spaces from numbers)
+    function cleanNumberText(text) {
+      if (!text) return '0.00';
+      // Remove ± symbol
+      text = text.replace(/±/g, '');
+      // Remove spaces
+      text = text.replace(/\s/g, '');
+      // Extract number if it contains currency symbol
+      const numMatch = text.match(/[\d.]+/);
+      if (numMatch) {
+        return parseFloat(numMatch[0]).toFixed(2);
+      }
+      return '0.00';
+    }
+    
+    // Get report data
+    const historyJsonEl = document.getElementById('history-json');
+    const historyData = JSON.parse(historyJsonEl ? historyJsonEl.textContent || '[]' : '[]');
+    const startDate = document.getElementById('startDate')?.value || '';
+    const endDate = document.getElementById('endDate')?.value || '';
+    
+    // Get KPI values and clean them
+    const totalRevenueRaw = document.getElementById('kpiTotal')?.textContent || '₱0.00';
+    const dailyAvgRaw = document.getElementById('kpiAvg')?.textContent || '₱0.00';
+    const totalDays = document.getElementById('kpiDays')?.textContent || '0';
+    const bestDayRaw = document.getElementById('kpiBest')?.textContent || '₱0.00';
+    
+    const totalRevenue = `PHP ${cleanNumberText(totalRevenueRaw)}`;
+    const dailyAvg = `PHP ${cleanNumberText(dailyAvgRaw)}`;
+    const bestDay = `PHP ${cleanNumberText(bestDayRaw)}`;
+    
+    // Load logo first, then generate PDF
+    const logoUrl = '/media/products/Logo.png';
+    const logoSize = 20;
+    
+    function createPDF(logoDataUrl) {
+      const doc = new jsPDFClass();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const margin = 20;
+      let yPos = margin;
+      
+      // Professional header section
+      doc.setFillColor(59, 130, 246);
+      doc.rect(0, 0, pageWidth, 30, 'F');
+      
+      // Add logo if available
+      let textStartX = margin;
+      if (logoDataUrl) {
+        try {
+          const logoX = margin;
+          const logoY = 5;
+          const logoHeight = logoSize;
+          const logoWidth = logoHeight;
+          doc.addImage(logoDataUrl, 'PNG', logoX, logoY, logoWidth, logoHeight);
+          textStartX = margin + logoWidth + 8;
+        } catch (e) {
+          console.log('Error adding logo to PDF:', e);
+        }
+      }
+      
+      // Add company name and title
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(20);
+      doc.setFont(undefined, 'bold');
+      doc.text('ALVAREZ BAKERY', textStartX, 15);
+      
+      doc.setFontSize(14);
+      doc.setFont(undefined, 'normal');
+      doc.text('Sales Report', textStartX, 22);
+      
+      // Reset text color
+      doc.setTextColor(0, 0, 0);
+      yPos = 45;
+      
+      // Report metadata
+      doc.setFontSize(9);
+      doc.setFont(undefined, 'normal');
+      doc.text(`Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, margin, yPos);
+      yPos += 5;
+      doc.text(`Period: ${startDate} to ${endDate}`, margin, yPos);
+      yPos += 10;
+      
+      // Draw separator line
+      doc.setDrawColor(200, 200, 200);
+      doc.line(margin, yPos, pageWidth - margin, yPos);
+      yPos += 8;
+      
+      // KPI Summary Section
+      doc.setFontSize(11);
+      doc.setFont(undefined, 'bold');
+      doc.text('Summary', margin, yPos);
+      yPos += 8;
+      
+      doc.setFontSize(9);
+      doc.setFont(undefined, 'normal');
+      doc.text(`Total Revenue: ${totalRevenue}`, margin, yPos);
+      yPos += 5;
+      doc.text(`Daily Average: ${dailyAvg}`, margin, yPos);
+      yPos += 5;
+      doc.text(`Total Days: ${totalDays}`, margin, yPos);
+      yPos += 5;
+      doc.text(`Best Day: ${bestDay}`, margin, yPos);
+      yPos += 10;
+      
+      // Draw separator
+      doc.setDrawColor(200, 200, 200);
+      doc.line(margin, yPos, pageWidth - margin, yPos);
+      yPos += 8;
+      
+      // Daily Sales Table
+      doc.setFontSize(11);
+      doc.setFont(undefined, 'bold');
+      doc.text('Daily Sales Breakdown', margin, yPos);
+      yPos += 8;
+      
+      // Table headers
+      const headers = ['Date', 'Revenue (PHP)', 'Status'];
+      const availableWidth = pageWidth - (margin * 2);
+      const rowHeight = 7;
+      const colWidths = [
+        availableWidth * 0.25,  // Date
+        availableWidth * 0.40,  // Revenue
+        availableWidth * 0.35   // Status
+      ];
+      const startX = margin;
+      const tableWidth = availableWidth;
+      
+      // Draw header row
+      doc.setFont(undefined, 'bold');
+      doc.setFontSize(10);
+      doc.setFillColor(40, 40, 40);
+      doc.rect(startX, yPos - 5, tableWidth, rowHeight, 'F');
+      doc.setTextColor(255, 255, 255);
+      
+      let xPos = startX;
+      headers.forEach((header, idx) => {
+        const textWidth = doc.getTextWidth(header);
+        const cellCenter = xPos + colWidths[idx] / 2;
+        doc.text(header, cellCenter - textWidth / 2, yPos);
+        if (idx < headers.length - 1) {
+          doc.line(xPos + colWidths[idx], yPos - 5, xPos + colWidths[idx], yPos + rowHeight - 5);
+        }
+        xPos += colWidths[idx];
+      });
+      doc.line(startX, yPos + rowHeight - 5, startX + tableWidth, yPos + rowHeight - 5);
+      
+      // Draw data rows
+      doc.setTextColor(0, 0, 0);
+      doc.setFont(undefined, 'normal');
+      doc.setFontSize(9);
+      yPos += rowHeight;
+      
+      if (historyData && historyData.length > 0) {
+        // Calculate average from history data
+        const reportTotal = historyData.reduce((sum, r) => sum + parseFloat(r.revenue || 0), 0);
+        const reportAvg = historyData.length > 0 ? reportTotal / historyData.length : 0;
+        
+        historyData.forEach((row, rowIdx) => {
+          if (yPos > 270) {
+            doc.addPage();
+            yPos = margin + 10;
+          }
+          
+          // Alternate row colors
+          if (rowIdx % 2 === 0) {
+            doc.setFillColor(250, 250, 250);
+            doc.rect(startX, yPos - 5, tableWidth, rowHeight, 'F');
+          }
+          
+          // Draw cell borders
+          doc.setDrawColor(220, 220, 220);
+          doc.line(startX, yPos - 5, startX, yPos + rowHeight - 5);
+          xPos = startX;
+          colWidths.forEach((width, colIdx) => {
+            if (colIdx < colWidths.length - 1) {
+              xPos += width;
+              doc.line(xPos, yPos - 5, xPos, yPos + rowHeight - 5);
+            }
+          });
+          doc.line(startX + tableWidth, yPos - 5, startX + tableWidth, yPos + rowHeight - 5);
+          doc.line(startX, yPos + rowHeight - 5, startX + tableWidth, yPos + rowHeight - 5);
+          
+          // Draw cell content
+          xPos = startX;
+          const date = row.date || '';
+          const revenue = `PHP ${parseFloat(row.revenue || 0).toFixed(2)}`;
+          const rowRevenue = parseFloat(row.revenue || 0);
+          const status = rowRevenue > reportAvg ? 'Above Avg' : (rowRevenue === reportAvg ? 'Average' : 'Below Avg');
+          
+          [date, revenue, status].forEach((cell, colIdx) => {
+            const cellText = cell || '';
+            const cellWidth = colWidths[colIdx];
+            const padding = 2;
+            const maxTextWidth = cellWidth - (padding * 2);
+            
+            let displayText = cellText;
+            let textWidth = doc.getTextWidth(displayText);
+            
+            if (textWidth > maxTextWidth) {
+              while (textWidth > maxTextWidth && displayText.length > 0) {
+                displayText = displayText.slice(0, -1);
+                textWidth = doc.getTextWidth(displayText);
+              }
+              displayText = displayText.slice(0, -3) + '...';
+            }
+            
+            if (colIdx > 0 && cellText) {
+              doc.text(displayText, xPos + cellWidth - textWidth - padding, yPos);
+            } else {
+              doc.text(displayText, xPos + padding, yPos);
+            }
+            xPos += cellWidth;
+          });
+          
+          yPos += rowHeight;
+        });
+      } else {
+        doc.text('No sales data available for the selected period', startX + 5, yPos);
+        yPos += rowHeight;
+      }
+      
+      // Footer
+      const totalPages = doc.internal.pages.length - 1;
+      for (let i = 1; i <= totalPages; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.setTextColor(128, 128, 128);
+        doc.text(`Page ${i} of ${totalPages}`, pageWidth - margin - 20, doc.internal.pageSize.getHeight() - 10);
+        doc.text(`Alvarez Bakery POS System`, margin, doc.internal.pageSize.getHeight() - 10);
+      }
+      
+      // Save PDF
+      const fileName = `Sales_Report_${startDate}_to_${endDate}.pdf`.replace(/\//g, '-');
+      doc.save(fileName);
+      
+      // Show success message
+      const btn = document.getElementById('exportReport');
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" class="me-2"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Exported!';
+      btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.style.background = '';
+      }, 2000);
+    }
+    
+    // Load logo image
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    
+    img.onload = function() {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(this, 0, 0);
+        const logoDataUrl = canvas.toDataURL('image/png');
+        createPDF(logoDataUrl);
+      } catch (e) {
+        console.log('Error processing logo:', e);
+        createPDF(null);
+      }
+    };
+    
+    img.onerror = function() {
+      console.log('Logo could not be loaded, continuing without logo');
+      createPDF(null);
+    };
+    
+    img.src = logoUrl;
+  }
 </script>
 
 {% endblock %}
