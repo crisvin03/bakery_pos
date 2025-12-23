@@ -1,0 +1,2234 @@
+{
+  "users": [
+    {
+      "username": "cashier",
+      "email": "cashier@example.com",
+      "first_name": "Juan",
+      "last_name": "Dela Cruz",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-08-24T18:42:10.558897+00:00"
+    },
+    {
+      "username": "Steve",
+      "email": "",
+      "first_name": "Steven Jan",
+      "last_name": "Estremera",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-11-13T23:54:07.508167+00:00"
+    },
+    {
+      "username": "Alvarez",
+      "email": "",
+      "first_name": "Lorie",
+      "last_name": "Alvarez",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-11-14T06:24:41.180444+00:00"
+    }
+  ],
+  "products": [
+    {
+      "name": "Pandesal",
+      "price": "3.00",
+      "ingredients": "",
+      "stock": 4,
+      "is_active": false,
+      "is_archived": true,
+      "expiration_date": "2025-12-21",
+      "image": "products/360_F_199692482_UIVxmL1tsYAMXwUyM3yWcrkN6PyceBMy.jpg",
+      "created_at": "2025-08-24T18:44:28.833503+00:00",
+      "updated_at": "2025-12-23T13:00:17.423051+00:00"
+    },
+    {
+      "name": "Ensaymada",
+      "price": "25.00",
+      "ingredients": "",
+      "stock": 5,
+      "is_active": true,
+      "is_archived": false,
+      "expiration_date": "2025-12-30",
+      "image": "products/images_0FACJrk.jpg",
+      "created_at": "2025-08-24T18:44:28.841316+00:00",
+      "updated_at": "2025-12-23T13:00:17.431625+00:00"
+    },
+    {
+      "name": "Spanish Bread",
+      "price": "15.00",
+      "ingredients": "",
+      "stock": 96,
+      "is_active": true,
+      "is_archived": false,
+      "expiration_date": "2025-12-22",
+      "image": "products/filipino-bread-640-500x500.jpg",
+      "created_at": "2025-08-24T18:44:28.848603+00:00",
+      "updated_at": "2025-12-23T13:00:17.440356+00:00"
+    },
+    {
+      "name": "Cheese Bread",
+      "price": "12.00",
+      "ingredients": "",
+      "stock": 5,
+      "is_active": false,
+      "is_archived": true,
+      "expiration_date": "2025-11-16",
+      "image": "products/Basket-with-Brazilian-Cheese-Bread.jpg",
+      "created_at": "2025-08-24T18:44:28.855954+00:00",
+      "updated_at": "2025-11-18T07:01:30.957870+00:00"
+    },
+    {
+      "name": "Ube Loaf",
+      "price": "70.00",
+      "ingredients": "",
+      "stock": 63,
+      "is_active": true,
+      "is_archived": false,
+      "expiration_date": "2025-12-30",
+      "image": "products/images_2.jpg",
+      "created_at": "2025-08-24T18:44:28.862706+00:00",
+      "updated_at": "2025-12-23T13:05:01.022254+00:00"
+    },
+    {
+      "name": "Pan de Coco",
+      "price": "10.00",
+      "ingredients": "",
+      "stock": 6,
+      "is_active": false,
+      "is_archived": true,
+      "expiration_date": "2025-12-29",
+      "image": "products/pan-de-coco-1200t.jpg",
+      "created_at": "2025-08-25T12:54:58.752703+00:00",
+      "updated_at": "2025-11-14T06:17:58.805552+00:00"
+    },
+    {
+      "name": "Steven",
+      "price": "6.00",
+      "ingredients": "",
+      "stock": 6,
+      "is_active": false,
+      "is_archived": true,
+      "expiration_date": "2025-12-22",
+      "image": "products/filipino-bread-640-500x500_DFQewIE.jpg",
+      "created_at": "2025-08-26T06:46:13.208952+00:00",
+      "updated_at": "2025-11-17T05:25:27.512352+00:00"
+    },
+    {
+      "name": "Pandecoco",
+      "price": "5.00",
+      "ingredients": "",
+      "stock": 4,
+      "is_active": true,
+      "is_archived": false,
+      "expiration_date": "2025-11-29",
+      "image": "products/download.jpg",
+      "created_at": "2025-11-17T05:27:22.695097+00:00",
+      "updated_at": "2025-11-25T01:13:04.551134+00:00"
+    },
+    {
+      "name": "'Tinpay ni Uwan'",
+      "price": "5.00",
+      "ingredients": "",
+      "stock": 2,
+      "is_active": false,
+      "is_archived": true,
+      "expiration_date": "2025-11-22",
+      "image": "products/_MG_8888_DXGAKVb.JPG",
+      "created_at": "2025-11-17T06:39:51.480142+00:00",
+      "updated_at": "2025-11-20T11:01:06.573091+00:00"
+    },
+    {
+      "name": "Slicebread",
+      "price": "45.00",
+      "ingredients": "",
+      "stock": 82,
+      "is_active": true,
+      "is_archived": false,
+      "expiration_date": "2025-11-27",
+      "image": "products/How-to-Use-the-Whole-Loaf-of-Bread-Including-the-Ends-FB.jpg",
+      "created_at": "2025-11-18T06:13:21.711562+00:00",
+      "updated_at": "2025-11-25T01:11:52.488990+00:00"
+    },
+    {
+      "name": "Kabayan",
+      "price": "5.00",
+      "ingredients": "",
+      "stock": 46,
+      "is_active": true,
+      "is_archived": false,
+      "expiration_date": "2025-11-24",
+      "image": "products/images_NJJrSt9.jpg",
+      "created_at": "2025-11-18T06:16:14.929764+00:00",
+      "updated_at": "2025-11-24T02:36:35.816751+00:00"
+    },
+    {
+      "name": "Cheese Bread",
+      "price": "10.00",
+      "ingredients": "",
+      "stock": 67,
+      "is_active": false,
+      "is_archived": true,
+      "expiration_date": "2025-11-25",
+      "image": "products/download_1.jpg",
+      "created_at": "2025-11-18T06:59:00.497687+00:00",
+      "updated_at": "2025-11-23T03:49:41.043543+00:00"
+    }
+  ],
+  "sales_transactions": [
+    {
+      "cashier_username": "admin",
+      "total_amount": "12.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-25T14:06:01.647310+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "12.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-25T14:31:47.324710+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "36.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T01:58:09.691004+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "241.00",
+      "discount": "39.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T01:58:47.679008+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "6.00",
+      "discount": "4.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T02:18:06.384362+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "87.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T02:18:23.537232+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "10.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T02:18:34.018108+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "220.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T02:18:49.075715+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "40.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T06:39:57.042794+00:00"
+    },
+    {
+      "cashier_username": "cashier",
+      "total_amount": "10.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T06:41:34.117142+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "31.00",
+      "discount": "8.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T06:46:49.444683+00:00"
+    },
+    {
+      "cashier_username": "cashier",
+      "total_amount": "61.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-08-26T06:49:04.417838+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "25.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T19:22:15.566411+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "25.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T19:26:12.309972+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "28.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T19:26:45.961757+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "16.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T19:28:08.538581+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "111.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T19:28:47.528744+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "105.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T19:29:04.274390+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "16.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T19:30:26.894939+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "48.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T19:31:49.611402+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "182.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T19:32:12.608863+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "30.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T20:07:46.710175+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "30.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T20:29:23.514616+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "30.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T20:31:20.568151+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "71.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T20:42:33.607397+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "10.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T20:43:24.148262+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "43.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T20:45:25.413202+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "144.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T20:50:14.573564+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "116.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-09T21:01:01.682331+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "10.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-19T22:47:37.136076+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "10.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-30T19:43:37.116138+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "50.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-30T19:48:07.431939+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "25.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-30T19:48:16.266125+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "10.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-30T19:52:45.427195+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "22.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-10-31T02:06:36.476460+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "45.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-01T00:19:21.156801+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "367.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-01T00:20:09.551146+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "63.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-04T15:55:54.663444+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "8.00",
+      "discount": "2.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-06T23:03:13.063220+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "18.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-14T00:15:22.613154+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "104.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-14T00:15:45.619358+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "166.40",
+      "discount": "41.60",
+      "payment_method": "CASH",
+      "created_at": "2025-11-14T00:16:53.514825+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "16.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-14T06:12:49.836111+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "6.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-14T06:19:50.397171+00:00"
+    },
+    {
+      "cashier_username": "cashier",
+      "total_amount": "22.50",
+      "discount": "2.50",
+      "payment_method": "CASH",
+      "created_at": "2025-11-17T05:54:13.856703+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "140.00",
+      "discount": "35.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-17T06:37:56.852056+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "28.00",
+      "discount": "7.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-18T07:17:52.591500+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "20.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-18T07:18:31.946871+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "10.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-20T02:27:05.546134+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "5.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-20T05:31:34.053582+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "5.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-20T06:31:11.156779+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "5.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-20T06:50:08.548684+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "5.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-20T07:11:17.177873+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "5.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-20T08:31:57.223036+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "15.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-20T08:34:13.437406+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "10.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-20T10:59:13.113960+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "164.00",
+      "discount": "41.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-23T03:21:15.849181+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "70.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-23T03:42:55.735270+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "252.00",
+      "discount": "63.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-23T03:57:56.316396+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "108.00",
+      "discount": "27.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-24T02:16:18.588191+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "9.90",
+      "discount": "0.10",
+      "payment_method": "CASH",
+      "created_at": "2025-11-24T02:36:35.799689+00:00"
+    },
+    {
+      "cashier_username": "cashier",
+      "total_amount": "56.00",
+      "discount": "14.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-24T02:44:36.802849+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "210.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-24T16:12:33.691197+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "140.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-24T16:49:08.519763+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "70.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T00:37:51.668910+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "15.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T00:41:38.773321+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "160.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T00:50:10.237903+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "45.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T00:55:43.161582+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "30.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T01:03:48.219766+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "75.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T01:04:05.783651+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "15.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T01:07:05.541325+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "25.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T01:09:42.190605+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "5.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T01:11:23.242606+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "160.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T01:11:52.447946+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "5.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-11-25T01:13:04.532639+00:00"
+    },
+    {
+      "cashier_username": "admin",
+      "total_amount": "70.00",
+      "discount": "0.00",
+      "payment_method": "CASH",
+      "created_at": "2025-12-23T13:05:00.990686+00:00"
+    }
+  ],
+  "sales_items": [
+    {
+      "sale_id": 985,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 986,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 987,
+      "product_name": "Cheese Bread",
+      "qty": 3,
+      "unit_price": "12.00",
+      "line_total": "36.00"
+    },
+    {
+      "sale_id": 988,
+      "product_name": "Pan de Coco",
+      "qty": 3,
+      "unit_price": "10.00",
+      "line_total": "30.00"
+    },
+    {
+      "sale_id": 988,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 988,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 988,
+      "product_name": "Ube Loaf",
+      "qty": 3,
+      "unit_price": "70.00",
+      "line_total": "210.00"
+    },
+    {
+      "sale_id": 989,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 990,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 990,
+      "product_name": "Ensaymada",
+      "qty": 3,
+      "unit_price": "25.00",
+      "line_total": "75.00"
+    },
+    {
+      "sale_id": 991,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 992,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 992,
+      "product_name": "Ube Loaf",
+      "qty": 3,
+      "unit_price": "70.00",
+      "line_total": "210.00"
+    },
+    {
+      "sale_id": 993,
+      "product_name": "Pan de Coco",
+      "qty": 4,
+      "unit_price": "10.00",
+      "line_total": "40.00"
+    },
+    {
+      "sale_id": 994,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 995,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 995,
+      "product_name": "Steven",
+      "qty": 2,
+      "unit_price": "6.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 995,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 996,
+      "product_name": "Pan de Coco",
+      "qty": 3,
+      "unit_price": "10.00",
+      "line_total": "30.00"
+    },
+    {
+      "sale_id": 996,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 996,
+      "product_name": "Steven",
+      "qty": 1,
+      "unit_price": "6.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 997,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 998,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 999,
+      "product_name": "Pandesal",
+      "qty": 1,
+      "unit_price": "3.00",
+      "line_total": "3.00"
+    },
+    {
+      "sale_id": 999,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1000,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1000,
+      "product_name": "Steven",
+      "qty": 1,
+      "unit_price": "6.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1001,
+      "product_name": "Cheese Bread",
+      "qty": 3,
+      "unit_price": "12.00",
+      "line_total": "36.00"
+    },
+    {
+      "sale_id": 1001,
+      "product_name": "Ensaymada",
+      "qty": 3,
+      "unit_price": "25.00",
+      "line_total": "75.00"
+    },
+    {
+      "sale_id": 1002,
+      "product_name": "Ensaymada",
+      "qty": 3,
+      "unit_price": "25.00",
+      "line_total": "75.00"
+    },
+    {
+      "sale_id": 1002,
+      "product_name": "Spanish Bread",
+      "qty": 2,
+      "unit_price": "15.00",
+      "line_total": "30.00"
+    },
+    {
+      "sale_id": 1003,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1003,
+      "product_name": "Steven",
+      "qty": 1,
+      "unit_price": "6.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1004,
+      "product_name": "Steven",
+      "qty": 3,
+      "unit_price": "6.00",
+      "line_total": "18.00"
+    },
+    {
+      "sale_id": 1004,
+      "product_name": "Pan de Coco",
+      "qty": 3,
+      "unit_price": "10.00",
+      "line_total": "30.00"
+    },
+    {
+      "sale_id": 1005,
+      "product_name": "Ensaymada",
+      "qty": 5,
+      "unit_price": "25.00",
+      "line_total": "125.00"
+    },
+    {
+      "sale_id": 1005,
+      "product_name": "Steven",
+      "qty": 2,
+      "unit_price": "6.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 1005,
+      "product_name": "Spanish Bread",
+      "qty": 3,
+      "unit_price": "15.00",
+      "line_total": "45.00"
+    },
+    {
+      "sale_id": 1006,
+      "product_name": "Pan de Coco",
+      "qty": 3,
+      "unit_price": "10.00",
+      "line_total": "30.00"
+    },
+    {
+      "sale_id": 1007,
+      "product_name": "Pan de Coco",
+      "qty": 3,
+      "unit_price": "10.00",
+      "line_total": "30.00"
+    },
+    {
+      "sale_id": 1008,
+      "product_name": "Pan de Coco",
+      "qty": 3,
+      "unit_price": "10.00",
+      "line_total": "30.00"
+    },
+    {
+      "sale_id": 1009,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1009,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1009,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 1009,
+      "product_name": "Steven",
+      "qty": 1,
+      "unit_price": "6.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1009,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1009,
+      "product_name": "Pandesal",
+      "qty": 1,
+      "unit_price": "3.00",
+      "line_total": "3.00"
+    },
+    {
+      "sale_id": 1010,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1011,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1011,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 1011,
+      "product_name": "Steven",
+      "qty": 1,
+      "unit_price": "6.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1011,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1012,
+      "product_name": "Steven",
+      "qty": 2,
+      "unit_price": "6.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 1012,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1012,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1012,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 1012,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1012,
+      "product_name": "Ube Loaf",
+      "qty": 1,
+      "unit_price": "70.00",
+      "line_total": "70.00"
+    },
+    {
+      "sale_id": 1013,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1013,
+      "product_name": "Steven",
+      "qty": 1,
+      "unit_price": "6.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1013,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1013,
+      "product_name": "Pandesal",
+      "qty": 1,
+      "unit_price": "3.00",
+      "line_total": "3.00"
+    },
+    {
+      "sale_id": 1013,
+      "product_name": "Ube Loaf",
+      "qty": 1,
+      "unit_price": "70.00",
+      "line_total": "70.00"
+    },
+    {
+      "sale_id": 1013,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 1014,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1015,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1016,
+      "product_name": "Pan de Coco",
+      "qty": 5,
+      "unit_price": "10.00",
+      "line_total": "50.00"
+    },
+    {
+      "sale_id": 1017,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1018,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1019,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 1019,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1020,
+      "product_name": "Pan de Coco",
+      "qty": 2,
+      "unit_price": "10.00",
+      "line_total": "20.00"
+    },
+    {
+      "sale_id": 1020,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1021,
+      "product_name": "Ensaymada",
+      "qty": 5,
+      "unit_price": "25.00",
+      "line_total": "125.00"
+    },
+    {
+      "sale_id": 1021,
+      "product_name": "Spanish Bread",
+      "qty": 4,
+      "unit_price": "15.00",
+      "line_total": "60.00"
+    },
+    {
+      "sale_id": 1021,
+      "product_name": "Steven",
+      "qty": 3,
+      "unit_price": "6.00",
+      "line_total": "18.00"
+    },
+    {
+      "sale_id": 1021,
+      "product_name": "Ube Loaf",
+      "qty": 2,
+      "unit_price": "70.00",
+      "line_total": "140.00"
+    },
+    {
+      "sale_id": 1021,
+      "product_name": "Cheese Bread",
+      "qty": 2,
+      "unit_price": "12.00",
+      "line_total": "24.00"
+    },
+    {
+      "sale_id": 1022,
+      "product_name": "Pan de Coco",
+      "qty": 2,
+      "unit_price": "10.00",
+      "line_total": "20.00"
+    },
+    {
+      "sale_id": 1022,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1022,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "12.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 1022,
+      "product_name": "Steven",
+      "qty": 1,
+      "unit_price": "6.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1023,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1024,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1024,
+      "product_name": "Pandesal",
+      "qty": 1,
+      "unit_price": "3.00",
+      "line_total": "3.00"
+    },
+    {
+      "sale_id": 1025,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1025,
+      "product_name": "Pandesal",
+      "qty": 1,
+      "unit_price": "3.00",
+      "line_total": "3.00"
+    },
+    {
+      "sale_id": 1025,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1025,
+      "product_name": "Steven",
+      "qty": 1,
+      "unit_price": "6.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1025,
+      "product_name": "Ube Loaf",
+      "qty": 1,
+      "unit_price": "70.00",
+      "line_total": "70.00"
+    },
+    {
+      "sale_id": 1026,
+      "product_name": "Pan de Coco",
+      "qty": 2,
+      "unit_price": "10.00",
+      "line_total": "20.00"
+    },
+    {
+      "sale_id": 1026,
+      "product_name": "Pandesal",
+      "qty": 2,
+      "unit_price": "3.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1026,
+      "product_name": "Spanish Bread",
+      "qty": 2,
+      "unit_price": "15.00",
+      "line_total": "30.00"
+    },
+    {
+      "sale_id": 1026,
+      "product_name": "Steven",
+      "qty": 2,
+      "unit_price": "6.00",
+      "line_total": "12.00"
+    },
+    {
+      "sale_id": 1026,
+      "product_name": "Ube Loaf",
+      "qty": 2,
+      "unit_price": "70.00",
+      "line_total": "140.00"
+    },
+    {
+      "sale_id": 1027,
+      "product_name": "Pan de Coco",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1027,
+      "product_name": "Pandesal",
+      "qty": 2,
+      "unit_price": "3.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1028,
+      "product_name": "Steven",
+      "qty": 1,
+      "unit_price": "6.00",
+      "line_total": "6.00"
+    },
+    {
+      "sale_id": 1029,
+      "product_name": "Pandecoco",
+      "qty": 5,
+      "unit_price": "5.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1030,
+      "product_name": "Pandecoco",
+      "qty": 7,
+      "unit_price": "5.00",
+      "line_total": "35.00"
+    },
+    {
+      "sale_id": 1030,
+      "product_name": "Ube Loaf",
+      "qty": 2,
+      "unit_price": "70.00",
+      "line_total": "140.00"
+    },
+    {
+      "sale_id": 1031,
+      "product_name": "'Tinpay ni Uwan'",
+      "qty": 4,
+      "unit_price": "5.00",
+      "line_total": "20.00"
+    },
+    {
+      "sale_id": 1031,
+      "product_name": "Kabayan",
+      "qty": 3,
+      "unit_price": "5.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1032,
+      "product_name": "Kabayan",
+      "qty": 4,
+      "unit_price": "5.00",
+      "line_total": "20.00"
+    },
+    {
+      "sale_id": 1033,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1034,
+      "product_name": "Kabayan",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1035,
+      "product_name": "Kabayan",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1036,
+      "product_name": "Kabayan",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1037,
+      "product_name": "Kabayan",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1038,
+      "product_name": "Kabayan",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1039,
+      "product_name": "'Tinpay ni Uwan'",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1039,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1040,
+      "product_name": "Cheese Bread",
+      "qty": 1,
+      "unit_price": "10.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1041,
+      "product_name": "Kabayan",
+      "qty": 5,
+      "unit_price": "5.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1041,
+      "product_name": "Slicebread",
+      "qty": 4,
+      "unit_price": "45.00",
+      "line_total": "180.00"
+    },
+    {
+      "sale_id": 1042,
+      "product_name": "Slicebread",
+      "qty": 1,
+      "unit_price": "45.00",
+      "line_total": "45.00"
+    },
+    {
+      "sale_id": 1042,
+      "product_name": "Kabayan",
+      "qty": 5,
+      "unit_price": "5.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1043,
+      "product_name": "Slicebread",
+      "qty": 5,
+      "unit_price": "45.00",
+      "line_total": "225.00"
+    },
+    {
+      "sale_id": 1043,
+      "product_name": "Spanish Bread",
+      "qty": 6,
+      "unit_price": "15.00",
+      "line_total": "90.00"
+    },
+    {
+      "sale_id": 1044,
+      "product_name": "Slicebread",
+      "qty": 3,
+      "unit_price": "45.00",
+      "line_total": "135.00"
+    },
+    {
+      "sale_id": 1045,
+      "product_name": "Kabayan",
+      "qty": 2,
+      "unit_price": "5.00",
+      "line_total": "10.00"
+    },
+    {
+      "sale_id": 1046,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1046,
+      "product_name": "Slicebread",
+      "qty": 1,
+      "unit_price": "45.00",
+      "line_total": "45.00"
+    },
+    {
+      "sale_id": 1047,
+      "product_name": "Ube Loaf",
+      "qty": 3,
+      "unit_price": "70.00",
+      "line_total": "210.00"
+    },
+    {
+      "sale_id": 1048,
+      "product_name": "Ube Loaf",
+      "qty": 2,
+      "unit_price": "70.00",
+      "line_total": "140.00"
+    },
+    {
+      "sale_id": 1049,
+      "product_name": "Ube Loaf",
+      "qty": 1,
+      "unit_price": "70.00",
+      "line_total": "70.00"
+    },
+    {
+      "sale_id": 1050,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1051,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1051,
+      "product_name": "Pandecoco",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1051,
+      "product_name": "Slicebread",
+      "qty": 1,
+      "unit_price": "45.00",
+      "line_total": "45.00"
+    },
+    {
+      "sale_id": 1051,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1051,
+      "product_name": "Ube Loaf",
+      "qty": 1,
+      "unit_price": "70.00",
+      "line_total": "70.00"
+    },
+    {
+      "sale_id": 1052,
+      "product_name": "Slicebread",
+      "qty": 1,
+      "unit_price": "45.00",
+      "line_total": "45.00"
+    },
+    {
+      "sale_id": 1053,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1053,
+      "product_name": "Pandecoco",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1054,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1054,
+      "product_name": "Pandecoco",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1054,
+      "product_name": "Slicebread",
+      "qty": 1,
+      "unit_price": "45.00",
+      "line_total": "45.00"
+    },
+    {
+      "sale_id": 1055,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1056,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1057,
+      "product_name": "Pandecoco",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1058,
+      "product_name": "Pandecoco",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1058,
+      "product_name": "Slicebread",
+      "qty": 1,
+      "unit_price": "45.00",
+      "line_total": "45.00"
+    },
+    {
+      "sale_id": 1058,
+      "product_name": "Ensaymada",
+      "qty": 1,
+      "unit_price": "25.00",
+      "line_total": "25.00"
+    },
+    {
+      "sale_id": 1058,
+      "product_name": "Spanish Bread",
+      "qty": 1,
+      "unit_price": "15.00",
+      "line_total": "15.00"
+    },
+    {
+      "sale_id": 1058,
+      "product_name": "Ube Loaf",
+      "qty": 1,
+      "unit_price": "70.00",
+      "line_total": "70.00"
+    },
+    {
+      "sale_id": 1059,
+      "product_name": "Pandecoco",
+      "qty": 1,
+      "unit_price": "5.00",
+      "line_total": "5.00"
+    },
+    {
+      "sale_id": 1060,
+      "product_name": "Ube Loaf",
+      "qty": 1,
+      "unit_price": "70.00",
+      "line_total": "70.00"
+    }
+  ],
+  "login_history": [
+    {
+      "username": "admin",
+      "login_time": "2025-12-23T13:03:34.774900+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0",
+      "logout_time": null
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-12-23T13:03:07.836816+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+      "logout_time": null
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-24T17:07:58.135802+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": null
+    },
+    {
+      "username": "Steve",
+      "login_time": "2025-11-24T17:07:40.556847+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T17:07:51.851685+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-24T17:07:20.406827+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T17:07:32.016344+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-24T16:29:07.724632+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T17:06:35.505562+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-24T15:19:50.938780+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T16:29:00.945445+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-24T09:20:45.684572+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T15:19:44.205093+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-24T03:12:15.328583+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T03:18:16.909976+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-24T02:46:33.130205+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T02:48:10.390271+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-24T02:43:42.765969+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T02:46:21.666547+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-24T02:21:27.941302+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T02:43:32.008469+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-24T02:14:16.485724+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-24T02:18:28.070342+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-23T04:07:18.391933+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-23T04:08:11.301097+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-23T03:55:37.813350+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-23T04:07:01.295746+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-23T03:54:12.569439+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-23T03:54:18.829944+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-23T03:25:14.416472+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-23T03:53:28.624420+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-23T03:23:28.625140+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-23T03:24:22.575833+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-23T03:21:55.910739+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-23T03:23:19.411533+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-23T03:20:15.619580+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-23T03:21:41.763428+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-21T05:41:56.472834+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-21T05:44:44.745216+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-21T04:03:10.708400+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-21T04:04:34.735758+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-20T10:57:05.843623+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": null
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-20T06:42:09.681954+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-20T10:56:32.624241+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-20T06:39:05.615431+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-20T06:41:39.771826+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-20T02:26:32.394188+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-20T06:32:03.080512+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-18T06:36:13.389609+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-20T02:25:32.003519+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-18T05:37:31.892131+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-18T06:23:39.589065+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-18T05:17:46.992324+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-18T05:30:11.748411+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-17T06:43:51.395678+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T06:46:27.290259+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-17T06:36:07.537628+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T06:43:35.906469+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-17T06:35:27.554944+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T06:35:43.476802+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-17T06:11:38.797438+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T06:33:40.105486+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-17T06:05:52.348680+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T06:07:24.079398+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-17T06:04:13.656149+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T06:05:39.474018+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-17T05:55:09.941097+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T05:57:47.454330+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-17T05:52:35.124421+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T05:55:00.042592+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-17T05:50:38.230802+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T05:52:21.195085+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-17T05:23:17.817400+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T05:27:57.539956+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-17T05:20:50.817271+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T05:22:32.579966+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-17T05:16:59.173867+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T05:20:38.691071+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-14T06:39:09.425085+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-17T05:16:15.706821+00:00"
+    },
+    {
+      "username": "Alvarez",
+      "login_time": "2025-11-14T06:28:32.758612+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T06:28:48.423129+00:00"
+    },
+    {
+      "username": "Steve",
+      "login_time": "2025-11-14T06:27:49.776616+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T06:28:11.523015+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-14T06:27:24.876315+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T06:27:38.697961+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-14T06:27:01.613197+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T06:27:10.860768+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-14T06:26:45.075881+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T06:26:52.810295+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-14T06:10:32.377839+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T06:24:53.819501+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-14T00:55:06.285752+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": null
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-14T00:48:10.028659+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T00:54:33.344323+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-14T00:47:48.128983+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T00:47:55.483653+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-14T00:32:39.491518+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "logout_time": "2025-11-14T00:47:27.976636+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-14T00:06:15.006453+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": null
+    },
+    {
+      "username": "Steve",
+      "login_time": "2025-11-14T00:05:50.446284+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T00:06:05.608249+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-14T00:05:16.738120+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T00:05:19.249123+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-13T23:54:48.538354+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-14T00:02:12.449296+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-13T23:52:31.076111+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-13T23:54:16.349377+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-13T23:52:06.131615+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-13T23:52:19.800814+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-13T23:51:37.290569+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-13T23:51:52.415976+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-13T23:51:07.754840+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-13T23:51:24.351097+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-13T23:31:47.239034+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-13T23:50:54.829808+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-06T04:22:31.817386+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-13T23:31:35.227442+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-04T15:55:22.770386+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-04T15:56:13.307220+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-04T15:33:10.260661+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-04T15:55:08.138569+00:00"
+    },
+    {
+      "username": "admin",
+      "login_time": "2025-11-04T15:31:32.535038+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-04T15:32:21.377333+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-11-04T15:30:55.874729+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+      "logout_time": "2025-11-04T15:31:18.292635+00:00"
+    },
+    {
+      "username": "cashier",
+      "login_time": "2025-10-31T01:51:35.689156+00:00",
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "logout_time": null
+    }
+  ],
+  "user_profiles": [
+    {
+      "username": "admin",
+      "profile_picture": "profiles/Untitled_design_65.jpg",
+      "created_at": "2025-11-20T05:51:21.562218+00:00",
+      "updated_at": "2025-11-23T03:39:00.940831+00:00"
+    },
+    {
+      "username": "cashier",
+      "profile_picture": null,
+      "created_at": "2025-11-23T03:22:05.873816+00:00",
+      "updated_at": "2025-11-23T03:22:05.873839+00:00"
+    }
+  ]
+}
