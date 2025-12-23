@@ -12,8 +12,8 @@ class Product(models.Model):
     is_archived = models.BooleanField(default=False, help_text="Archived products are hidden from normal view but can be restored")
     expiration_date = models.DateField(blank=True, null=True, help_text="Product expiration date")
 
-    # Product image (stored under MEDIA_ROOT/products/)
-    image = models.ImageField(upload_to="products/", blank=True, null=True)
+    # Product image (can be local file or Cloudinary URL)
+    image = models.CharField(max_length=500, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
