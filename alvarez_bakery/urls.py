@@ -44,6 +44,9 @@ urlpatterns = [
 
     # Profile (All authenticated users)
     path('profile/', core_views.profile, name='profile'),
+    
+    # Image Upload (Admin only)
+    path('upload-image/', core_views.upload_image, name='upload_image'),
 ]
 
 # serve uploaded media in development

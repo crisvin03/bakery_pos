@@ -12,7 +12,7 @@ from datetime import date, timedelta, datetime
 
 from .models import Product, SalesTransaction, SalesItem, LoginHistory
 from .forms import ProductForm, CashierForm, ProfileEditForm
-from .utils import daily_sales, daily_quantity, top_sellers, moving_average_forecast
+from .utils import daily_sales, daily_quantity, top_sellers, moving_average_forecast, upload_image_to_imgbb
 from .reports import sales_csv
 from django.contrib.auth import get_user_model
 
@@ -491,3 +491,21 @@ def cashier_login_history(request, user_id):
         'cashier': cashier,
         'login_history': login_history,
     })
+
+
+@login_required
+@user_passes_test(is_admin)
+def upload_image(request):
+    """Handle image upload via ImgBB API"""
+    if request.method == 'POST' and request.FILES.get('image'):
+        image_file = request.FILES['image']
+        
+        # Upload to ImgBB
+        image_url, error = upload_image_to_imgbb(image_file)
+        
+        if error:
+            return JsonResponse({'success': False, 'error': error}, status=400)
+        
+        return JsonResponse({'success': True, 'image_url': image_url})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)

@@ -1,6 +1,10 @@
+import os
+import requests
+import base64
 from django.db.models import Sum, F
 from .models import SalesItem
 from datetime import date, timedelta
+from django.conf import settings
 
 def daily_sales(start=None, end=None):
     # returns list of dicts: [{'date': date, 'revenue': float}]
@@ -56,3 +60,42 @@ def moving_average_forecast(history, horizon=7, window=7):
     last_vals = [h['revenue'] for h in history[-window:]]
     avg = sum(last_vals) / max(1, len(last_vals))
     return [{'day': i+1, 'forecast': round(avg, 2)} for i in range(horizon)]
+
+
+def upload_image_to_imgbb(image_file):
+    """
+    Upload an image file to ImgBB and return the URL
+    """
+    api_key = os.getenv('IMGBB_API_KEY')
+    
+    if not api_key or api_key == 'your_imgbb_api_key_here':
+        return None, "ImgBB API key not configured"
+    
+    try:
+        # Read image file and encode to base64
+        image_data = image_file.read()
+        encoded_image = base64.b64encode(image_data)
+        
+        # Prepare API request
+        url = "https://api.imgbb.com/1/upload"
+        payload = {
+            "key": api_key,
+            "image": encoded_image,
+            "expiration": 0,  # No expiration
+        }
+        
+        # Upload to ImgBB
+        response = requests.post(url, data=payload)
+        response.raise_for_status()
+        
+        data = response.json()
+        
+        if data.get('success'):
+            return data['data']['url'], None
+        else:
+            return None, data.get('error', {}).get('message', 'Upload failed')
+            
+    except requests.exceptions.RequestException as e:
+        return None, f"Network error: {str(e)}"
+    except Exception as e:
+        return None, f"Upload error: {str(e)}"

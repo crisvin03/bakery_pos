@@ -267,12 +267,13 @@
             <h3 class="section-title">📸 Product Image</h3>
             <div class="d-flex flex-column align-items-center gap-2">
             {% if form.instance.image %}
-                <img id="preview" src="{{ form.instance.image.url }}" class="thumb-lg" alt="Product Preview" style="cursor: pointer;" title="Click to change image">
+                <img id="preview" src="{{ form.instance.image }}" class="thumb-lg" alt="Product Preview" style="cursor: pointer;" title="Click to change image">
             {% else %}
                 <img id="preview" src="" class="thumb-lg d-none" alt="Product Preview" style="cursor: pointer;" title="Click to change image">
             {% endif %}
 
               {{ form.image }}
+              {{ form.image_upload }}
               
             <div id="placeholder" class="image-upload-area {% if form.instance.image %}mt-2{% endif %}">
               <svg class="upload-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -285,6 +286,14 @@
               <div class="form-text text-center d-none">
                 <small class="text-muted">PNG, JPG, JPEG</small>
               </div>
+              
+              <!-- Upload Progress -->
+              <div id="upload-progress" class="progress d-none" style="width: 100%; height: 4px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+              </div>
+              
+              <!-- Upload Status -->
+              <div id="upload-status" class="alert alert-sm d-none"></div>
             </div>
           </div>
         </div>
@@ -425,10 +434,13 @@
     }
     
     // Image upload with enhanced preview
-    const input = document.getElementById("id_image");
+    const input = document.getElementById("id_image_upload");
+    const hiddenInput = document.getElementById("id_image");
     const preview = document.getElementById("preview");
     const placeholder = document.getElementById("placeholder");
     const uploadArea = document.querySelector('.image-upload-area');
+    const uploadProgress = document.getElementById("upload-progress");
+    const uploadStatus = document.getElementById("upload-status");
 
     // Hide the default file input
     if (input) {
@@ -447,8 +459,56 @@
         preview.addEventListener('click', () => input.click());
       }
 
-      // Function to update image preview
-      function updateImagePreview(file) {
+      // Function to upload image to ImgBB
+      async function uploadImageToImgBB(file) {
+        const formData = new FormData();
+        formData.append('image', file);
+        
+        try {
+          uploadProgress.classList.remove('d-none');
+          uploadStatus.classList.add('d-none');
+          
+          const response = await fetch('/upload-image/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            // Update hidden input with the URL
+            hiddenInput.value = result.image_url;
+            
+            // Update preview
+            preview.src = result.image_url;
+            preview.classList.remove('d-none');
+            
+            // Update upload text
+            document.querySelector('.upload-text').textContent = 'Change Image';
+            
+            // Show success message
+            uploadStatus.className = 'alert alert-success alert-sm';
+            uploadStatus.textContent = 'Image uploaded successfully!';
+            uploadStatus.classList.remove('d-none');
+            
+          } else {
+            throw new Error(result.error || 'Upload failed');
+          }
+          
+        } catch (error) {
+          uploadStatus.className = 'alert alert-danger alert-sm';
+          uploadStatus.textContent = 'Upload failed: ' + error.message;
+          uploadStatus.classList.remove('d-none');
+        } finally {
+          uploadProgress.classList.add('d-none');
+        }
+      }
+
+      // Function to handle file selection
+      function handleFileSelect(file) {
         if (!file) return;
 
         // Validate file type
@@ -466,32 +526,14 @@
           return;
         }
 
-        // Create preview URL
-        const url = URL.createObjectURL(file);
-        preview.src = url;
-        preview.classList.remove("d-none");
-        // Keep upload area visible but update text
-        if (placeholder) {
-          const uploadText = placeholder.querySelector('.upload-text');
-          if (uploadText) {
-            uploadText.textContent = 'Change Image';
-          }
-        }
-        
-        // Add success animation
-        preview.style.transform = 'scale(1.1)';
-        setTimeout(() => {
-          preview.style.transform = 'scale(1)';
-        }, 200);
-        
-        // Make preview clickable to change image
-        preview.style.cursor = 'pointer';
+        // Upload to ImgBB
+        uploadImageToImgBB(file);
       }
 
       // Handle file selection
       input.addEventListener("change", function (e) {
         const file = e.target.files && e.target.files[0];
-        updateImagePreview(file);
+        handleFileSelect(file);
       });
     }
 

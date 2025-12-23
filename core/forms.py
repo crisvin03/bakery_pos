@@ -5,15 +5,20 @@ from django.contrib.auth.models import User
 from .models import Product
 
 class ProductForm(forms.ModelForm):
+    image_upload = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            'class': 'form-control',
+            'accept': 'image/*',
+            'id': 'id_image_upload',
+        })
+    )
+    
     class Meta:
         model = Product
         fields = ['image', 'name', 'price', 'stock', 'ingredients', 'is_active', 'expiration_date']
         widgets = {
-            'image': forms.ClearableFileInput(attrs={
-                'class': 'form-control',   # so it matches your bootstrap style
-                'accept': 'image/*',
-                'id': 'id_image',
-            }),
+            'image': forms.HiddenInput(),  # Hidden field for storing the URL
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
             'stock': forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'step': '1'}),
