@@ -398,7 +398,7 @@
       <div class="profile-header view-mode">
         <div class="profile-avatar-upload">
           {% if user_profile.profile_picture %}
-            <img src="{{ user_profile.profile_picture.url }}" alt="{{ user.get_full_name|default:user.username }}" class="profile-avatar" id="profilePictureDisplay">
+            <img src="{{ user_profile.profile_picture }}" alt="{{ user.get_full_name|default:user.username }}" class="profile-avatar" id="profilePictureDisplay">
           {% else %}
             <div class="profile-avatar" id="profilePictureDisplay">
               {{ user.get_full_name|default:user.username|slice:":1"|upper }}
@@ -434,7 +434,7 @@
           {% if user_profile.profile_picture %}
             <div class="mt-3 text-center">
               <small class="text-muted d-block mb-2">Current picture:</small>
-              <img src="{{ user_profile.profile_picture.url }}" alt="Current profile picture" class="profile-picture-preview" style="width: 100px; height: 100px; border: 3px solid rgba(59, 130, 246, 0.2);">
+              <img src="{{ user_profile.profile_picture }}" alt="Current profile picture" class="profile-picture-preview" style="width: 100px; height: 100px; border: 3px solid rgba(59, 130, 246, 0.2);">
             </div>
           {% endif %}
           <small class="text-muted d-block mt-2">Recommended: Square image (JPG, PNG), max 2MB</small>

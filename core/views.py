@@ -465,11 +465,17 @@ def profile(request):
         form = ProfileEditForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            # Handle profile picture upload
+            # Handle profile picture upload with ImgBB
             if 'profile_picture' in request.FILES:
-                user_profile.profile_picture = request.FILES['profile_picture']
-                user_profile.save()
-            messages.success(request, 'Profile updated successfully!')
+                image_url, error = upload_image_to_imgbb(request.FILES['profile_picture'])
+                if error:
+                    messages.error(request, f'Profile picture upload failed: {error}')
+                else:
+                    user_profile.profile_picture = image_url
+                    user_profile.save()
+                    messages.success(request, 'Profile picture uploaded successfully!')
+            else:
+                messages.success(request, 'Profile updated successfully!')
             return redirect('profile')
     else:
         form = ProfileEditForm(instance=user)

@@ -150,7 +150,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size:1.05rem;">
               {% if request.user.profile.profile_picture %}
-                <img src="{{ request.user.profile.profile_picture.url }}" alt="{{ request.user.get_full_name|default:request.user.username }}" class="avatar" style="object-fit: cover;">
+                <img src="{{ request.user.profile.profile_picture }}" alt="{{ request.user.get_full_name|default:request.user.username }}" class="avatar" style="object-fit: cover;">
               {% else %}
                 <span class="avatar">{{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}</span>
               {% endif %}
