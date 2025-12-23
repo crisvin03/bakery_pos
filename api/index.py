@@ -1,5 +1,6 @@
 import os
 import sys
+from django.core.wsgi import get_wsgi_application
 
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -12,9 +13,12 @@ import django
 django.setup()
 
 # Import the WSGI application
-from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
-# Vercel serverless handler
-def handler(environ, start_response):
-    return application(environ, start_response)
+# Vercel expects a class-based handler
+class handler:
+    def __init__(self):
+        self.application = application
+    
+    def __call__(self, environ, start_response):
+        return self.application(environ, start_response)
