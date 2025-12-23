@@ -3,15 +3,17 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'dev-secret-key-change-me'
-DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-me')
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*.vercel.app', 'vercel.app']
 
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',
     'http://127.0.0.1:50384',
     'http://localhost:50384',
+    'https://*.vercel.app',
+    'https://vercel.app',
 ]
 
 INSTALLED_APPS = [

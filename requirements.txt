@@ -1,2 +1,4 @@
 Django>=5.0,<6.0
-mysqlclient>=2.2.0  # If you switch to MySQL in settings.py
+Pillow>=10.0.0
+gunicorn>=21.0.0
+whitenoise>=6.0.0
