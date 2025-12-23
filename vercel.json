@@ -1,1 +1,23 @@
-{"version": 2, "builds": [{"src": "api/index.py", "use": "@vercel/python"}], "routes": [{"src": "/(.*)", "dest": "api/index.py"}], "env": {"DJANGO_SETTINGS_MODULE": "alvarez_bakery.settings"}}
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/index.py"
+    }
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "alvarez_bakery.settings"
+  },
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.9"
+    }
+  }
+}
