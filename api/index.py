@@ -12,5 +12,5 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'alvarez_bakery.settings')
 application = get_wsgi_application()
 
 # Vercel serverless handler
-def handler(request):
-    return application(request.environ, start_response)
+def handler(environ, start_response):
+    return application(environ, start_response)
