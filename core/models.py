@@ -9,6 +9,7 @@ class Product(models.Model):
     ingredients = models.TextField(blank=True)
     stock = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
+    is_archived = models.BooleanField(default=False, help_text="Archived products are hidden from normal view but can be restored")
     expiration_date = models.DateField(blank=True, null=True, help_text="Product expiration date")
 
     # Product image (stored under MEDIA_ROOT/products/)
@@ -39,8 +40,8 @@ class Product(models.Model):
         return self.expiration_date < date.today()
     
     def is_available_for_sale(self):
-        """Returns True if product can be sold (active, in stock, and not expired)"""
-        return self.is_active and self.stock > 0 and not self.is_expired()
+        """Returns True if product can be sold (active, in stock, not expired, and not archived)"""
+        return self.is_active and self.stock > 0 and not self.is_expired() and not self.is_archived()
 
 
 class SalesTransaction(models.Model):
@@ -82,3 +83,21 @@ class LoginHistory(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.login_time.strftime('%Y-%m-%d %H:%M:%S')}"
+
+
+class UserProfile(models.Model):
+    """Extended user profile with profile picture"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+    
+    @property
+    def get_profile_picture_url(self):
+        """Returns the profile picture URL or None"""
+        if self.profile_picture:
+            return self.profile_picture.url
+        return None

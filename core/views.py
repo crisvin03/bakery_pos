@@ -1,4 +1,8 @@
+import json
+from collections import defaultdict
+from calendar import month_abbr
 from django.db.models import Q
+from django.db.models.deletion import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
@@ -8,7 +12,7 @@ from datetime import date, timedelta, datetime
 
 from .models import Product, SalesTransaction, SalesItem, LoginHistory
 from .forms import ProductForm, CashierForm, ProfileEditForm
-from .utils import daily_sales, top_sellers, moving_average_forecast
+from .utils import daily_sales, daily_quantity, top_sellers, moving_average_forecast
 from .reports import sales_csv
 from django.contrib.auth import get_user_model
 
@@ -33,15 +37,20 @@ def home(request):
     yesterday_revenue = sum(sale.total_amount for sale in yesterday_sales)
     today_growth = ((today_revenue - yesterday_revenue) / yesterday_revenue * 100) if yesterday_revenue > 0 else 0
     
-    # Low stock products (assuming we have a stock field or can calculate from sales)
-    low_stock_count = Product.objects.filter(is_active=True).count()  # Placeholder - would need stock tracking
+    # Active products count (matching POS view logic: non-archived, with stock, not expired)
+    active_products_count = Product.objects.filter(
+        is_archived=False,
+        stock__gt=0
+    ).exclude(
+        expiration_date__lt=today
+    ).count()
     
     # Top sellers (last 7 days)
     week_start = today - timedelta(days=7)
     top_products = top_sellers(start=week_start, end=today, limit=5)
     
-    # Recent transactions (last 7)
-    recent_sales = SalesTransaction.objects.select_related().prefetch_related('items').order_by('-created_at')[:7]
+    # Recent transactions (last 6)
+    recent_sales = SalesTransaction.objects.select_related().prefetch_related('items').order_by('-created_at')[:6]
     recent_sales_data = []
     for sale in recent_sales:
         recent_sales_data.append({
@@ -51,26 +60,49 @@ def home(request):
             'total_amount': f"{sale.total_amount:.2f}"
         })
     
-    # Last 7 days sales for chart
+    # Last 7 months sales for chart (grouped by month)
+    # Get sales data for the last 7 months
+    start_date = today.replace(day=1) - timedelta(days=180)  # Approximately 7 months back
+    monthly_data = defaultdict(lambda: {'revenue': 0.0, 'quantity': 0})
+    
+    # Get all sales items in the date range
+    sales_items = SalesItem.objects.filter(
+        sale__created_at__date__gte=start_date,
+        sale__created_at__date__lte=today
+    ).select_related('sale')
+    
+    # Group by month
+    for item in sales_items:
+        sale_date = item.sale.created_at.date()
+        month_key = f"{sale_date.year}-{sale_date.month:02d}"
+        monthly_data[month_key]['revenue'] += float(item.line_total)
+        monthly_data[month_key]['quantity'] += int(item.qty)
+    
+    # Sort by date and get last 7 months
+    sorted_months = sorted(monthly_data.keys())[-7:]
+    
     last7_labels = []
     last7_values = []
-    for i in range(7):
-        day = today - timedelta(days=6-i)
-        day_sales = SalesTransaction.objects.filter(created_at__date=day)
-        day_revenue = sum(sale.total_amount for sale in day_sales)
-        last7_labels.append(day.strftime('%a'))
-        last7_values.append(day_revenue)
+    last7_quantities = []
+    
+    for month_key in sorted_months:
+        year, month = month_key.split('-')
+        month_name = month_abbr[int(month)]
+        last7_labels.append(f"{month_name} {year}")
+        last7_values.append(float(monthly_data[month_key]['revenue']))
+        last7_quantities.append(int(monthly_data[month_key]['quantity']))
     
     return render(request, 'core/home.html', {
         'kpi_today_sales': f"{today_revenue:.2f}",
         'kpi_today_growth': f"{today_growth:+.1f}%",
         'kpi_today_orders': today_orders,
         'kpi_avg_ticket': f"{today_avg_ticket:.2f}",
-        'kpi_low_stock': low_stock_count,
+        'kpi_low_stock': active_products_count,
         'top_products': top_products,
         'recent_sales': recent_sales_data,
-        'last7_labels': last7_labels,
-        'last7_values': last7_values,
+        'last7_labels': json.dumps(last7_labels),
+        'last7_values': json.dumps(last7_values),
+        'last7_quantities': json.dumps(last7_quantities),
     })
 
 # ---------------- Admin: Product CRUD -----------------
@@ -78,12 +110,19 @@ def home(request):
 @user_passes_test(is_admin)
 def product_list(request):
     q = (request.GET.get('q') or '').strip()
+    show_archived = request.GET.get('archived', '').lower() == 'true'
+    
     # Show all products (including out of stock) for admin management
-    qs = Product.objects.all().order_by('name')
+    # By default, exclude archived products unless explicitly requested
+    if show_archived:
+        qs = Product.objects.filter(is_archived=True).order_by('name')
+    else:
+        qs = Product.objects.filter(is_archived=False).order_by('name')
+    
     if q:
         from django.db.models import Q
         qs = qs.filter(Q(name__icontains=q) | Q(ingredients__icontains=q))
-    return render(request, 'core/product_list.html', {'products': qs, 'q': q})
+    return render(request, 'core/product_list.html', {'products': qs, 'q': q, 'show_archived': show_archived})
 
 @login_required
 @user_passes_test(is_admin)
@@ -117,31 +156,63 @@ def product_edit(request, pk):
 def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        product.delete()
-        messages.success(request, 'Product deleted.')
+        # Check if product has sales history
+        sales_items_count = SalesItem.objects.filter(product=product).count()
+        
+        if sales_items_count > 0:
+            # Archive the product instead of deleting
+            product.is_archived = True
+            product.is_active = False  # Also deactivate it
+            product.save()
+            messages.success(
+                request, 
+                f'Product "{product.name}" has been archived. It is referenced in {sales_items_count} sales record(s). '
+                'You can restore it from the archived products view.'
+            )
+        else:
+            # No sales history, safe to delete
+            product.delete()
+            messages.success(request, 'Product deleted successfully.')
+        
         return redirect('product_list')
     return render(request, 'core/product_delete.html', {'product': product})
+
+@login_required
+@user_passes_test(is_admin)
+def product_restore(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        product.is_archived = False
+        product.is_active = True  # Also restore active status when restoring
+        product.save()
+        messages.success(request, f'Product "{product.name}" has been restored successfully.')
+        return redirect('product_list')
+    return render(request, 'core/product_restore.html', {'product': product})
 
 # ---------------- POS: Cashier & Admin -----------------
 @login_required
 def pos(request):
     from datetime import date
     today = date.today()
-    # Filter out expired products and out-of-stock products - only show active products that are not expired and have stock
+    
+    # Show all non-archived products with stock that are not expired
+    # Include products with no expiration date set
+    # Note: We check is_active in add_to_cart, but show all non-archived products here for flexibility
     products = Product.objects.filter(
-        is_active=True,
+        is_archived=False,
         stock__gt=0
     ).exclude(
         expiration_date__lt=today
     ).order_by('name')
+    
     cart = request.session.get('cart', {})
-    print(f"POS view - Cart data: {cart}")
     return render(request, 'core/pos.html', {'products': products, 'cart': cart})
 
 @login_required
 def add_to_cart(request, product_id):
     from datetime import date
-    product = get_object_or_404(Product, pk=product_id, is_active=True)
+    # Match POS view logic: non-archived products (is_active check removed to match POS display)
+    product = get_object_or_404(Product, pk=product_id, is_archived=False)
     
     # Check if product is expired
     if product.is_expired():
@@ -179,7 +250,8 @@ def update_cart(request, product_id):
     if str(product_id) in cart:
         # Check if product still exists and is valid
         try:
-            product = Product.objects.get(pk=product_id, is_active=True)
+            # Match POS view logic: non-archived products (is_active check removed to match POS display)
+            product = Product.objects.get(pk=product_id, is_archived=False)
             if product.is_expired():
                 cart.pop(str(product_id))
                 messages.error(request, f'❌ Removed "{product.name}" from cart - Product has expired!')
@@ -248,10 +320,12 @@ def checkout(request):
         print(f"Checkout cart data: {cart}")
         discount = float(request.POST.get('discount', 0) or 0)
         payment_method = request.POST.get('payment_method', 'CASH')
+        cash_received = float(request.POST.get('cash_received', 0) or 0)
         total = 0.0
         for pid, item in cart.items():
             total += item['unit_price'] * item['qty']
         total_after_discount = max(0.0, total - discount)
+        change = max(0.0, cash_received - total_after_discount)
 
         sale = SalesTransaction.objects.create(
             cashier=request.user,
@@ -259,6 +333,10 @@ def checkout(request):
             discount=discount,
             payment_method=payment_method
         )
+        
+        # Store cash_received and change in session for receipt
+        request.session[f'sale_{sale.id}_cash_received'] = cash_received
+        request.session[f'sale_{sale.id}_change'] = change
         for pid, item in cart.items():
             # Debug: Print each item being saved
             print(f"Creating SalesItem: Product {pid}, Qty: {item['qty']}, Unit Price: {item['unit_price']}, Line Total: {item['unit_price'] * item['qty']}")
@@ -281,7 +359,14 @@ def checkout(request):
 @login_required
 def receipt(request, sale_id):
     sale = get_object_or_404(SalesTransaction, pk=sale_id)
-    return render(request, 'core/receipt.html', {'sale': sale})
+    # Get cash_received and change from session
+    cash_received = request.session.get(f'sale_{sale_id}_cash_received', 0)
+    change = request.session.get(f'sale_{sale_id}_change', 0)
+    return render(request, 'core/receipt.html', {
+        'sale': sale,
+        'cash_received': cash_received,
+        'change': change
+    })
 
 # ---------------- Admin: Forecast & Analytics -----------
 @login_required
@@ -290,6 +375,7 @@ def forecast(request):
     today = date.today()
     start = today - timedelta(days=60)
     history = daily_sales(start=start, end=today)
+    quantity_history = daily_quantity(start=start, end=today)
     forecast_points = moving_average_forecast(history, horizon=7, window=7)
     top = top_sellers(start=start, end=today, limit=5)
     # Sales performance for last 7 days
@@ -297,6 +383,7 @@ def forecast(request):
     top_7days = top_sellers(start=start_7days, end=today, limit=10)
     return render(request, 'core/forecast.html', {
         'history': history,
+        'quantity_history': quantity_history,
         'forecast_points': forecast_points,
         'top': top,
         'top_7days': top_7days,
@@ -367,12 +454,21 @@ def cashier_create(request):
 @login_required
 def profile(request):
     """Display and edit the current user's profile information"""
+    from .models import UserProfile
+    
     user = request.user
     
+    # Get or create user profile
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
+    
     if request.method == 'POST':
-        form = ProfileEditForm(request.POST, instance=user)
+        form = ProfileEditForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
+            # Handle profile picture upload
+            if 'profile_picture' in request.FILES:
+                user_profile.profile_picture = request.FILES['profile_picture']
+                user_profile.save()
             messages.success(request, 'Profile updated successfully!')
             return redirect('profile')
     else:
@@ -381,6 +477,7 @@ def profile(request):
     return render(request, 'core/profile.html', {
         'user': user,
         'form': form,
+        'user_profile': user_profile,
     })
 
 @login_required

@@ -4,12 +4,23 @@
 
 <style>
   :root {
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
     --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
     --card-shadow: 0 20px 40px rgba(16,24,40,.08);
     --border-color: rgba(16,24,40,.08);
+  }
+
+  /* Body background matching home.html */
+  body {
+    background: linear-gradient(135deg, #f5e6d3 0%, #faf5f0 100%);
+    min-height: 100vh;
+  }
+
+  /* Add spacing below sticky navbar */
+  .container {
+    padding-top: 1rem;
   }
 
   /* Enhanced Page Header */
@@ -20,9 +31,10 @@
     gap: 1.5rem; 
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
     border-radius: 20px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255,255,255,0.2);
     position: relative;
     overflow: hidden;
   }
@@ -48,9 +60,10 @@
 
   .kpi {
     padding: 1rem 1.5rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 16px;
-    background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
     box-shadow: var(--card-shadow);
     font-size: 1rem;
     font-weight: 600;
@@ -75,7 +88,7 @@
     right: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
     animation: float 6s ease-in-out infinite;
   }
 
@@ -86,10 +99,10 @@
 
   /* Enhanced Card */
   .card-elevated { 
-    border: 1px solid var(--border-color); 
+    border: 1px solid rgba(255,255,255,0.2); 
     border-radius: 20px; 
     box-shadow: var(--card-shadow);
-    background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(20px);
     transition: all 0.3s ease;
   }
@@ -106,10 +119,11 @@
     gap: 1rem; 
     align-items: center; 
     padding: 1.5rem;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
     border-radius: 16px;
     margin-bottom: 1.5rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255,255,255,0.2);
   }
 
   .toolbar .search { width: min(400px, 100%); }
@@ -135,18 +149,19 @@
   }
 
   .form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     outline: none;
   }
 
   .cashier-card {
     transition: transform 0.2s, box-shadow 0.2s;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 1rem;
-    background: white;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
   }
 
   .cashier-card:hover {
@@ -195,7 +210,7 @@
 
   .btn-primary-gradient:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
     color: white;
   }
 
@@ -218,13 +233,13 @@
   }
 
   .text-muted {
-    color: #64748b;
+    color: #4b5563;
   }
 
   .empty-state {
     text-align: center;
     padding: 3rem;
-    color: #64748b;
+    color: #4b5563;
   }
 
   .empty-state svg {

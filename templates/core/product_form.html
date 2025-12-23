@@ -28,6 +28,11 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
 
+  /* Add spacing below sticky navbar */
+  .container {
+    padding-top: 1rem;
+  }
+
   .form-card { 
     max-width: 700px; 
     background: rgba(255, 255, 255, 0.95);
@@ -74,6 +79,12 @@
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
+    width: 100%;
+  }
+  
+  .image-upload-area.mt-2 {
+    padding: 1rem;
+    border-radius: 12px;
   }
 
   .image-upload-area:hover {
@@ -86,12 +97,20 @@
     height: 48px;
     color: var(--form-gray-400);
     margin-bottom: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .image-upload-area.mt-2 .upload-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.5rem;
   }
 
   .upload-text {
     color: var(--form-gray-500);
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
+    white-space: nowrap;
   }
 
   .upload-hint {
@@ -204,6 +223,23 @@
     margin-left: 0.5rem;
   }
 
+  /* Hide the link, "Change:" label, checkbox, and "Currently:" text in ClearableFileInput */
+  label[for*="clear"] {
+    display: none !important;
+  }
+  
+  /* Hide the clear checkbox */
+  input[type="checkbox"][id*="clear"],
+  input[type="checkbox"][name*="clear"] {
+    display: none !important;
+  }
+  
+  /* Hide any "Change:" text that might appear */
+  .form-control + label,
+  #id_image + label {
+    display: none !important;
+  }
+
   /* Responsive Design */
   @media (max-width: 768px) {
     .form-card {
@@ -231,20 +267,22 @@
             <h3 class="section-title">📸 Product Image</h3>
             <div class="d-flex flex-column align-items-center gap-2">
             {% if form.instance.image %}
-                <img id="preview" src="{{ form.instance.image.url }}" class="thumb-lg" alt="Product Preview">
+                <img id="preview" src="{{ form.instance.image.url }}" class="thumb-lg" alt="Product Preview" style="cursor: pointer;" title="Click to change image">
             {% else %}
-                <img id="preview" src="" class="thumb-lg d-none" alt="Product Preview">
-                <div id="placeholder" class="image-upload-area">
-                  <svg class="upload-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                  </svg>
-                  <div class="upload-text">Click to upload</div>
-                  <div class="upload-hint">PNG/JPG up to 5MB</div>
-              </div>
+                <img id="preview" src="" class="thumb-lg d-none" alt="Product Preview" style="cursor: pointer;" title="Click to change image">
             {% endif %}
 
               {{ form.image }}
-              <div class="form-text text-center">
+              
+            <div id="placeholder" class="image-upload-area {% if form.instance.image %}mt-2{% endif %}">
+              <svg class="upload-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+              </svg>
+              <div class="upload-text">{% if form.instance.image %}Change Image{% else %}Click to upload{% endif %}</div>
+              <div class="upload-hint">PNG/JPG up to 5MB</div>
+            </div>
+              
+              <div class="form-text text-center d-none">
                 <small class="text-muted">PNG, JPG, JPEG</small>
               </div>
             </div>
@@ -268,10 +306,10 @@
           </div>
 
               <div class="col-md-3">
-                <label class="form-label">Stock</label>
+                <label class="form-label"> Stock</label>
             {{ form.stock }}
           </div>
-
+ 
               <div class="col-md-3">
                 <label class="form-label">Expiration Date</label>
             {{ form.expiration_date }}
@@ -308,45 +346,152 @@
 <script>
   // Enhanced Product Form Functionality
   document.addEventListener('DOMContentLoaded', function() {
+    // Hide the link, "Change:" label, and "Currently:" text from ClearableFileInput
+    const imageInput = document.getElementById("id_image");
+    if (imageInput) {
+      // Find the parent container
+      const imageInputContainer = imageInput.closest('div') || imageInput.parentElement;
+      if (imageInputContainer) {
+        // Hide the link
+        const links = imageInputContainer.querySelectorAll('a[href*="/media/"]');
+        links.forEach(link => {
+          link.style.display = 'none';
+        });
+        
+        // Hide the "Change:" label
+        const changeLabels = imageInputContainer.querySelectorAll('label[for*="clear"]');
+        changeLabels.forEach(label => {
+          label.style.display = 'none';
+        });
+        
+        // Hide the clear checkbox
+        const clearCheckboxes = imageInputContainer.querySelectorAll('input[type="checkbox"][id*="clear"], input[type="checkbox"][name*="clear"]');
+        clearCheckboxes.forEach(checkbox => {
+          checkbox.style.display = 'none';
+        });
+        
+        // Find and hide/remove "Currently:" text
+        // Check all elements in the container
+        const allElements = imageInputContainer.querySelectorAll('*');
+        allElements.forEach(el => {
+          const text = el.textContent || '';
+          // If element only contains "Currently:" or starts with it
+          if (text.trim() === 'Currently:' || text.trim().match(/^Currently:\s*$/)) {
+            el.style.display = 'none';
+          } else if (text.includes('Currently:')) {
+            // Replace "Currently:" in the text
+            el.textContent = text.replace(/Currently:\s*/g, '');
+          }
+        });
+        
+        // Check text nodes directly (for text not in elements)
+        const walker = document.createTreeWalker(
+          imageInputContainer,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+        let node;
+        while (node = walker.nextNode()) {
+          if (node.textContent && node.textContent.includes('Currently:')) {
+            node.textContent = node.textContent.replace(/Currently:\s*/g, '');
+          }
+        }
+        
+        // Check siblings of the input
+        let nextSibling = imageInput.nextElementSibling;
+        while (nextSibling) {
+          if (nextSibling.tagName === 'LABEL' && nextSibling.textContent.includes('Change')) {
+            nextSibling.style.display = 'none';
+          }
+          // Hide elements that only contain "Currently:"
+          if (nextSibling.textContent && nextSibling.textContent.trim() === 'Currently:') {
+            nextSibling.style.display = 'none';
+          }
+          nextSibling = nextSibling.nextElementSibling;
+        }
+      }
+      
+      // Also check the parent of the input's parent (Django wraps things)
+      const parentContainer = imageInput.parentElement?.parentElement;
+      if (parentContainer) {
+        const currentlyElements = Array.from(parentContainer.querySelectorAll('*')).filter(el => {
+          return el.textContent && el.textContent.trim() === 'Currently:';
+        });
+        currentlyElements.forEach(el => {
+          el.style.display = 'none';
+        });
+      }
+    }
+    
     // Image upload with enhanced preview
     const input = document.getElementById("id_image");
     const preview = document.getElementById("preview");
     const placeholder = document.getElementById("placeholder");
     const uploadArea = document.querySelector('.image-upload-area');
 
-    if (input && preview && placeholder) {
+    // Hide the default file input
+    if (input) {
+      input.style.display = 'none';
+    }
+
+    if (input && preview) {
       // Click to upload functionality
       if (uploadArea) {
         uploadArea.addEventListener('click', () => input.click());
       }
+      
+      // Also allow clicking on preview to change image (always, even if visible)
+      if (preview) {
+        preview.style.cursor = 'pointer';
+        preview.addEventListener('click', () => input.click());
+      }
 
-    input.addEventListener("change", function (e) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
+      // Function to update image preview
+      function updateImagePreview(file) {
+        if (!file) return;
 
         // Validate file type
         const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
         if (!validTypes.includes(file.type)) {
           alert('Please select a valid image file (PNG, JPG, JPEG)');
+          input.value = ''; // Clear the input
           return;
         }
 
         // Validate file size (5MB limit)
         if (file.size > 5 * 1024 * 1024) {
           alert('File size must be less than 5MB');
+          input.value = ''; // Clear the input
           return;
         }
 
-      const url = URL.createObjectURL(file);
-      preview.src = url;
-      preview.classList.remove("d-none");
-        placeholder.classList.add("d-none");
+        // Create preview URL
+        const url = URL.createObjectURL(file);
+        preview.src = url;
+        preview.classList.remove("d-none");
+        // Keep upload area visible but update text
+        if (placeholder) {
+          const uploadText = placeholder.querySelector('.upload-text');
+          if (uploadText) {
+            uploadText.textContent = 'Change Image';
+          }
+        }
         
         // Add success animation
         preview.style.transform = 'scale(1.1)';
         setTimeout(() => {
           preview.style.transform = 'scale(1)';
         }, 200);
+        
+        // Make preview clickable to change image
+        preview.style.cursor = 'pointer';
+      }
+
+      // Handle file selection
+      input.addEventListener("change", function (e) {
+        const file = e.target.files && e.target.files[0];
+        updateImagePreview(file);
       });
     }
 

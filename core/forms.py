@@ -56,15 +56,36 @@ class CashierForm(UserCreationForm):
         self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirm Password'})
     
     def save(self, commit=True):
+        # UserCreationForm.save(commit=False) automatically hashes the password
+        # and sets it on the user object, but doesn't save to database yet
         user = super().save(commit=False)
+        
+        # Set cashier-specific attributes
         user.is_staff = False  # Cashiers are not staff (only admins are staff)
+        user.is_superuser = False  # Cashiers are not superusers
+        
+        # Explicitly ensure password is set (UserCreationForm should handle this, but be explicit)
+        if self.cleaned_data.get('password1'):
+            user.set_password(self.cleaned_data['password1'])
+        
+        # Save to database
         if commit:
             user.save()
+        
         return user
 
 
 class ProfileEditForm(forms.ModelForm):
     """Form for editing user profile information"""
+    profile_picture = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            'class': 'form-control',
+            'accept': 'image/*',
+            'id': 'id_profile_picture',
+        })
+    )
+    
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']

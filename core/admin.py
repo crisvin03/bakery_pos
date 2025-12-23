@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, SalesTransaction, SalesItem, LoginHistory
+from .models import Product, SalesTransaction, SalesItem, LoginHistory, UserProfile
 
 class SalesItemInline(admin.TabularInline):
     model = SalesItem
@@ -22,3 +22,9 @@ class LoginHistoryAdmin(admin.ModelAdmin):
     list_filter = ['login_time', 'user']
     search_fields = ['user__username', 'ip_address']
     readonly_fields = ['login_time', 'ip_address', 'user_agent']
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'created_at', 'updated_at']
+    search_fields = ['user__username', 'user__email']
+    readonly_fields = ['created_at', 'updated_at']
